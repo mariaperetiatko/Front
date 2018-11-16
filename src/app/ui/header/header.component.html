@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">EasyEat</a>
+  <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"  aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarTogglerDemo02">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02" [ngbCollapse]="isCollapsed">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-block jumping" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled d-block jumping" href="#">Disabled</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item">
+        <button class="btn btn-default d-none" id="signUp" (click)="signUp()">Sing Up</button>
+      </li>
+      <li class="nav-item">
+          <button class="btn btn-default" (click)="logOnClickAction()">{{LoginString}}</button>
+      </li>
+
+    </ul>
+  </div>
+</nav>
