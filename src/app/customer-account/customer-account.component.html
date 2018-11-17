@@ -1,10 +1,3 @@
-{{customer.firstName}}
-{{customer.lastName}}
-{{customer.phone}}
-{{customer.caloricGoal}}
-{{customer.balance}}
-{{customer.lastName}}
-
 <table class="table table-bordered">
     <tbody>
       <tr>
@@ -20,11 +13,68 @@
         <td>{{customer.phone}}</td>
       </tr>
       <tr>
-          <td>Balance</td>
-          <td>{{customer.balance}}
-              <button class="btn btn-default" (click)="balance()">Send</button>
+        <td>Balance</td>
+         <td>{{customer.balance}}
+            <button class="btn btn-default" (click)="balance()">Send</button>
+         </td>
+      </tr>
+      <tr>
+        <td>Caloric goal</td>
+          <td>{{customer.caloricGoal}}
+            <button class="btn btn-default" (click)="caloricGoal()">Change</button>
           </td>
         </tr>
-
+      <tr>
+        <td>Special products</td>
+          <td>
+            <button class="btn btn-default" (click)="getSpecialProducts()">View</button>
+          </td>
+        </tr>
+      <tr>
+        <td>Food style</td>
+          <td> {{foodStyleName}}
+            <button class="btn btn-default" (click)="foodStyle()">View details</button>
+          </td>
+      </tr>
+      <tr>
+          <td>Cart</td>
+            <td>
+              <button class="btn btn-default" (click)="cart()">View</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Addresses</td>
+              <td>
+                <button class="btn btn-default" (click)="addresses()">View</button>
+              </td>
+          </tr>
+          <tr>
+              <td>Favourite dishes</td>
+                <td>
+                  <button class="btn btn-default" (click)="favouriteDish()">View</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Food orders</td>
+                  <td>
+                    <button class="btn btn-default" (click)="favouriteDish()">View</button>
+                  </td>
+              </tr>
+              id?: number | undefined;
+              firstName?: string | undefined;
+              lastName?: string | undefined;
+              phone?: number | undefined;
+              caloricGoal?: number | undefined;
+              foodStyleId?: number | undefined;
+              balance?: number | undefined;
+              isDeleted?: number | undefined;
+              identityId?: string | undefined;
+              identity?: User | undefined;
+              foodStyle?: FoodStyle | undefined;
+              cart?: Cart | undefined;
+              deliveryAddress?: DeliveryAddress[] | undefined;
+              favouriteDish?: FavouriteDish[] | undefined;
+              foodOrder?: FoodOrder[] | undefined;
+              specialProduct?: SpecialProduct[] | undefined;
     </tbody>
   </table>

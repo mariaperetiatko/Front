@@ -6,6 +6,7 @@ import { RegistrationFormComponent } from './registration-form/registration-form
 import { HttpModule } from '@angular/http';
 import { LandingPageComponent } from './ui/landing-page/landing-page.component';
 import { CustomerAccountComponent } from './customer-account/customer-account.component';
+import { SpecialProductsComponent } from './special-products/special-products.component';
 
 
 
@@ -15,6 +16,7 @@ const routes: Routes = [
                          { path: 'login', component: LoginFormComponent},
                          { path: 'register', component: RegistrationFormComponent},
                          { path: 'home', component: CustomerAccountComponent},
+                         { path: 'specialProducts', component: SpecialProductsComponent},
                          { path: 'map', component: GoogleMapComponent } ];
 
 @NgModule({

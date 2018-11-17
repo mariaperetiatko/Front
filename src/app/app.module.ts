@@ -16,6 +16,7 @@ import { GoogleMapComponent } from './google-map/google-map.component';
 import { UiModule } from './ui/ui.module';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { CustomerAccountComponent } from './customer-account/customer-account.component';
+import { SpecialProductsComponent } from './special-products/special-products.component';
 
 
 
@@ -26,7 +27,8 @@ import { CustomerAccountComponent } from './customer-account/customer-account.co
     CustomerListComponent,
     GoogleMapComponent,
     RegistrationFormComponent,
-    CustomerAccountComponent
+    CustomerAccountComponent,
+    SpecialProductsComponent
   ],
   imports: [
     BrowserModule,

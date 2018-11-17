@@ -926,6 +926,122 @@ export class Client {
     /**
      * @return Success
      */
+    allowedProductBySpecial(): Observable<Product[]> {
+        let url_ = this.baseUrl + "/api/SpecialProduct/AllowedProductBySpecial";
+        url_ = url_.replace(/[?&]$/, "");
+        let authToken = localStorage.getItem('auth_token');
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json",
+                "Authorization": `Bearer ${authToken}`
+
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAllowedProductBySpecial(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAllowedProductBySpecial(<any>response_);
+                } catch (e) {
+                    return <Observable<Product[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Product[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAllowedProductBySpecial(response: HttpResponseBase): Observable<Product[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(Product.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Product[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    notAllowedProductBySpecial(): Observable<Product[]> {
+        let url_ = this.baseUrl + "/api/SpecialProduct/NotAllowedProductBySpecial";
+        url_ = url_.replace(/[?&]$/, "");
+      let authToken = localStorage.getItem('auth_token');
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json",
+                 "Authorization": `Bearer ${authToken}`
+
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processNotAllowedProductBySpecial(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processNotAllowedProductBySpecial(<any>response_);
+                } catch (e) {
+                    return <Observable<Product[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Product[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processNotAllowedProductBySpecial(response: HttpResponseBase): Observable<Product[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(Product.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Product[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     get6(): Observable<Customer[]> {
       let url_ = this.baseUrl + "/api/Customer";
       url_ = url_.replace(/[?&]$/, "");
@@ -4155,15 +4271,17 @@ export class Client {
     /**
      * @return Success
      */
-    get26(): Observable<Product[]> {
+    getProducts(): Observable<Product[]> {
         let url_ = this.baseUrl + "/api/Product";
         url_ = url_.replace(/[?&]$/, "");
+        let authToken = localStorage.getItem('auth_token');
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": `Bearer ${authToken}`
             })
         };
 
@@ -4314,52 +4432,60 @@ export class Client {
     /**
      * @return Success
      */
-    get27(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/Product/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
+    getProductById(id: number): Observable<Product> {
+      let url_ = this.baseUrl + "/api/Product/{id}";
+      let authToken = localStorage.getItem('auth_token');
 
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
+      if (id === undefined || id === null)
+          throw new Error("The parameter 'id' must be defined.");
+      url_ = url_.replace("{id}", encodeURIComponent("" + id));
+      url_ = url_.replace(/[?&]$/, "");
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGet27(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGet27(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json",
+              "Authorization": `Bearer ${authToken}`
+
+          })
+      };
+
+      return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processGet27(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processGet27(<any>response_);
+              } catch (e) {
+                  return <Observable<Product>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<Product>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processGet27(response: HttpResponseBase): Observable<Product> {
+    const status = response.status;
+    const responseBlob =
+        response instanceof HttpResponse ? response.body :
+        (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+    let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+    if (status === 200) {
+        return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+        let result200: any = null;
+        let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+        result200 = resultData200 ? Product.fromJS(resultData200) : new Product();
+        return _observableOf(result200);
+        }));
+    } else if (status !== 200 && status !== 204) {
+        return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+        return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }));
     }
-
-    protected processGet27(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
+    return _observableOf<Product>(<any>null);
+}
 
     /**
      * @return Success
@@ -4793,15 +4919,19 @@ export class Client {
     /**
      * @return Success
      */
-    get30(): Observable<SpecialProduct[]> {
+    getSpecialProducts(): Observable<SpecialProduct[]> {
         let url_ = this.baseUrl + "/api/SpecialProduct";
         url_ = url_.replace(/[?&]$/, "");
+
+        let authToken = localStorage.getItem('auth_token');
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": `Bearer ${authToken}`
+
             })
         };
 
@@ -4846,39 +4976,38 @@ export class Client {
     }
 
     /**
-     * @param specialProduct (optional)
      * @return Success
      */
-    change(specialProduct: SpecialProduct | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/SpecialProduct";
+    getCustomerByToken(): Observable<number> {
+        let url_ = this.baseUrl + "/api/Customer/GetCustomerByToken";
         url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(specialProduct);
+        let authToken = localStorage.getItem('auth_token');
 
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${authToken}`
+
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processChange(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCustomerByToken(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processChange(<any>response_);
+                    return this.processGetCustomerByToken(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<number>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<number>><any>_observableThrow(response_);
         }));
     }
 
-    protected processChange(response: HttpResponseBase): Observable<void> {
+    protected processGetCustomerByToken(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4887,15 +5016,80 @@ export class Client {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<number>(<any>null);
     }
+
+    /**
+     * @param specialProduct (optional)
+     * @return Success
+     */
+    change(specialProduct: SpecialProduct | null | undefined): Observable<SpecialProduct> {
+      let url_ = this.baseUrl + "/api/SpecialProduct";
+      url_ = url_.replace(/[?&]$/, "");
+      let authToken = localStorage.getItem('auth_token');
+
+
+      const content_ = JSON.stringify(specialProduct);
+
+      let options_ : any = {
+          body: content_,
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": `Bearer ${authToken}`
+
+          })
+      };
+
+      return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processChange(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processChange(<any>response_);
+              } catch (e) {
+                  return <Observable<SpecialProduct>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<SpecialProduct>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processChange(response: HttpResponseBase): Observable<SpecialProduct> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200 ? SpecialProduct.fromJS(resultData200) : new SpecialProduct();
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<SpecialProduct>(<any>null);
+  }
+
+
 
     /**
      * @param productId (optional)
@@ -4958,160 +5152,179 @@ export class Client {
      * @param customerId (optional)
      * @return Success
      */
-    delete16(productId: number | null | undefined, customerId: number | null | undefined, id: string): Observable<void> {
-        let url_ = this.baseUrl + "/api/SpecialProduct/{id}?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (productId !== undefined)
-            url_ += "ProductId=" + encodeURIComponent("" + productId) + "&";
-        if (customerId !== undefined)
-            url_ += "CustomerId=" + encodeURIComponent("" + customerId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
+    deleteSpecialProduct(productId: number | null | undefined, customerId: number | null | undefined, id: string): Observable<SpecialProduct> {
+      let url_ = this.baseUrl + "/api/SpecialProduct/Delete{id}?";
+      if (id === undefined || id === null)
+          throw new Error("The parameter 'id' must be defined.");
+      url_ = url_.replace("{id}", encodeURIComponent("" + id));
+      if (productId !== undefined)
+          url_ += "ProductId=" + encodeURIComponent("" + productId) + "&";
+      if (customerId !== undefined)
+          url_ += "CustomerId=" + encodeURIComponent("" + customerId) + "&";
+      url_ = url_.replace(/[?&]$/, "");
+      let authToken = localStorage.getItem('auth_token');
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json",
+              "Authorization": `Bearer ${authToken}`
+          })
+      };
 
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
+      return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processDelete16(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processDelete16(<any>response_);
+              } catch (e) {
+                  return <Observable<SpecialProduct>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<SpecialProduct>><any>_observableThrow(response_);
+      }));
+  }
 
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDelete16(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDelete16(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
+  protected processDelete16(response: HttpResponseBase): Observable<SpecialProduct> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-    protected processDelete16(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200 ? SpecialProduct.fromJS(resultData200) : new SpecialProduct();
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<SpecialProduct>(<any>null);
+  }
 
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @param specialProduct (optional)
-     * @return Success
-     */
-    createAllowed(specialProduct: SpecialProduct | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/SpecialProduct/CreateAllowed";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(specialProduct);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateAllowed(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateAllowed(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCreateAllowed(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
 
     /**
      * @param specialProduct (optional)
      * @return Success
      */
-    createNotAllowed(specialProduct: SpecialProduct | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/SpecialProduct/CreateNotAllowed";
-        url_ = url_.replace(/[?&]$/, "");
+    createAllowed(specialProduct: SpecialProduct | null | undefined): Observable<SpecialProduct> {
+      let url_ = this.baseUrl + "/api/SpecialProduct/CreateAllowed";
+      url_ = url_.replace(/[?&]$/, "");
+      let authToken = localStorage.getItem('auth_token');
 
-        const content_ = JSON.stringify(specialProduct);
+      const content_ = JSON.stringify(specialProduct);
 
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-            })
-        };
+      let options_ : any = {
+          body: content_,
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": `Bearer ${authToken}`
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateNotAllowed(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateNotAllowed(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
+          })
+      };
 
-    protected processCreateNotAllowed(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+      return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processCreateAllowed(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processCreateAllowed(<any>response_);
+              } catch (e) {
+                  return <Observable<SpecialProduct>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<SpecialProduct>><any>_observableThrow(response_);
+      }));
+  }
 
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
+  protected processCreateAllowed(response: HttpResponseBase): Observable<SpecialProduct> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200 ? SpecialProduct.fromJS(resultData200) : new SpecialProduct();
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<SpecialProduct>(<any>null);
+  }
+
+       /**
+     * @param specialProduct (optional)
+     * @return Success
+     */
+    createNotAllowed(specialProduct: SpecialProduct | null | undefined): Observable<SpecialProduct> {
+      let url_ = this.baseUrl + "/api/SpecialProduct/CreateNotAllowed";
+      url_ = url_.replace(/[?&]$/, "");
+      let authToken = localStorage.getItem('auth_token');
+
+      const content_ = JSON.stringify(specialProduct);
+
+      let options_ : any = {
+          body: content_,
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": `Bearer ${authToken}`
+          })
+      };
+
+      return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processCreateNotAllowed(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processCreateNotAllowed(<any>response_);
+              } catch (e) {
+                  return <Observable<SpecialProduct>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<SpecialProduct>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processCreateNotAllowed(response: HttpResponseBase): Observable<SpecialProduct> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200 ? SpecialProduct.fromJS(resultData200) : new SpecialProduct();
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<SpecialProduct>(<any>null);
+  }
 }
 
 export class RegistrationViewModel implements IRegistrationViewModel {
