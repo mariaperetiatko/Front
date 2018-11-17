@@ -69,11 +69,12 @@ export class UserService {
 
   register(email: string, password: string, firstName: string, lastName: string, phone: number,
     role: string): Observable<RegistrationViewModel> {
+      alert(role );
     const body = JSON.stringify({ email, password, firstName, lastName, phone, role });
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
-
-    return this.http.post(this.baseUrl + '/account', body, options)
+    const headers = new Headers();
+    headers.append('Access-Control-Allow-Origin',  '*');
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.baseUrl + '/account', body,  { headers })
     .pipe(map(res => res.json()));
   }
 }

@@ -1,0 +1,30 @@
+{{customer.firstName}}
+{{customer.lastName}}
+{{customer.phone}}
+{{customer.caloricGoal}}
+{{customer.balance}}
+{{customer.lastName}}
+
+<table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td>First Name:</td>
+        <td>{{customer.firstName}}</td>
+      </tr>
+      <tr>
+        <td>Last Name:</td>
+        <td>{{customer.lastName}}</td>
+      </tr>
+      <tr>
+        <td>Phone</td>
+        <td>{{customer.phone}}</td>
+      </tr>
+      <tr>
+          <td>Balance</td>
+          <td>{{customer.balance}}
+              <button class="btn btn-default" (click)="balance()">Send</button>
+          </td>
+        </tr>
+
+    </tbody>
+  </table>

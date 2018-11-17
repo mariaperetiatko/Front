@@ -1,9 +1,14 @@
 <div class="form-group">
     <label>Email</label>
-    <input class="form-control" type="text" name="email" [(ngModel)]="registrations.email"  #email="ngModel" required />
-    <div [hidden]="email.valid || email.untouched" class="alert alert-danger">
+    <input class="form-control" type="text" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="registrations.email" placeholder="email@example.com" #email="ngModel" required />
+    <div *ngIf="email.errors &&(email.touched || email.dirty)">
+        <div [hidden]="!email.errors?.pattern" class ="aler alert-danger">
+          Invalid pattern
+        </div>
+       </div>
+    <!--<div [hidden]="email.valid || email.untouched" class="alert alert-danger">
       Input your email!
-    </div>
+    </div>-->
   </div>
 
   <div class="form-group">
@@ -40,14 +45,21 @@
 
         <div class="form-group">
             <label>role</label>
+            <select class="form-control" (change)="selectChangeHandler($event)">
+            <option value="member"></option>
+
+                <option value="member">Member</option>
+                <option value="admin">Admin</option>
+                <option value="restaurantOwner">Restaurant manager</option>
+            </select>
             <input class="form-control" type="text" name="role" [(ngModel)]="registrations.role" #role="ngModel" required />
             <div [hidden]="role.valid || role.untouched" class="alert alert-danger">
               Input your role!
             </div>
-          </div>
+        </div>
+
 
   <div class="form-group">
-    <button [disabled]="registrations.email || registrations.password || registrations.firstName
-    || registrations.lastName || registrations.phone || registrations.role"
+    <button
         class="btn btn-default" (click)="registerUser()">Send</button>
   </div>

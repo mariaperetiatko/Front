@@ -40,18 +40,15 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       }
 
       login() {
-        alert(this.router);
         this.submitted = true;
         this.isRequesting = true;
         this.errors = '';
         // if (valid) {
-          alert('hfhfhf');
           this.userService.login(this.credentials.userName, this.credentials.password)
             .pipe(finalize(() => this.isRequesting = false)).
             subscribe(
             result => {
               if (result) {
-                alert('ggggggggggggggggggggggggg');
                 window.location.reload();
                 this.router.navigate(['/map']);
               }
@@ -59,6 +56,3 @@ export class LoginFormComponent implements OnInit, OnDestroy {
             error => this.errors = error);
         }
       }
-    // }
-
-

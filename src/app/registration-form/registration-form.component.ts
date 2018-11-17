@@ -29,8 +29,12 @@ export class RegistrationFormComponent implements OnInit {
   ngOnInit() {
   }
 
-  registerUser() {
+  selectChangeHandler (event: any) {
+    this.registrations.role = event.target.value;
+  }
 
+  registerUser() {
+        alert(this.registrations.role);
         this.userService.register(this.registrations.email, this.registrations.password, this.registrations.firstName,
           this.registrations.lastName, this.registrations.phone, this.registrations.role)
                   .pipe(finalize(() => this.isRequesting = false))

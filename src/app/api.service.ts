@@ -42,15 +42,13 @@ export class Client {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
-        let authToken = localStorage.getItem('auth_token');
 
             let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${authToken}`
+                "Content-Type": "application/json"
             })
         };
 
@@ -459,6 +457,8 @@ export class Client {
     getCart(): Observable<void> {
         let url_ = this.baseUrl + "/api/Cart/GetCart";
         url_ = url_.replace(/[?&]$/, "");
+
+        let authToken = localStorage.getItem('auth_token');
 
         let options_ : any = {
             observe: "response",
@@ -982,6 +982,60 @@ export class Client {
   }
 
 
+     /**
+     * @return Success
+     */
+    getCustomer(): Observable<Customer> {
+      let url_ = this.baseUrl + "/api/Customer/GetCustomer";
+      url_ = url_.replace(/[?&]$/, "");
+
+      let authToken = localStorage.getItem('auth_token');
+
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json",
+              "Authorization": `Bearer ${authToken}`
+
+          })
+      };
+
+      return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processGetCustomer(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processGetCustomer(<any>response_);
+              } catch (e) {
+                  return <Observable<Customer>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<Customer>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processGetCustomer(response: HttpResponseBase): Observable<Customer> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200 ? Customer.fromJS(resultData200) : new Customer();
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<Customer>(<any>null);
+  }
 
     /**
      * @param customer (optional)
