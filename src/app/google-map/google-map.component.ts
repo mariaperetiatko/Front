@@ -52,7 +52,7 @@ export class GoogleMapComponent implements AfterContentInit {
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
     this.getListOfRestaurants();
-     this.showAllRestaurants();
+    // this.showAllRestaurants();
 
   }
 

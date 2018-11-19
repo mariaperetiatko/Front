@@ -19,42 +19,69 @@ export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
   restaurant: Restaurant;
   menues: Menu[];
   dish: Dish;
-  dishes: Dish[];
-
+  dishes: Dish[] = [];
+  isRequesting = true;
+  singleArray = [];
   constructor(private client: Client, private router: Router,  private userService: UserService) { }
 
   ngAfterContentInit() {
    this. getRestaurant();
    this.getMenuesByRestaurant();
-   this.getListOfDishes();
+  // this.getListOfDishes();
   }
 
   getRestaurant(): void {
     const restaurant: Restaurant = JSON.parse(localStorage.getItem('restaurant'));
     this.restaurant = restaurant;
-   alert(restaurant.id);
+  //  alert(restaurant.id);
   }
 
   getMenuesByRestaurant(): void {
-    this.client.getMenuesByRestaurant(this.restaurant.id)
-    .subscribe((data: Menu[]) => this.menues = data);
 
+    this.client.getMenuesByRestaurant(this.restaurant.id)
+    .pipe(finalize(() => this.isRequesting = false))
+    .subscribe((data: Menu[]) => {
+      this.menues = data;
+      this.getListOfDishes();
+      this.mergeArrays();
+
+      }
+    );
+  }
+
+  mergeArrays(): void {
+    for (let i = 0; i < this.menues.length; i++) {
+      this.singleArray[i] = {
+                           menuId: this.menues[i].id,
+                           menuCost: this.menues[i].cost,
+                           dishId: this.dishes[i].id,
+                           dishName: this.dishes[i].dishName
+                          };
+                          alert(this.singleArray[i].menuId);
+      }
   }
 
   ngOnDestroy() {
     localStorage.removeItem('restaurant');
   }
 
-  getDishById(dishId: number): void {
-    this.client.getDishById(this.restaurant.id)
+  getDishById(dishId: number): string {
+
+    this.client.getDishById(dishId)
     .subscribe((data: Dish) => this.dish = data);
-  }
+
+  return this.dish.dishName;
+}
 
   getListOfDishes(): void {
     for (let i = 0; i < this.menues.length; i++) {
-        this.client.getDishById(this.menues[i].id)
-        .subscribe((data: Dish) => this.dishes[i] = data);
+        this.client.getDishById(this.menues[i].dishId)
+        .subscribe((data: Dish) => {
+          this.dishes[i] = data;
+        }
+        );
     }
+
   }
 
 }

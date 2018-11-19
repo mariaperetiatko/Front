@@ -5,13 +5,13 @@
 {{restaurant.houseNamber}}
 <button class="btn btn-default" (click)="showAllRestaurants()">Menu</button>
 <div *ngFor="let prod of menues">
-  <h4>{{prod.id}}-{{prod.cost}}</h4>
+  <h4>{{prod.id}}-{{prod.cost}}--{{prod.dishId}}</h4>
   <h4>{{prod.restaurantId}}</h4>
 
 </div>
 
-<div *ngFor="let prod of dishes">
-  <h4>{{prod.id}}-{{prod.dishName}}</h4>
+<div *ngFor="let prod of singleArray">
+  <h4>{{prod.fromMenu.id}}-{{prod.fromDish.id}}</h4>
 
 
 </div>
