@@ -2,7 +2,10 @@
 
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
-
+import { Restaurant, Client } from '../api.service';
+import { UserService } from '../user.service';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-google-map',
@@ -10,6 +13,8 @@ import { ViewChild } from '@angular/core';
   styleUrls: ['./google-map.component.css']
 })
 export class GoogleMapComponent implements AfterContentInit {
+
+  restaurants: Restaurant[];
 
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
@@ -36,6 +41,8 @@ export class GoogleMapComponent implements AfterContentInit {
 
   isHidden = false;
 
+  constructor(private client: Client, private router: Router,  private userService: UserService) { }
+
   ngAfterContentInit() {
     const mapProp = {
       center: new google.maps.LatLng(18.5793, 73.8143),
@@ -44,12 +51,20 @@ export class GoogleMapComponent implements AfterContentInit {
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
+    this.getListOfRestaurants();
+     this.showAllRestaurants();
 
   }
 
   setMapType(mapTypeId: string) {
     this.map.setMapTypeId(mapTypeId);
   }
+
+  getListOfRestaurants(): void {
+    this.client.getListOfRestaurants()
+    .subscribe((data: Restaurant[]) => this.restaurants = data);
+  }
+
 
   setCenter() {
     this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
@@ -76,6 +91,7 @@ export class GoogleMapComponent implements AfterContentInit {
 
   markerHandler(marker: google.maps.Marker) {
     alert('Marker\'s Title: ' + marker.getTitle() + 'pos      ' + marker.getPosition());
+
   }
 
   showCustomMarker() {
@@ -99,6 +115,45 @@ export class GoogleMapComponent implements AfterContentInit {
       this.markerHandler(marker);
     });
   }
+
+  showAllRestaurants(): void {
+    alert(this.restaurants.length);
+    for (let i = 0; i < this.restaurants.length; i++) {
+      this.showRestaurant(this.restaurants[i]);
+    }
+  }
+
+  showRestaurant(restaurant: Restaurant) {
+
+   // this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
+   alert(restaurant.xcoordinate + '   ' + restaurant.ycoordinate);
+
+
+    const location = new google.maps.LatLng(restaurant.xcoordinate, restaurant.ycoordinate);
+
+    // console.log(`selected marker: ${this.selectedMarkerType}`);
+
+    const marker = new google.maps.Marker({
+      position: location,
+      map: this.map,
+      icon: this.iconBase + this.selectedMarkerType,
+      title: restaurant.restaurantName
+    });
+    // marker.addListener('click', this.simpleMarkerHandler);
+
+    marker.addListener('click', () => {
+      this.restaurantHendler(restaurant, marker);
+    });
+  }
+
+  restaurantHendler(restaurant: Restaurant, marker: google.maps.Marker ): void {
+    alert('Marker\'s Title: ' + marker.getTitle() + 'pos      ' + marker.getPosition());
+    // const restaurantJson = restaurant.toJSON();
+    localStorage.setItem('restaurant', JSON.stringify(restaurant));
+   alert(restaurant);
+   this.router.navigate(['/restaurantPage']);
+  }
+
 
   toggleMap() {
     this.isHidden = !this.isHidden;

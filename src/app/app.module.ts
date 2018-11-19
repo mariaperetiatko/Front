@@ -21,6 +21,7 @@ import { FoodStyleComponent } from './food-style/food-style.component';
 import { IngredientComponent } from './ingredient/ingredient.component';
 import { FoodStyleProductsComponent } from './food-style-products/food-style-products.component';
 import { FavouriteDishesComponent } from './favourite-dishes/favourite-dishes.component';
+import { RestaurantPageComponent } from './restaurant-page/restaurant-page.component';
 
 
 
@@ -36,7 +37,8 @@ import { FavouriteDishesComponent } from './favourite-dishes/favourite-dishes.co
     FoodStyleComponent,
     IngredientComponent,
     FoodStyleProductsComponent,
-    FavouriteDishesComponent
+    FavouriteDishesComponent,
+    RestaurantPageComponent
   ],
   imports: [
     BrowserModule,

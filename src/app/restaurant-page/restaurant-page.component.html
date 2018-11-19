@@ -1,0 +1,18 @@
+{{restaurant.restaurantName}}
+{{restaurant.country}}
+{{restaurant.city}}
+{{restaurant.streete}}
+{{restaurant.houseNamber}}
+<button class="btn btn-default" (click)="showAllRestaurants()">Menu</button>
+<div *ngFor="let prod of menues">
+  <h4>{{prod.id}}-{{prod.cost}}</h4>
+  <h4>{{prod.restaurantId}}</h4>
+
+</div>
+
+<div *ngFor="let prod of dishes">
+  <h4>{{prod.id}}-{{prod.dishName}}</h4>
+
+
+</div>
+

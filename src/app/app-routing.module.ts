@@ -1,3 +1,4 @@
+import { RestaurantPageComponent } from './restaurant-page/restaurant-page.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -10,6 +11,7 @@ import { SpecialProductsComponent } from './special-products/special-products.co
 import { FoodStyleComponent } from './food-style/food-style.component';
 import { IngredientComponent } from './ingredient/ingredient.component';
 import { FavouriteDishesComponent } from './favourite-dishes/favourite-dishes.component';
+
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
                          { path: 'welcome', component: LandingPageComponent},
@@ -21,6 +23,7 @@ const routes: Routes = [
                          { path: 'foodStyle', component: FoodStyleComponent},
                          { path: 'foodStyleProducts', component: FoodStyleComponent},
                          { path: 'favouriteDishes', component: FavouriteDishesComponent},
+                         { path: 'restaurantPage', component: RestaurantPageComponent},
                          { path: 'map', component: GoogleMapComponent } ];
 
 @NgModule({
