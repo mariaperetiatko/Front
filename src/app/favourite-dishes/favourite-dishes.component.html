@@ -1,0 +1,66 @@
+<h4>Favourite dishes</h4>
+<table class="table table-bordered">
+    <tbody>
+    <div *ngFor="let favouriteDish of favouriteDishes">
+            <tr class="first-allowed">
+                <td>
+                    Name
+                </td>
+                <td>
+                {{favouriteDish.dishName}}
+                </td>
+            </tr>
+            <tr class="second-allowed">
+                <td>
+                    Description
+                </td>
+                <td>
+                {{favouriteDish.description}}
+                </td>
+            </tr>
+            <tr class="third-allowed">
+                <td>
+                    <button class="btn btn-default" (click)="setNotAllowed(allowedProduct.id)">Details</button>
+                </td>
+                <td>
+                    <button class="btn btn-default" (click)="deleteFavouriteDish(customer.id,favouriteDish.id)">Delete</button>
+                </td>
+            </tr>
+
+    <tbody>
+    </div>
+    <h4>Other dishes</h4>
+
+    </table>
+
+    <table class="table table-bordered">
+        <tbody>
+        <div *ngFor="let notFavouriteDish of notFavouriteDishes">
+                <tr class="first-allowed">
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                    {{notFavouriteDish.dishName}}
+                    </td>
+                </tr>
+                <tr class="second-allowed">
+                    <td>
+                        Description
+                    </td>
+                    <td>
+                    {{notFavouriteDish.description}}
+                    </td>
+                </tr>
+                <tr class="third-allowed">
+                    <td>
+                        <button class="btn btn-default" (click)="setNotAllowed(allowedProduct.id)">Delails</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-default" (click)="createFavouriteDish(customer.id,notFavouriteDish.id)">Add</button>
+                    </td>
+                </tr>
+
+        <tbody>
+        </div>
+        </table>

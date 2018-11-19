@@ -17,6 +17,10 @@ import { UiModule } from './ui/ui.module';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { CustomerAccountComponent } from './customer-account/customer-account.component';
 import { SpecialProductsComponent } from './special-products/special-products.component';
+import { FoodStyleComponent } from './food-style/food-style.component';
+import { IngredientComponent } from './ingredient/ingredient.component';
+import { FoodStyleProductsComponent } from './food-style-products/food-style-products.component';
+import { FavouriteDishesComponent } from './favourite-dishes/favourite-dishes.component';
 
 
 
@@ -28,7 +32,11 @@ import { SpecialProductsComponent } from './special-products/special-products.co
     GoogleMapComponent,
     RegistrationFormComponent,
     CustomerAccountComponent,
-    SpecialProductsComponent
+    SpecialProductsComponent,
+    FoodStyleComponent,
+    IngredientComponent,
+    FoodStyleProductsComponent,
+    FavouriteDishesComponent
   ],
   imports: [
     BrowserModule,

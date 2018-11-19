@@ -7,9 +7,9 @@ import { HttpModule } from '@angular/http';
 import { LandingPageComponent } from './ui/landing-page/landing-page.component';
 import { CustomerAccountComponent } from './customer-account/customer-account.component';
 import { SpecialProductsComponent } from './special-products/special-products.component';
-
-
-
+import { FoodStyleComponent } from './food-style/food-style.component';
+import { IngredientComponent } from './ingredient/ingredient.component';
+import { FavouriteDishesComponent } from './favourite-dishes/favourite-dishes.component';
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
                          { path: 'welcome', component: LandingPageComponent},
@@ -17,6 +17,10 @@ const routes: Routes = [
                          { path: 'register', component: RegistrationFormComponent},
                          { path: 'home', component: CustomerAccountComponent},
                          { path: 'specialProducts', component: SpecialProductsComponent},
+                         { path: 'ingredients', component: IngredientComponent},
+                         { path: 'foodStyle', component: FoodStyleComponent},
+                         { path: 'foodStyleProducts', component: FoodStyleComponent},
+                         { path: 'favouriteDishes', component: FavouriteDishesComponent},
                          { path: 'map', component: GoogleMapComponent } ];
 
 @NgModule({

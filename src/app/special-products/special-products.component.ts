@@ -3,7 +3,6 @@ import { Client, SpecialProduct, Product } from '../api.service';
 import { UserService } from '../user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { SelectorMatcher } from '@angular/compiler';
 
 
 @Component({
@@ -22,27 +21,32 @@ export class SpecialProductsComponent implements OnInit {
   selectedAllowed: number;
   selectedNotAllowed: number;
   error: string;
-
   product: Product;
+
   constructor(private client: Client, private router: Router,  private userService: UserService) { }
-
-
 
   ngOnInit() {
     this.allowedProductBySpecial();
     this.notAllowedProductBySpecial();
-    this.getProducts();
+    this.notSpecialProducts();
     this.client.getCustomerByToken()
     .subscribe((data: number) => this.specialProductToChange.customerId = data);
   }
 
   allowedProductBySpecial(): void {
+    this.isRequesting = true;
+
     this.client.allowedProductBySpecial()
-    .subscribe((data: Product[]) => this.allowedProducts = data);
+    .pipe(finalize(() => this.isRequesting = false))
+    .subscribe((data: Product[]) => this.allowedProducts = data)
+    ;
   }
 
   notAllowedProductBySpecial(): void {
+    this.isRequesting = true;
+
     this.client.notAllowedProductBySpecial()
+    .pipe(finalize(() => this.isRequesting = false))
     .subscribe((data: Product[]) => this.notAllowedProducts = data);
   }
 
@@ -61,7 +65,6 @@ export class SpecialProductsComponent implements OnInit {
         }
       }
   );
-
   }
 
   setAllowed(prodId: number): void {
@@ -69,7 +72,6 @@ export class SpecialProductsComponent implements OnInit {
     this.specialProductToChange.allowance = 1;
 
     this.isRequesting = true;
-
 
     this.client.change(this.specialProductToChange)
     .pipe(finalize(() => this.isRequesting = false))
@@ -80,11 +82,10 @@ export class SpecialProductsComponent implements OnInit {
         }
       }
   );
-
   }
 
-  getProducts(): void {
-    this.client.getProducts()
+  notSpecialProducts(): void {
+    this.client.notSpecialProducts()
     .subscribe((data: Product[]) => this.products = data);
   }
 
@@ -98,7 +99,6 @@ export class SpecialProductsComponent implements OnInit {
     .pipe(finalize(() => this.isRequesting = false))
     .subscribe(
       result => {
-        alert(result.customerId);
         if (result) {
           window.location.reload();
         }
@@ -116,13 +116,11 @@ export class SpecialProductsComponent implements OnInit {
     .pipe(finalize(() => this.isRequesting = false))
     .subscribe(
       result => {
-      // alert(result.customerId);
         if (result) {
           window.location.reload();
         }
       },
       error => this.error = error);
-     // alert(this.error);
   }
 
 

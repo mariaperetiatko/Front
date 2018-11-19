@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private client: Client, private userService: UserService) { }
 
   ngOnInit() {
-    this.get66();
+    // this.get66();
   }
 
   get66(): void {

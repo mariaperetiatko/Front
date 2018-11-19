@@ -1,41 +1,62 @@
+<div *ngIf="!isRequesting">
+  <div *ngIf="!isFoodNameRequesting">
+
 <table class="table table-bordered">
     <tbody>
       <tr>
         <td>First Name:</td>
+
         <td>{{customer.firstName}}</td>
+        <td>
+            <input type="text" [(ngModel)]="firstName">
+            <button class="btn btn-default" (click)="changeFirstName(customer.id, firstName)">Change</button>
+         </td>
       </tr>
       <tr>
         <td>Last Name:</td>
         <td>{{customer.lastName}}</td>
+        <td>
+            <input type="text" [(ngModel)]="lastName">
+            <button class="btn btn-default" (click)="changeLastName(customer.id, lastName)">Change</button>
+         </td>
       </tr>
       <tr>
         <td>Phone</td>
         <td>{{customer.phone}}</td>
+        <td>
+            <input type="number" [(ngModel)]="phoneNumber">
+            <button class="btn btn-default" (click)="changePhoneNumber(customer.id, phoneNumber)">Change</button>
+         </td>
       </tr>
       <tr>
         <td>Balance</td>
-         <td>{{customer.balance}}
-            <button class="btn btn-default" (click)="balance()">Send</button>
+         <td>{{customer.balance}}</td>
+          <td>
+            <input type="number" [(ngModel)]="moneySum">
+            <button class="btn btn-default" (click)="changeBalance(customer.id, moneySum)">Increase</button>
          </td>
       </tr>
       <tr>
         <td>Caloric goal</td>
-          <td>{{customer.caloricGoal}}
-            <button class="btn btn-default" (click)="caloricGoal()">Change</button>
-          </td>
+          <td>{{customer.caloricGoal}}</td>
+          <td>
+              <input type="number" [(ngModel)]="caloric">
+              <button class="btn btn-default" (click)="changeCaloricGoal(customer.id, caloric)">Change</button>
+            </td>
         </tr>
+        <tr>
+            <td>Food style</td>
+              <td> {{foodStyle.foodStyleName}}</td>
+                <td><button class="btn btn-default" (click)="getFoodStyle()">View details</button>
+              </td>
+          </tr>
       <tr>
         <td>Special products</td>
           <td>
             <button class="btn btn-default" (click)="getSpecialProducts()">View</button>
           </td>
         </tr>
-      <tr>
-        <td>Food style</td>
-          <td> {{foodStyleName}}
-            <button class="btn btn-default" (click)="foodStyle()">View details</button>
-          </td>
-      </tr>
+
       <tr>
           <td>Cart</td>
             <td>
@@ -51,7 +72,7 @@
           <tr>
               <td>Favourite dishes</td>
                 <td>
-                  <button class="btn btn-default" (click)="favouriteDish()">View</button>
+                  <button class="btn btn-default" (click)="favouriteDishes()">View</button>
                 </td>
             </tr>
             <tr>
@@ -60,21 +81,8 @@
                     <button class="btn btn-default" (click)="favouriteDish()">View</button>
                   </td>
               </tr>
-              id?: number | undefined;
-              firstName?: string | undefined;
-              lastName?: string | undefined;
-              phone?: number | undefined;
-              caloricGoal?: number | undefined;
-              foodStyleId?: number | undefined;
-              balance?: number | undefined;
-              isDeleted?: number | undefined;
-              identityId?: string | undefined;
-              identity?: User | undefined;
-              foodStyle?: FoodStyle | undefined;
-              cart?: Cart | undefined;
-              deliveryAddress?: DeliveryAddress[] | undefined;
-              favouriteDish?: FavouriteDish[] | undefined;
-              foodOrder?: FoodOrder[] | undefined;
-              specialProduct?: SpecialProduct[] | undefined;
     </tbody>
-  </table>
+</table>
+  <button class="btn btn-default" (click)="getFoodStyleById(customer.foodStyleId)">View</button>
+</div>
+</div>

@@ -44,6 +44,7 @@ export class GoogleMapComponent implements AfterContentInit {
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
+
   }
 
   setMapType(mapTypeId: string) {
@@ -69,11 +70,12 @@ export class GoogleMapComponent implements AfterContentInit {
   }
 
   simpleMarkerHandler() {
+
     alert('Simple Component\'s function...');
   }
 
   markerHandler(marker: google.maps.Marker) {
-    alert('Marker\'s Title: ' + marker.getTitle());
+    alert('Marker\'s Title: ' + marker.getTitle() + 'pos      ' + marker.getPosition());
   }
 
   showCustomMarker() {
@@ -90,6 +92,11 @@ export class GoogleMapComponent implements AfterContentInit {
       map: this.map,
       icon: this.iconBase + this.selectedMarkerType,
       title: 'Got you!'
+    });
+    marker.addListener('click', this.simpleMarkerHandler);
+
+    marker.addListener('click', () => {
+      this.markerHandler(marker);
     });
   }
 
