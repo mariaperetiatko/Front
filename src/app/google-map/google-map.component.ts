@@ -2,7 +2,7 @@
 
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
-import { Restaurant, Client } from '../api.service';
+import { Restaurant, Client, Customer } from '../api.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
@@ -15,6 +15,10 @@ import { finalize } from 'rxjs/operators';
 export class GoogleMapComponent implements AfterContentInit {
 
   restaurants: Restaurant[];
+  customer: Customer;
+  appropriateRestaurants: Restaurant[];
+  radius: number;
+  gmarkers = [];
 
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
@@ -44,6 +48,8 @@ export class GoogleMapComponent implements AfterContentInit {
   constructor(private client: Client, private router: Router,  private userService: UserService) { }
 
   ngAfterContentInit() {
+
+    this.getCustomer();
     const mapProp = {
       center: new google.maps.LatLng(18.5793, 73.8143),
       zoom: 15,
@@ -56,6 +62,11 @@ export class GoogleMapComponent implements AfterContentInit {
 
   }
 
+  getCustomer(): void {
+    this.client.getCustomer()
+    .subscribe((data: Customer) => this.customer = data);
+  }
+
   setMapType(mapTypeId: string) {
     this.map.setMapTypeId(mapTypeId);
   }
@@ -64,7 +75,6 @@ export class GoogleMapComponent implements AfterContentInit {
     this.client.getListOfRestaurants()
     .subscribe((data: Restaurant[]) => this.restaurants = data);
   }
-
 
   setCenter() {
     this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
@@ -91,7 +101,6 @@ export class GoogleMapComponent implements AfterContentInit {
 
   markerHandler(marker: google.maps.Marker) {
     alert('Marker\'s Title: ' + marker.getTitle() + 'pos      ' + marker.getPosition());
-
   }
 
   showCustomMarker() {
@@ -139,6 +148,7 @@ export class GoogleMapComponent implements AfterContentInit {
       icon: this.iconBase + this.selectedMarkerType,
       title: restaurant.restaurantName
     });
+    this.gmarkers.push(marker);
     // marker.addListener('click', this.simpleMarkerHandler);
 
     marker.addListener('click', () => {
@@ -188,5 +198,25 @@ export class GoogleMapComponent implements AfterContentInit {
 
     }
   }
+
+  showAppropriate(customerId: number, radius: number, addressId: number) {
+    this.removeMarkers();
+    this.client.findRestaurantsByAppropriate(customerId, radius, addressId)
+    .subscribe((data: Restaurant[]) => {
+      this.appropriateRestaurants = data;
+      for (let i = 0; i < this.appropriateRestaurants.length; i++) {
+        this.showRestaurant(this.appropriateRestaurants[i]);
+      }
+    }
+    );
+  }
+
+  removeMarkers() {
+    this.gmarkers.forEach((marker) => {
+        marker.setMap(null);
+        marker = null;
+    });
+   this.gmarkers = [];
+}
 
 }

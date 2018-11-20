@@ -3,6 +3,18 @@
 </div>
 <button class="btn btn-default" (click)="showAllRestaurants()">View</button>
 
+<button class="btn btn-default" (click)=" showAppropriate(customer.id, radius, 0)"> showAppropriate</button>
+
+<input class="form-control" type="number" name="radius" [(ngModel)]="radius" required />
+
+
+
+<div *ngFor="let appropriateRestaurant of appropriateRestaurants">
+{{appropriateRestaurant.id}}
+</div>
+<button class="btn btn-default" (click)="showAllRestaurants()">View</button>
+
+
 <div class="container">
   <div style="text-align:center">
     <p class="h1">

@@ -43,7 +43,6 @@ export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
     .subscribe((data: Menu[]) => {
       this.menues = data;
       this.getListOfDishes();
-      this.mergeArrays();
 
       }
     );
@@ -57,7 +56,7 @@ export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
                            dishId: this.dishes[i].id,
                            dishName: this.dishes[i].dishName
                           };
-                          alert(this.singleArray[i].menuId);
+                          alert(this.menues[i].id);
       }
   }
 

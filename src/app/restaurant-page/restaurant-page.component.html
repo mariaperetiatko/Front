@@ -1,18 +1,40 @@
-{{restaurant.restaurantName}}
-{{restaurant.country}}
-{{restaurant.city}}
-{{restaurant.streete}}
-{{restaurant.houseNamber}}
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            <td>Restaurant name</td>
+            <td>{{restaurant.restaurantName}}</td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td>{{restaurant.country}}</td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td>{{restaurant.city}}</td>
+        </tr>
+        <tr>
+            <td>Street</td>
+            <td>{{restaurant.streete}}</td>
+        </tr>
+        <tr>
+            <td>House number</td>
+            <td>{{restaurant.houseNamber}}</td>
+        </tr>
+    </tbody>
+</table>
+
 <button class="btn btn-default" (click)="showAllRestaurants()">Menu</button>
-<div *ngFor="let prod of menues">
-  <h4>{{prod.id}}-{{prod.cost}}--{{prod.dishId}}</h4>
-  <h4>{{prod.restaurantId}}</h4>
 
+<h4>Menu</h4>
+<div id="parent">
+  <div id="narrow">
+      <div *ngFor="let dish of dishes" >
+          <h4>{{dish.dishName}}-{{dish.dishDescription}}</h4>
+      </div>
+  </div>
+  <div id="wide">
+      <div *ngFor="let menu of menues">
+          <h4>{{menu.cost}}</h4>
+      </div>
+  </div>
 </div>
-
-<div *ngFor="let prod of singleArray">
-  <h4>{{prod.fromMenu.id}}-{{prod.fromDish.id}}</h4>
-
-
-</div>
-
