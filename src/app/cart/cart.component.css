@@ -1,0 +1,15 @@
+#parent {
+  display: flex;
+}
+#first {
+  width: 300px;
+}
+#second {
+  width: 150x;
+}
+#third {
+  width: 600px;
+}
+#forth {
+  flex: 1;
+}

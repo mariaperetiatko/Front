@@ -17,6 +17,7 @@ export class GoogleMapComponent implements AfterContentInit {
   restaurants: Restaurant[];
   customer: Customer;
   appropriateRestaurants: Restaurant[];
+  favouriteRestaurants: Restaurant[];
   radius: number;
   gmarkers = [];
 
@@ -30,7 +31,7 @@ export class GoogleMapComponent implements AfterContentInit {
 
   markerTypes = [
     {
-      text: 'Parking', value: 'parking_lot_maps.png'
+      text: 'Restaurant', value: 'dining.png'
     }
     // ,
     // {
@@ -41,7 +42,7 @@ export class GoogleMapComponent implements AfterContentInit {
     // }
   ];
 
-  selectedMarkerType = 'parking_lot_maps.png';
+  selectedMarkerType = 'dining.png';
 
   isHidden = false;
 
@@ -206,6 +207,18 @@ export class GoogleMapComponent implements AfterContentInit {
       this.appropriateRestaurants = data;
       for (let i = 0; i < this.appropriateRestaurants.length; i++) {
         this.showRestaurant(this.appropriateRestaurants[i]);
+      }
+    }
+    );
+  }
+
+  showFavourite(customerId: number, radius: number, addressId: number) {
+    this.removeMarkers();
+    this.client.findRestaurantsByFavourite(customerId, radius, addressId)
+    .subscribe((data: Restaurant[]) => {
+      this.favouriteRestaurants = data;
+      for (let i = 0; i < this.favouriteRestaurants.length; i++) {
+        this.showRestaurant(this.favouriteRestaurants[i]);
       }
     }
     );

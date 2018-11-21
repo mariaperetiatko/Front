@@ -62,6 +62,10 @@ export class CustomerAccountComponent implements OnInit {
     this.router.navigate(['/favouriteDishes']);
   }
 
+  cart(): void {
+    this.router.navigate(['/cart']);
+  }
+
   changeBalance(custId: number, money: number): void {
     this.isRequesting = true;
 

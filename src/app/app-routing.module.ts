@@ -1,3 +1,4 @@
+import { CartComponent } from './cart/cart.component';
 import { RestaurantPageComponent } from './restaurant-page/restaurant-page.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { NgModule } from '@angular/core';
@@ -24,6 +25,7 @@ const routes: Routes = [
                          { path: 'foodStyleProducts', component: FoodStyleComponent},
                          { path: 'favouriteDishes', component: FavouriteDishesComponent},
                          { path: 'restaurantPage', component: RestaurantPageComponent},
+                         { path: 'cart', component: CartComponent},
                          { path: 'map', component: GoogleMapComponent } ];
 
 @NgModule({

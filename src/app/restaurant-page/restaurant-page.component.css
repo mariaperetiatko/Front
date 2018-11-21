@@ -6,6 +6,12 @@
   background: lightblue;
   /* Just so it's visible */
 }
+#middle {
+  width: 600px;
+  /* Grow to rest of container */
+  background: lightgreen;
+  /* Just so it's visible */
+}
 #wide {
   flex: 1;
   /* Grow to rest of container */

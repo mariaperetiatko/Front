@@ -1,0 +1,92 @@
+<h4>Cart</h4>
+<div *ngIf="!isRequesting">
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td>Total caloric value</td>
+      <td>{{cart.totalCaloricValue}}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Address</td>
+      <td>{{currentAddress.country}}, {{currentAddress.city}}, {{currentAddress.streete}},
+          {{currentAddress.houseNamber}}, {{currentAddress.flatNamber}}
+      </td>
+      <td>
+        <select [(ngModel)]="cart.addressId" name="category">
+          <option *ngFor="let deliveryAddress of deliveryAddresses" [value]="deliveryAddress.id">
+              {{deliveryAddress.country}}, {{deliveryAddress.city}}, {{deliveryAddress.streete}},
+              {{deliveryAddress.houseNamber}}, {{deliveryAddress.flatNamber}}
+          </option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Meal time</td>
+      <td>{{currentMealTime}}</td>
+      <td>
+          <select [(ngModel)]="cart.mealTimeId" name="mealTimeId">
+              <option value=0>breakfast</option>
+              <option value=1>dinner</option>
+              <option value=2>supper</option>
+          </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>
+         <!-- <mat-form-field class="example-full-width">
+              <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>-->
+          {{cart.deliveryDate}}
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<div class="text-right">
+  <button type="button" class="btn btn-default" (click)="changeCart()">Update</button>
+</div>
+
+
+<h4>Dishes</h4>
+<div id="parent">
+    <table id="first" class="table table-bordered">
+      <thead><tr><td>Dish</td></tr></thead>
+      <tbody>
+        <div *ngFor="let dish of dishes">
+          <tr><td><h4>{{dish.dishName}}</h4></td></tr>
+        </div>
+      </tbody>
+    </table>
+    <table id="second" class="table table-bordered">
+        <thead><tr><td>Restaurant</td></tr></thead>
+        <tbody>
+        <div *ngFor="let restaurant of restaurants">
+          <tr><td><h4>{{restaurant.restaurantName}}</h4></td></tr>
+        </div>
+      </tbody>
+      </table>
+    <table id="third" class="table table-bordered">
+      <thead>
+          <tr>
+          <td>Count</td>
+          <td>Temperature</td>
+          <td></td>
+          <td></td>
+          </tr>
+        </thead>
+        <tr *ngFor="let cartPart of cartParts">
+              <td><input type="number" [(ngModel)]="cartPart.dishCount"></td>
+              <td><input type="number" [(ngModel)]="cartPart.dishTemperature"></td>
+              <td>
+                <button class="btn btn-default" (click)="updateCartPart(cartPart)">Change</button></td>
+              <td><button class="btn btn-default" (click)="showAllRestaurants()">Delete</button>
+              </td>
+          </tr>
+    </table>
+
+  </div>
+</div>

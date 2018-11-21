@@ -2,7 +2,7 @@ import { Component, AfterContentInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Client, Restaurant, Menu, Dish} from '../api.service';
+import { Client, Restaurant, Menu, Dish, CartPart, Customer} from '../api.service';
 import { UserService } from '../user.service';
 
 import { finalize } from 'rxjs/operators';
@@ -17,17 +17,35 @@ import { map } from 'rxjs/operators';
 export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
 
   restaurant: Restaurant;
+  customer: Customer;
   menues: Menu[];
   dish: Dish;
   dishes: Dish[] = [];
   isRequesting = true;
   singleArray = [];
+  cartPart = new CartPart({
+    cartId: null,
+    menuId: null,
+    dishCount: null,
+    dishTemperature: null
+  });
+  forAdd: boolean[] = [];
+  forCartView: boolean[] = [];
+
   constructor(private client: Client, private router: Router,  private userService: UserService) { }
 
   ngAfterContentInit() {
-   this. getRestaurant();
+   this.getCartId();
+   this.getRestaurant();
    this.getMenuesByRestaurant();
   // this.getListOfDishes();
+  }
+
+  getCartId(): void {
+    this.client.getCustomer()
+    .subscribe((data: Customer) => {
+      this.cartPart.cartId = data.id;
+    });
   }
 
   getRestaurant(): void {
@@ -43,7 +61,6 @@ export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
     .subscribe((data: Menu[]) => {
       this.menues = data;
       this.getListOfDishes();
-
       }
     );
   }
@@ -80,7 +97,11 @@ export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
         }
         );
     }
+  }
 
+  createCartPart(menuId: number): void {
+    this.cartPart.menuId = menuId;
+    this.client.createCartPart(this.cartPart);
   }
 
 }

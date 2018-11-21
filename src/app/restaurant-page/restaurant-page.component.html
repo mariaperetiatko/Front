@@ -23,18 +23,40 @@
     </tbody>
 </table>
 
-<button class="btn btn-default" (click)="showAllRestaurants()">Menu</button>
 
 <h4>Menu</h4>
 <div id="parent">
-  <div id="narrow">
-      <div *ngFor="let dish of dishes" >
-          <h4>{{dish.dishName}}-{{dish.dishDescription}}</h4>
-      </div>
-  </div>
-  <div id="wide">
-      <div *ngFor="let menu of menues">
-          <h4>{{menu.cost}}</h4>
-      </div>
-  </div>
+  <table id="narrow" class="table table-bordered">
+      <thead>
+        <tr>
+          <td>Dish</td>
+          <td>Description</td>
+         </tr>
+      </thead>
+        <tr *ngFor="let dish of dishes" >
+              <td><h4>{{dish.dishName}}</h4></td>
+              <td><h4>{{dish.dishDescription}}</h4></td>
+        </tr>
+  </table>
+  <table id="narrow" class="table table-bordered">
+      <thead>
+        <tr>
+          <td>Cost</td>
+          <td>Count</td>
+          <td>Temperature</td>
+          <td></td>
+        </tr>
+      </thead>
+        <tr *ngFor="let menu of menues">
+              <td>{{menu.cost}}</td>
+              <td><input type="number" [(ngModel)]="cartPart.dishCount" required></td>
+              <td><input type="number" [(ngModel)]="cartPart.dishTemperature" required></td>
+              <td>
+                  <button class="btn btn-default" (click)="createCartPart(menu.id)">Add</button>
+                  <button class="btn btn-default" (click)="createCartPart()">ViewCart</button>
+              </td>
+        </tr>
+  </table>
 </div>
+
+
