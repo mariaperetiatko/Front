@@ -1,0 +1,53 @@
+<div class="form-group">
+    <label>Country</label>
+    <input class="form-control" type="text" name="country" [(ngModel)]="address.country"  #country="ngModel"  required/>
+    <div [hidden]="country.valid || country.untouched" class="alert alert-danger">
+       Input country!
+    </div>
+</div>
+<div class="form-group">
+    <label>City</label>
+      <input class="form-control" type="text" name="city" [(ngModel)]="address.city" #city="ngModel" required/>
+      <div [hidden]="city.valid || city.untouched" class="alert alert-danger">
+          Input city!
+      </div>
+</div>
+<div class="form-group">
+    <label>Streete</label>
+    <input class="form-control" type="text" name="streete" [(ngModel)]="address.streete" #streete="ngModel" required/>
+    <div [hidden]="streete.valid || streete.untouched" class="alert alert-danger">
+       Input streete!
+    </div>
+</div>
+<div class="form-group">
+    <label>House number</label>
+    <input class="form-control" type="number" name="houseNamber" #houseNamber="ngModel" min="1" oninput="validity.valid||(value='');" [(ngModel)]="address.houseNamber" required/>
+    <div [hidden]="houseNamber.valid || houseNamber.untouched" class="alert alert-danger">
+       Input houseNamber!
+    </div>
+</div>
+<div class="form-group">
+    <label>Flat number</label>
+    <input class="form-control" type="number" name="flatNamber" #flatNamber="ngModel" min="1" oninput="validity.valid||(value='');" [(ngModel)]="address.flatNamber" required/>
+    <div [hidden]="flatNamber.valid || flatNamber.untouched" class="alert alert-danger">
+       Input flatNamber!
+    </div>
+</div>
+<div class="form-group">
+    <label>X coord</label>
+    <input class="form-control" type="number" name="xcoordinate" #xcoordinate="ngModel" min="1" oninput="validity.valid||(value='');" [(ngModel)]="address.xcoordinate" />
+    <div [hidden]="xcoordinate.valid || xcoordinate.untouched" class="alert alert-danger">
+       Input X coord!
+    </div>required
+</div>
+<div class="form-group">
+    <label>Y coord</label>
+    <input class="form-control" type="number" name="ycoordinate" #ycoordinate="ngModel" min="1" oninput="validity.valid||(value='');" [(ngModel)]="address.ycoordinate" required/>
+    <div [hidden]="ycoordinate.valid || ycoordinate.untouched" class="alert alert-danger">
+       Input Y coord!
+    </div>
+</div>
+
+ <div class="text-right">
+ <button type="button" class="btn btn-default" (click)="createDeliveryAddress()">Save</button>
+ </div>

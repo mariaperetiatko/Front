@@ -1,3 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Restaurant</li>
+  </ol>
+</nav>
+
 <table class="table table-bordered">
     <tbody>
         <tr>
@@ -52,8 +58,7 @@
               <td><input type="number" [(ngModel)]="cartPart.dishCount" required></td>
               <td><input type="number" [(ngModel)]="cartPart.dishTemperature" required></td>
               <td>
-                  <button class="btn btn-default" (click)="createCartPart(menu.id)">Add</button>
-                  <button class="btn btn-default" (click)="createCartPart()">ViewCart</button>
+                  <button id="addButton" class="btn btn-default" (click)="createCartPart(menu.id)">Add</button>
               </td>
         </tr>
   </table>

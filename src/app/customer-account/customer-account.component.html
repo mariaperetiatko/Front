@@ -1,88 +1,94 @@
 <div *ngIf="!isRequesting">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+  </nav>
+
   <div *ngIf="!isFoodNameRequesting">
 
 <table class="table table-bordered">
     <tbody>
       <tr>
-        <td>First Name:</td>
+        <td>{{ 'CUSTOMERACCOUNT.FIRSTNAME' | translate }}</td>
 
         <td>{{customer.firstName}}</td>
         <td>
             <input type="text" [(ngModel)]="firstName">
-            <button class="btn btn-default" (click)="changeFirstName(customer.id, firstName)">Change</button>
+            <button class="btn btn-default" (click)="changeFirstName(customer.id, firstName)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
          </td>
       </tr>
       <tr>
-        <td>Last Name:</td>
+        <td>{{ 'CUSTOMERACCOUNT.LASTNAME' | translate }}</td>
         <td>{{customer.lastName}}</td>
         <td>
             <input type="text" [(ngModel)]="lastName">
-            <button class="btn btn-default" (click)="changeLastName(customer.id, lastName)">Change</button>
+            <button class="btn btn-default" (click)="changeLastName(customer.id, lastName)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
          </td>
       </tr>
       <tr>
-        <td>Phone</td>
+        <td>{{ 'CUSTOMERACCOUNT.PHONE' | translate }}</td>
         <td>{{customer.phone}}</td>
         <td>
             <input type="number" [(ngModel)]="phoneNumber">
-            <button class="btn btn-default" (click)="changePhoneNumber(customer.id, phoneNumber)">Change</button>
+            <button class="btn btn-default" min="1" step="1" oninput="validity.valid||(value='');" (click)="changePhoneNumber(customer.id, phoneNumber)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
          </td>
       </tr>
       <tr>
-        <td>Balance</td>
+        <td>{{ 'CUSTOMERACCOUNT.BALANCE' | translate }}</td>
          <td>{{customer.balance}}</td>
           <td>
             <input type="number" [(ngModel)]="moneySum">
-            <button class="btn btn-default" (click)="changeBalance(customer.id, moneySum)">Increase</button>
+            <button class="btn btn-default" min="1" step="1" oninput="validity.valid||(value='');" (click)="changeBalance(customer.id, moneySum)">{{ 'CUSTOMERACCOUNT.INCREASE' | translate }}</button>
          </td>
       </tr>
       <tr>
-        <td>Caloric goal</td>
+        <td>{{ 'CUSTOMERACCOUNT.CALORICGOAL' | translate }}</td>
           <td>{{customer.caloricGoal}}</td>
           <td>
               <input type="number" [(ngModel)]="caloric">
-              <button class="btn btn-default" (click)="changeCaloricGoal(customer.id, caloric)">Change</button>
+              <button class="btn btn-default" min="1" step="1" oninput="validity.valid||(value='');" (click)="changeCaloricGoal(customer.id, caloric)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
             </td>
         </tr>
         <tr>
-            <td>Food style</td>
+            <td>{{ 'CUSTOMERACCOUNT.FOODSTYLE' | translate }}</td>
               <td> {{foodStyle.foodStyleName}}</td>
-                <td><button class="btn btn-default" (click)="getFoodStyle()">View details</button>
+                <td><button class="btn btn-default" (click)="getFoodStyle()">{{ 'CUSTOMERACCOUNT.VIEWDETAILS' | translate }}</button>
               </td>
           </tr>
       <tr>
-        <td>Special products</td>
+        <td>{{ 'CUSTOMERACCOUNT.SPECIALPRODUCTS' | translate }}</td>
           <td>
-            <button class="btn btn-default" (click)="getSpecialProducts()">View</button>
+            <button class="btn btn-default" (click)="getSpecialProducts()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
           </td>
         </tr>
 
       <tr>
-          <td>Cart</td>
+          <td>{{ 'CUSTOMERACCOUNT.CART' | translate }}</td>
             <td>
-              <button class="btn btn-default" (click)="cart()">View</button>
+              <button class="btn btn-default" (click)="cart()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
             </td>
         </tr>
         <tr>
-            <td>Addresses</td>
+            <td>{{ 'CUSTOMERACCOUNT.ADDRESSES' | translate }}</td>
               <td>
-                <button class="btn btn-default" (click)="addresses()">View</button>
+                <button class="btn btn-default" (click)="addresses()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
               </td>
           </tr>
           <tr>
-              <td>Favourite dishes</td>
+              <td>{{ 'CUSTOMERACCOUNT.FAVOURITEDISHES' | translate }}</td>
                 <td>
-                  <button class="btn btn-default" (click)="favouriteDishes()">View</button>
+                  <button class="btn btn-default" (click)="favouriteDishes()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
                 </td>
             </tr>
             <tr>
-                <td>Food orders</td>
+                <td>{{ 'CUSTOMERACCOUNT.FOODORDERS' | translate }}</td>
                   <td>
-                    <button class="btn btn-default" (click)="favouriteDish()">View</button>
+                    <button class="btn btn-default" (click)="favouriteDish()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
                   </td>
               </tr>
     </tbody>
 </table>
-  <button class="btn btn-default" (click)="getFoodStyleById(customer.foodStyleId)">View</button>
+  <button class="btn btn-default" (click)="getFoodStyleById(customer.foodStyleId)">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
 </div>
 </div>

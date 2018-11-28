@@ -3,21 +3,42 @@
   <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"  aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarTogglerDemo02">
     <span class="navbar-toggler-icon"></span>
   </button>
-
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02" [ngbCollapse]="isCollapsed">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    <ul *ngIf="isMember" class="navbar-nav mr-auto mt-2 mt-lg-0">
+
       <li class="nav-item active">
         <a class="nav-link" href="/home">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-block jumping" href="/specialProducts">Special products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-block jumping" href="/foodStyle">Food style</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-block jumping" href="/favouriteDishes">Favourite dishes</a>
       </li>
       <li class="nav-item">
         <a class="nav-link d-block jumping" href="/map">Map</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled d-block jumping" href="#">Disabled</a>
+        <a class="nav-link d-block jumping" href="/cart">Cart</a>
       </li>
+      <li class="nav-item">
+          <a class="nav-link d-block jumping" href="/foodOrderArchiv">Food orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d-block jumping" href="/addresses">Addresses</a>
+          </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li class="nav-item">
+
+        <li class="nav-item mr-2">
+            <select #langSelect class="form-control"(change)="translate.use(langSelect.value)">
+              <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            </select>
+        </li>
+      <li class="nav-item mr-2">
         <button class="btn btn-default d-none" id="signUp" (click)="signUp()">Sing Up</button>
       </li>
       <li class="nav-item">

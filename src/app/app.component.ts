@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Client, Customer } from './api.service';
 import { UserService } from './user.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({

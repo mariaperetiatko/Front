@@ -1,0 +1,32 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">Cart</li>
+      <li class="breadcrumb-item active" aria-current="page">Create order</li>
+    </ol>
+  </nav>
+<div *ngIf="paySuccess">
+  {{payResult}}
+</div>
+<div *ngIf="payNotSuccess">
+    {{payResult}}
+  </div>
+<div *ngIf="!isRequesting">
+    <table class="table table-bordered">
+       <tbody>
+          <tr>
+             <td>Total cost</td>
+             <td>{{foodOrder.totalCost}}</td>
+          </tr>
+          <tr>
+             <td>Date</td>
+             <td>{{foodOrder.deliveryDate}}</td>
+          </tr>
+          <tr>
+             <td>Address</td>
+             <td>{{foodOrder.addressId}}</td>
+          </tr>
+       </tbody>
+    </table>
+    <button class="btn btn-default mr-2" (click)="deleteFoodOrder()">Cancel</button>
+    <button class="btn btn-default" (click)="pay()">Pay</button>
+ </div>

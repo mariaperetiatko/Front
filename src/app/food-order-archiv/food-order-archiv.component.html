@@ -1,0 +1,18 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <td>Total cost</td>
+      <td>Date</td>
+      <td>Address</td>
+      <td>Location</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let foodOrder of foodOrders">
+      <td>{{foodOrder.totalCost}}</td>
+      <td>{{foodOrder.deliveryDate}}</td>
+      <td>{{foodOrder.addressId}}</td>
+      <td> <button type="button" (click)="boxMap()" class="btn btn-default">View</button></td>
+    </tr>
+  </tbody>
+</table>

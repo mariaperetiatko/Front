@@ -1,0 +1,54 @@
+{
+  "HOME": {
+    "TITLE": "Hello Angular with ngx-translate!",
+    "SELECT": "Change language"
+  },
+
+  "CUSTOMERACCOUNT": {
+    "FIRSTNAME": "First name",
+    "LASTNAME": "Last name",
+    "PHONE": "Phone",
+    "BALANCE": "Balance",
+    "CALORICGOAL": "Caloric goal",
+    "FOODSTYLE": "Food style",
+    "SPECIALPRODUCTS": "Special products",
+    "CART": "Cart",
+    "ADDRESSES": "Addresses",
+    "FAVOURITEDISHES": "Favourite dishes",
+    "FOODORDERS": "Food orders",
+    "VIEW": "View",
+    "INCREASE": "Increase",
+    "CHANGE": "Change",
+    "VIEWDETAILS": "View details"
+  },
+
+  "CART": {
+    "CART": "Cart",
+    "TOTALCALORICVALUE": "Total caloric value",
+    "ADDRESS": "Address",
+    "MEALTIME": "Meal time",
+    "BREAKFAST": "breakfast",
+    "DINNER": "dinner",
+    "SUPPER": "supper",
+    "DELIVERYDATE": "Delivery date",
+    "UPDATE": "Update",
+    "DISHES": "Dishes",
+    "DISHE": "Dishe",
+    "RESTAURANT": "Restaurant",
+    "COUNT": "Count",
+    "TEMPERATURE": "Temperature",
+    "CHANGE": "Change",
+    "DELETE": "Delete",
+    "CREATEORDER": "Create order"
+  },
+
+  "deliveryAddress": {
+    "Ukraine": "Ukraine",
+    "Kharkiv": "Kharkiv",
+    "Petrova": "Petrova",
+    "Lviv": "Lviv"
+  },
+  "BREAKFAST": "breakfast",
+  "DINNER": "dinner",
+  "SUPPER": "supper"
+}

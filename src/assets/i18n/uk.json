@@ -1,0 +1,53 @@
+{
+  "HOME": {
+    "TITLE": "пвкпвпів",
+    "SELECT": "купвпівпіп"
+  },
+  "CUSTOMERACCOUNT": {
+    "FIRSTNAME": "Ім'я",
+    "LASTNAME": "Прізвище",
+    "PHONE": "Телефон",
+    "BALANCE": "Баланс",
+    "CALORICGOAL": "Мета по калорійності",
+    "FOODSTYLE": "Стиль харчування",
+    "SPECIALPRODUCTS": "Спеціальні продукти",
+    "CART": "Кошик",
+    "ADDRESSES": "Адреси",
+    "FAVOURITEDISHES": "Улюблені страви",
+    "FOODORDERS": "Замовлення",
+    "VIEW": "Переглянути",
+    "INCREASE": "Збільшити",
+    "CHANGE": "Змінити",
+    "VIEWDETAILS": "Переглянути подробиці"
+  },
+  "CART": {
+    "CART": "Кошик",
+    "TOTALCALORICVALUE": "Загальна калорійність",
+    "ADDRESS": "Адреса",
+    "MEALTIME": "Прийом їжі",
+    "BREAKFAST": "сніданок",
+    "DINNER": "обід",
+    "SUPPER": "вечеря",
+    "DELIVERYDATE": "Адреса доставки",
+    "UPDATE": "Оновити",
+    "DISHES": "Страви",
+    "DISHE": "Страва",
+    "RESTAURANT": "Ресторан",
+    "COUNT": "Кількість",
+    "TEMPERATURE": "Температура",
+    "CHANGE": "Змінити",
+    "DELETE": "Видалити",
+    "CREATEORDER": "Сформувати замовлення"
+  },
+
+  "deliveryAddress": {
+    "Ukraine": "Україна",
+    "Kharkiv": "Харків",
+    "Lviv": "Львів",
+    "Petrova": "Петрова"
+  },
+  "BREAKFAST": "сніданок",
+  "DINNER": "обід",
+  "SUPPER": "вечеря"
+
+}

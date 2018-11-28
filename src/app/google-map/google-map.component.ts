@@ -2,7 +2,7 @@
 
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
-import { Restaurant, Client, Customer } from '../api.service';
+import { Restaurant, Client, Customer, DeliveryAddress } from '../api.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
@@ -16,10 +16,13 @@ export class GoogleMapComponent implements AfterContentInit {
 
   restaurants: Restaurant[];
   customer: Customer;
+  addresses: DeliveryAddress[];
   appropriateRestaurants: Restaurant[];
   favouriteRestaurants: Restaurant[];
   radius: number;
   gmarkers = [];
+  locationMarker: google.maps.Marker = new google.maps.Marker();
+  deliveryAddress: DeliveryAddress;
 
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
@@ -51,14 +54,16 @@ export class GoogleMapComponent implements AfterContentInit {
   ngAfterContentInit() {
 
     this.getCustomer();
+    this.getListOfAddresses();
     const mapProp = {
-      center: new google.maps.LatLng(18.5793, 73.8143),
+      center: new google.maps.LatLng(49.947621500, 36.305090299),
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
     this.getListOfRestaurants();
+    this.setCurrentPosition();
     // this.showAllRestaurants();
 
   }
@@ -77,16 +82,19 @@ export class GoogleMapComponent implements AfterContentInit {
     .subscribe((data: Restaurant[]) => this.restaurants = data);
   }
 
-  setCenter() {
-    this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
+  setCenter(latitude: number, longitude: number) {
+    this.locationMarker.setMap(null);
+    this.locationMarker = null;
+    this.map.setCenter(new google.maps.LatLng(latitude, longitude));
 
-    const location = new google.maps.LatLng(this.latitude, this.longitude);
+    const location = new google.maps.LatLng(latitude, longitude);
 
     const marker = new google.maps.Marker({
       position: location,
       map: this.map,
       title: 'Got you!'
     });
+    this.locationMarker = marker;
 
     marker.addListener('click', this.simpleMarkerHandler);
 
@@ -174,6 +182,8 @@ export class GoogleMapComponent implements AfterContentInit {
 
   setCurrentPosition() {
     if ('geolocation' in navigator) {
+      this.locationMarker.setMap(null);
+    this.locationMarker = null;
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
@@ -189,20 +199,15 @@ export class GoogleMapComponent implements AfterContentInit {
         title: 'Got you!'
       });
 
-      const location1 = new google.maps.LatLng(this.latitude - 1, this.longitude + 1);
-
-      const marker1 = new google.maps.Marker({
-        position: location1,
-        map: this.map,
-        title: 'Got you!'
-      });
+      this.locationMarker = marker;
 
     }
   }
 
-  showAppropriate(customerId: number, radius: number, addressId: number) {
+  showAppropriate(customerId: number, radius: number) {
+    this.setCenter(this.deliveryAddress.xcoordinate, this.deliveryAddress.ycoordinate);
     this.removeMarkers();
-    this.client.findRestaurantsByAppropriate(customerId, radius, addressId)
+    this.client.findRestaurantsByAppropriate(customerId, radius, this.deliveryAddress.id)
     .subscribe((data: Restaurant[]) => {
       this.appropriateRestaurants = data;
       for (let i = 0; i < this.appropriateRestaurants.length; i++) {
@@ -212,9 +217,37 @@ export class GoogleMapComponent implements AfterContentInit {
     );
   }
 
-  showFavourite(customerId: number, radius: number, addressId: number) {
+  showAppropriateRuntime(customerId: number, radius: number) {
+    this.setCenter(this.latitude, this.longitude);
     this.removeMarkers();
-    this.client.findRestaurantsByFavourite(customerId, radius, addressId)
+    this.client.findRestaurantsByAppropriateRuntimePosition(customerId, radius, this.latitude, this.longitude)
+    .subscribe((data: Restaurant[]) => {
+      this.appropriateRestaurants = data;
+      for (let i = 0; i < this.appropriateRestaurants.length; i++) {
+        this.showRestaurant(this.appropriateRestaurants[i]);
+      }
+    }
+    );
+  }
+
+  showFavourite(customerId: number, radius: number, address: DeliveryAddress) {
+    this.setCenter(address.xcoordinate, address.ycoordinate);
+    this.removeMarkers();
+    this.client.findRestaurantsByFavourite(customerId, radius, address.id)
+    .subscribe((data: Restaurant[]) => {
+      this.favouriteRestaurants = data;
+      for (let i = 0; i < this.favouriteRestaurants.length; i++) {
+        this.showRestaurant(this.favouriteRestaurants[i]);
+      }
+    }
+    );
+  }
+
+  showFavouriteRuntime(customerId: number, radius: number) {
+    this.setCenter(this.latitude, this.longitude);
+
+    this.removeMarkers();
+    this.client.findRestaurantsByFavouriteRuntimePosition(customerId, radius, this.latitude, this.longitude)
     .subscribe((data: Restaurant[]) => {
       this.favouriteRestaurants = data;
       for (let i = 0; i < this.favouriteRestaurants.length; i++) {
@@ -230,6 +263,13 @@ export class GoogleMapComponent implements AfterContentInit {
         marker = null;
     });
    this.gmarkers = [];
+}
+
+getListOfAddresses(): void {
+  this.client.getListOfDeliveryAddresses()
+  .subscribe((data: DeliveryAddress[]) => {
+    this.addresses = data;
+  });
 }
 
 }

@@ -49,7 +49,12 @@ export class UserService {
       map(res => res.json()),
       map(res => {
         localStorage.setItem('auth_token', res.auth_token);
-        alert(res.auth_token);
+        const jwtData = res.auth_token.split('.')[1];
+        const decodedJwtJsonData = window.atob(jwtData);
+        const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+        const role = decodedJwtData.roles;
+        localStorage.setItem('role', role);
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
         return true;
@@ -59,6 +64,7 @@ export class UserService {
 
   logout() {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('role');
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
   }

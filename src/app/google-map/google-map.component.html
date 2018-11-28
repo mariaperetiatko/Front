@@ -1,28 +1,40 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Map</li>
+  </ol>
+</nav>
+
 <div *ngFor="let prod of restaurants">
   <h4>{{prod.id}}</h4>
 </div>
-<button class="btn btn-default" (click)="showAllRestaurants()">View</button>
-
-<button class="btn btn-default" (click)=" showAppropriate(customer.id, radius, 0)"> showAppropriate</button>
-<button class="btn btn-default" (click)=" showFavourite(customer.id, radius, 0)"> showFavourite</button>
-
-
-<input class="form-control" type="number" name="radius" [(ngModel)]="radius" required />
-
-
-
-<div *ngFor="let appropriateRestaurant of appropriateRestaurants">
-{{appropriateRestaurant.id}}
+<button class="btn btn-default" (click)="showAllRestaurants()">Show all restaurants</button>
+<div class="form-group">
+    <label>Input radius for searching</label>
+    <input class="form-control" type="number" min="1" oninput="validity.valid||(value='');"name="radius" [(ngModel)]="radius" required />
+  </div>
+<label>You can select address or use runtime coordinates</label>
+<div class="form-group">
+    <label>Select address</label>
+<select [(ngModel)]="deliveryAddress" name="address" id="address" class="form-control">
+    <option *ngFor="let address of addresses" [ngValue]="address">
+        {{address.country}},
+        {{address.city}},
+        {{address.streete}},
+        {{address.houseNamber}}, {{address.flatNamber}}
+    </option>
+  </select>
 </div>
+<button class="btn btn-default" (click)=" showAppropriateRuntime(customer.id, radius)">Show appropriate r restaurants</button>
+<button class="btn btn-default" (click)=" showFavouriteRuntime(customer.id, radius)">Show favourite r restaurants</button>
+
+<button class="btn btn-default" (click)=" showAppropriate(customer.id, radius)">Show appropriate restaurants</button>
+<button class="btn btn-default" (click)=" showFavourite(customer.id, radius)">Show favourite restaurants</button>
+
 <button class="btn btn-default" (click)="showAllRestaurants()">View</button>
 
 
 <div class="container">
-  <div style="text-align:center">
-    <p class="h1">
-      Google Maps in Angular 6
-    </p>
-  </div>
+
   <br>
 
   <div class="row">
@@ -41,13 +53,6 @@
       </form>
     </div>
 
-    <div class="col-md-6 col-sm-12 col-xs-12">
-      <label>Select Marker: </label>
-      <select [(ngModel)]="selectedMarkerType" name="category">
-        <option *ngFor="let marker of markerTypes" [value]="marker.value">{{marker.text}}</option>
-      </select>
-      <button type="button" (click)="showCustomMarker()" class="btn btn-primary" [disabled]="form.invalid"> Custom Marker</button>
-    </div>
   </div>
   <br>
 

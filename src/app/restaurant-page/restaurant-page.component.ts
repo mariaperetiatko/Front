@@ -101,7 +101,20 @@ export class RestaurantPageComponent implements AfterContentInit, OnDestroy {
 
   createCartPart(menuId: number): void {
     this.cartPart.menuId = menuId;
-    this.client.createCartPart(this.cartPart);
+    alert(this.cartPart.cartId);
+    alert(this.cartPart.dishCount);
+    alert(this.cartPart.dishTemperature);
+    alert(this.cartPart.cartId);
+
+
+    this.client.createCartPart(this.cartPart)
+    .subscribe(
+      result => {
+        if (result) {
+          window.location.reload();
+        }
+      });
+
   }
 
 }

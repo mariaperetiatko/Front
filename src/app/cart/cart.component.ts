@@ -4,7 +4,6 @@ import { Client, Customer, Cart, CartPart, Menu, Restaurant, Dish, DeliveryAddre
 import { UserService } from '../user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Subscriber } from 'rxjs';
-// import {MatDatepickerModule} from '@angular/';
 
 
 @Component({
@@ -19,7 +18,7 @@ export class CartComponent implements OnInit {
   menues: Menu[] = [];
   restaurants: Restaurant[] = [];
   dishes: Dish[] = [];
-  minDate = new Date();
+  minDate = Date.now();
   isRequesting = false;
   deliveryAddresses: DeliveryAddress[];
   currentAddress: DeliveryAddress;
@@ -28,6 +27,7 @@ export class CartComponent implements OnInit {
   constructor(private client: Client, private router: Router,  private userService: UserService) { }
 
   ngOnInit() {
+    alert(this.minDate);
     this.getOwnCart();
     this.getListOfDeliveryAddresses();
   }
@@ -84,6 +84,7 @@ export class CartComponent implements OnInit {
   }
 
   changeCart(): void {
+    alert(this.cart.deliveryDate);
     this.client.updateCart(this.cart)
     .subscribe(result => {
       if (result) {
@@ -95,7 +96,7 @@ export class CartComponent implements OnInit {
   getMealTimeName(): void {
     switch (this.cart.mealTimeId) {
       case 0:
-        this.currentMealTime = 'breakfast';
+        this.currentMealTime = 'BREAKFAST';
         break;
       case 2:
         this.currentMealTime = 'supper';
@@ -113,5 +114,18 @@ export class CartComponent implements OnInit {
         window.location.reload();
       }
     });
+  }
+
+  deleteCartPart(menuId: number, cartId: number): void {
+    this.client.deleteCartPart(menuId, cartId, '')
+    .subscribe(result => {
+      if (result) {
+        window.location.reload();
+      }
+    });
+  }
+
+  foodOrder(): void {
+    this.router.navigate(['/foodOrder']);
   }
 }
