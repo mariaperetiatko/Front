@@ -1,0 +1,14 @@
+.table-bordered td, .table-bordered th{
+    border-color: transparent transparent transparent transparent;
+  }
+
+  .brd {
+    border: 2px solid red;
+    background-color: lightcoral;
+    border-radius: 5px;
+  }
+  .brd1 {
+    border: 2px solid lightgreen;
+    border-radius: 5px;
+  }
+

@@ -1,0 +1,70 @@
+<button type="button" (click)="showEquipment()" class="btn btn-primary">Show equipment</button>
+
+<div *ngIf="isEqShow">
+<h4>Equipment</h4>
+<div class="brd1">
+{{showObject()}}</div>
+</div>
+<table class="table table-bordered">
+    <colgroup>
+      <col width="5%" />
+      <col width="26%" />
+      <col width="5%" />
+      <col width="26%" />
+      <col width="5%" />
+      <col width="26%" />
+    </colgroup>
+    <tr>
+      <td>Year</td>
+      <td><input type="number" class="form-control" min="2019" max="2025" [(ngModel)]="selectedYear" (change)="minMontChanged()"></td>
+      <td>Month</td>
+      <td><input type="number" class="form-control" min={{minMonth}} max="12" [(ngModel)]="selectedMonth" (change)="minDayChanged()"></td>
+      <td>Day</td>
+      <td><input type="number" class="form-control" min={{minDay}} max={{dateItems[selectedMonth-1]}} [(ngModel)]="selectedDay" (change)="minHoursChanged()"></td>
+    </tr>
+    </table>
+
+    <button type="button" (click)="getDayOrders()" class="btn btn-primary">Get list of busy times</button>
+    <br>
+    <br>
+    <div *ngIf="isOrdersVisible" >
+<div *ngFor="let item of selectedWorkplaceOrdersByDay" class="brd">
+    {{item.startTime | date:  ('HOME.timeformat' | translate)}} -
+    {{item.finishTime | date:  ('HOME.timeformat' | translate)}}
+</div>
+</div>
+Start time
+<table class="table table-bordered">
+    <colgroup>
+      <col width="25%" />
+      <col width="25%" />
+      <col width="25%" />
+      <col width="25%" />
+    </colgroup>
+    <tr>
+        <td>Hours</td>
+        <td><input type="number" class="form-control" min={{minHours}} max="20" [(ngModel)]="selectedHours" (change)="minMinutesChanged()"></td>
+        <td>Minutes</td>
+        <td><input type="number" class="form-control" min={{minMinutes}} max="59" [(ngModel)]="selectedMinutes" (change)="minFinishMinutesChanged()"></td>
+</tr>
+</table>
+Finish time
+<table class="table table-bordered">
+    <colgroup>
+      <col width="25%" />
+      <col width="25%" />
+      <col width="25%" />
+      <col width="25%" />
+    </colgroup>
+    <tr>
+        <td>Hours</td>
+        <td><input type="number" class="form-control" min={{selectedHours}} max="21" [(ngModel)]="selectedFinishHours" (change)="minFinishChanged()"></td>
+        <td>Minutes</td>
+        <td><input type="number" class="form-control" min={{minFinishMinutes}} max="59" [(ngModel)]="selectedFinishMinutes" (change)="minMinFinishChanged()"></td>
+</tr>
+</table>
+<button type="button" (click)="createWorkplaceOrder()" class="btn btn-primary">Create order</button>
+<br><br> <h5>{{creatingResult}}</h5>
+
+
+

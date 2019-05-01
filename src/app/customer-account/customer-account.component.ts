@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Client, Customer, FoodStyle } from '../api.service';
+import { APIClient, Client } from '../api.service';
 import { UserService } from '../user.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,138 +12,90 @@ import { Subscription } from 'rxjs';
 })
 export class CustomerAccountComponent implements OnInit {
 
-  customer: Customer;
+  client: Client;
   isRequesting: boolean;
-  moneySum: number;
-  caloricValue: number;
-  firstName: string;
-  lastName: string;
-  phoneNumber: number;
-  foodStyle: FoodStyle;
-  isFoodNameRequesting: boolean;
+  isFirstNameVisible = false;
+  isLastNameVisible = false;
+  isBirthdayVisible = false;
+  isPassportNumberVisible = false;
+  isPhoneVisible = false;
+  isEmailVisible = false;
 
-  constructor(private client: Client, private router: Router,  private userService: UserService) { }
+  constructor(private apiClient: APIClient, private router: Router,  private userService: UserService) {
+       }
 
   ngOnInit() {
-
-    this.getCustomer();
-    this.getFoodStyleByCustomer();
+    this.getClient();
   }
 
-  getCustomer(): void {
+  getClient(): void {
     this.isRequesting = true;
 
-    this.client.getCustomer()
+    this.apiClient.getClientById(0)
     .pipe(finalize(() => this.isRequesting = false))
-    .subscribe((data: Customer) => this.customer = data);
-
+    .subscribe((data: Client) => this.client = data);
   }
 
-  getFoodStyleByCustomer(): void {
-    this.isFoodNameRequesting = true;
-
-    this.client.getFoodStyleByCustomer()
-    .pipe(finalize(() => this.isFoodNameRequesting = false))
-    .subscribe((data: FoodStyle) => this.foodStyle = data);
-
+  showHideFirstNameInput(): void {
+    if (!this.isFirstNameVisible) {
+      this.isFirstNameVisible = true;
+    } else {
+      this.isFirstNameVisible = false;
+    }
   }
 
-  getSpecialProducts(): void {
-
-    this.router.navigate(['/specialProducts']);
+  showHideLastNameInput(): void {
+    if (!this.isLastNameVisible) {
+      this.isLastNameVisible = true;
+    } else {
+      this.isLastNameVisible = false;
+    }
   }
 
-  getFoodStyle(): void {
-    this.router.navigate(['/foodStyle']);
+  showHideBirthdayInput(): void {
+    if (!this.isBirthdayVisible) {
+      this.isBirthdayVisible = true;
+    } else {
+      this.isBirthdayVisible = false;
+    }
   }
 
-  favouriteDishes(): void {
-    this.router.navigate(['/favouriteDishes']);
+  showHidePassportNumberInput(): void {
+    if (!this.isPassportNumberVisible) {
+      this.isPassportNumberVisible = true;
+    } else {
+      this.isPassportNumberVisible = false;
+    }
   }
 
-  cart(): void {
-    this.router.navigate(['/cart']);
+  showHidePhoneInput(): void {
+    if (!this.isPhoneVisible) {
+      this.isPhoneVisible = true;
+    } else {
+      this.isPhoneVisible = false;
+    }
   }
 
-  changeBalance(custId: number, money: number): void {
+
+  showHideEmailInput(): void {
+    if (!this.isEmailVisible) {
+      this.isEmailVisible = true;
+    } else {
+      this.isEmailVisible = false;
+    }
+  }
+
+  updateClient(client: Client): void {
     this.isRequesting = true;
+    this.isBirthdayVisible = false;
+    this.isEmailVisible = false;
+    this.isFirstNameVisible = false;
+    this.isLastNameVisible = false;
+    this.isPassportNumberVisible = false;
+    this.isPhoneVisible = false;
 
-    this.client.increaseBalance(custId, money)
+    this.apiClient.updateClient(client)
     .pipe(finalize(() => this.isRequesting = false))
-    .subscribe(
-      result => {
-        if (result) {
-          window.location.reload();
-        }
-      }
-    );
+    .subscribe((result: Client) => {this.client = result; });
   }
-
-  changeCaloricGoal(custId: number, caloric: number): void {
-    this.isRequesting = true;
-
-    this.client.changeCaloricGoal(custId, caloric)
-    .pipe(finalize(() => this.isRequesting = false))
-    .subscribe(
-      result => {
-        if (result) {
-          window.location.reload();
-        }
-      }
-    );
-  }
-
-  changeFirstName(custId: number, firstName: string): void {
-    this.isRequesting = true;
-
-    this.client.changeFirstName(custId, firstName)
-    .pipe(finalize(() => this.isRequesting = false))
-    .subscribe(
-      result => {
-        if (result) {
-          window.location.reload();
-        }
-      }
-    );
-  }
-
-  changeLastName(custId: number, lastName: string): void {
-    this.isRequesting = true;
-
-    this.client.changeLastName(custId, lastName)
-    .pipe(finalize(() => this.isRequesting = false))
-    .subscribe(
-      result => {
-        if (result) {
-          window.location.reload();
-        }
-      }
-    );
-  }
-
-  changePhoneNumber(custId: number, phone: number): void {
-    this.isRequesting = true;
-
-    this.client.changePhoneNumber(custId, phone)
-    .pipe(finalize(() => this.isRequesting = false))
-    .subscribe(
-      result => {
-        if (result) {
-          window.location.reload();
-        }
-      }
-    );
-  }
-
-  getFoodStyleById(foodStyleId: number): void {
-    this.isRequesting = true;
-    alert(foodStyleId);
-    this.client.getFoodStyleById(foodStyleId)
-    .pipe(finalize(() => this.isRequesting = false))
-    .subscribe((data: FoodStyle) => this.foodStyle = data);
-
-    alert(this.foodStyle.foodStyleName);
-
-  }
-
 }

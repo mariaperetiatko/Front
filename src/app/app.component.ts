@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Client, Customer } from './api.service';
+import { Client, APIClient } from './api.service';
 import { UserService } from './user.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -13,22 +13,17 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent implements OnInit {
   title = 'EasyEat';
 
-  customers: Customer[] = [];
+  clients: Client[] = [];
 
-  constructor(private client: Client, private userService: UserService) { }
+  constructor(private apiClient: APIClient, private userService: UserService) { }
 
   ngOnInit() {
     // this.get66();
   }
 
-  get66(): void {
-    this.client.get6().
-    subscribe((data: Customer[]) => this.customers = data);
-  }
 
   logout() {
     this.userService.logout();
-   // this.get66();
     window.location.reload();
  }
 }

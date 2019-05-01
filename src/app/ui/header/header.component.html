@@ -7,30 +7,52 @@
     <ul *ngIf="isMember" class="navbar-nav mr-auto mt-2 mt-lg-0">
 
       <li class="nav-item active">
-        <a class="nav-link" href="/home">Home</a>
+        <a class="nav-link" href="/home">{{ 'header.Home' | translate }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/specialProducts">Special products</a>
+        <a class="nav-link d-block jumping" href="/settings">Settings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/foodStyle">Food style</a>
+        <a class="nav-link d-block jumping" href="/workplace-parameters">Workplace parameters</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/favouriteDishes">Favourite dishes</a>
+        <a class="nav-link d-block jumping" href="/map-search">Map search</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/map">Map</a>
+        <a class="nav-link d-block jumping" href="/scheduler">Scheduler</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/cart">Cart</a>
+        <a class="nav-link d-block jumping" href="/cart">{{ 'header.Cart' | translate }}</a>
       </li>
       <li class="nav-item">
-          <a class="nav-link d-block jumping" href="/foodOrderArchiv">Food orders</a>
+          <a class="nav-link d-block jumping" href="/foodOrderArchiv">{{ 'header.FoodOrders' | translate }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link d-block jumping" href="/addresses">Addresses</a>
+            <a class="nav-link d-block jumping" href="/addresses">{{ 'header.Addresses' | translate }}</a>
           </li>
     </ul>
+
+    <ul *ngIf="isAdmin" class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+        <li class="nav-item active">
+          <a class="nav-link  d-block jumping" href="/cartController">Carts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-block jumping" href="/customerController">Customers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-block jumping" href="/dishController">Dishes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-block jumping" href="/foodStyleController">Food styles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-block jumping" href="/productController">Products</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d-block jumping" href="/restaurantController">Restaurants</a>
+          </li>
+      </ul>
     <ul class="nav navbar-nav navbar-right">
 
         <li class="nav-item mr-2">
@@ -39,10 +61,10 @@
             </select>
         </li>
       <li class="nav-item mr-2">
-        <button class="btn btn-default d-none" id="signUp" (click)="signUp()">Sing Up</button>
+        <button class="btn btn-default d-none details" id="signUp" (click)="signUp()">{{ 'header.SingUp' | translate }}</button>
       </li>
       <li class="nav-item">
-          <button class="btn btn-default" (click)="logOnClickAction()">{{LoginString}}</button>
+          <button class="btn btn-default details" (click)="logOnClickAction()">{{('header.' + LoginString) | translate}}</button>
       </li>
 
     </ul>

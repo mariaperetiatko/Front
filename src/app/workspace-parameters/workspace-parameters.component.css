@@ -1,0 +1,8 @@
+.icon {
+    font-size:120%;
+    background-color: rgb(104, 216, 113);
+  }
+
+.table-bordered td, .table-bordered th{
+  border-color: transparent transparent transparent transparent;
+}

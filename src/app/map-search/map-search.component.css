@@ -1,0 +1,15 @@
+.brd {
+    border: 2px solid red;
+    border-radius: 5px;
+  }
+
+  .table-bordered td, .table-bordered th{
+    border-color: transparent transparent black transparent;
+  }
+
+  .icon {
+    background-color: rgb(104, 216, 113);
+    width: 70px !important;
+    height: 30px !important;
+
+  }

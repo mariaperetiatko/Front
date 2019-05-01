@@ -1,0 +1,129 @@
+<div *ngIf="isRecommendedTableVisible">
+    <table class="table table-bordered">
+      <colgroup>
+        <col width="60%" />
+        <col width="40%" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <td>
+            <div class="brd">Recommended table height {{recommendedTableHeight}}</div>
+          </td>
+          <td>
+            <button class="btn btn-default" (click)="applyRecommendedTable()">Apply</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="isRecommendedChairVisible">
+    <table class="table table-bordered">
+      <colgroup>
+        <col width="60%" />
+        <col width="40%" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <td>
+            <div class="brd">Recommended chair height {{recommendedChairHeight}}</div>
+          </td>
+          <td>
+            <button class="btn btn-default" (click)="applyRecommendedChair()">Apply</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="!isRequesting">
+    <table class="table table-bordered">
+      <colgroup>
+        <col width="20%" />
+        <col width="30%" />
+        <col width="10%" />
+        <col width="40%" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <td>Height</td>
+          <td>{{client.hight}}</td>
+          <td><button class="btn btn-default details" (click)="showHideHeightInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isHeightVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.hight">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Vision</td>
+          <td>{{client.vision}}</td>
+          <td><button class="btn btn-default details" (click)="showHideVisionInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isVisionVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.vision">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Table height</td>
+          <td>{{client.tableHight}}</td>
+          <td><button class="btn btn-default details" (click)="showHideTableHeightInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isTableHeightVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.tableHight">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Chair height</td>
+          <td>{{client.chairHight}}</td>
+          <td><button class="btn btn-default details" (click)="showHideChairHeightInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isChairHeightVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.chairHight">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Light</td>
+          <td>{{client.light}}</td>
+          <td><button class="btn btn-default details" (click)="showHideLightInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isLightVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.light">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Temperature</td>
+          <td>{{client.temperature}}</td>
+          <td><button class="btn btn-default details" (click)="showHideTemperatureInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isTemperatureVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.temperature">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Music</td>
+          <td>{{client.music}}</td>
+          <td><button class="btn btn-default details" (click)="showHideMusicInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isMusicVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.music">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Drink</td>
+          <td>{{client.drink}}</td>
+          <td><button class="btn btn-default details" (click)="showHideDrinkInput()">Modify</button></td>
+          <td>
+            <div *ngIf="isDrinkVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.drink">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-default details" (click)="updateClient(client)">Save</button>
+  </div>

@@ -1,18 +1,23 @@
-    <div class="form-group">
-  <label>Name</label>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">{{ 'LogIn.LogIn' | translate }}</li>
+    </ol>
+  </nav>
+   <div class="form-group">
+  <label>{{ 'LogIn.Name' | translate }}</label>
   <input class="form-control" type="text" name="userName" [(ngModel)]="credentials.userName"  #userName="ngModel" required />
   <div [hidden]="userName.valid || userName.untouched" class="alert alert-danger">
-    Input your name!
+      {{ 'LogIn.InputYourName' | translate }}
   </div>
 </div>
 <div class="form-group">
-  <label>Password</label>
+  <label>{{ 'LogIn.Password' | translate }}</label>
   <input class="form-control" type="text" name="password" [(ngModel)]="credentials.password" #password="ngModel" required />
   <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
-    Input your password!
+      {{ 'LogIn.InputYourPassword' | translate }}
   </div>
 </div>
 <div class="form-group">
   <button [disabled]="userName.invalid || password.invalid"
-      class="btn btn-default" (click)="login()">Send</button>
+      class="btn btn-default" (click)="login()">{{ 'LogIn.Send' | translate }}</button>
 </div>

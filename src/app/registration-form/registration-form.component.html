@@ -1,9 +1,14 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">{{ 'Registration.Registration' | translate }}</li>
+    </ol>
+  </nav>
 <div class="form-group">
-    <label>Email</label>
+    <label>{{ 'Registration.Email' | translate }}</label>
     <input class="form-control" type="text" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="registrations.email" placeholder="email@example.com" #email="ngModel" required />
     <div *ngIf="email.errors &&(email.touched || email.dirty)">
         <div [hidden]="!email.errors?.pattern" class ="aler alert-danger">
-          Invalid pattern
+            {{ 'Registration.InvalidPattern' | translate }}
         </div>
        </div>
     <!--<div [hidden]="email.valid || email.untouched" class="alert alert-danger">
@@ -12,54 +17,54 @@
   </div>
 
   <div class="form-group">
-    <label>Password</label>
+    <label>{{ 'Registration.Password' | translate }}</label>
     <input class="form-control" type="text" name="password" [(ngModel)]="registrations.password" #password="ngModel" required />
     <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
-      Input your password!
+        {{ 'Registration.InputYourPassword' | translate }}
     </div>
   </div>
 
   <div class="form-group">
-      <label>firstName</label>
+      <label>{{ 'Registration.firstName' | translate }}</label>
       <input class="form-control" type="text" name="firstName" [(ngModel)]="registrations.firstName" #firstName="ngModel" required />
       <div [hidden]="firstName.valid || firstName.untouched" class="alert alert-danger">
-        Input your firstName!
+          {{ 'Registration.InputYourFirstName' | translate }}
       </div>
     </div>
 
     <div class="form-group">
-        <label>lastName</label>
+        <label>{{ 'Registration.lastName' | translate }}!</label>
         <input class="form-control" type="text" name="lastName" [(ngModel)]="registrations.lastName" #lastName="ngModel" required />
         <div [hidden]="lastName.valid || lastName.untouched" class="alert alert-danger">
-          Input your lastName!
+            {{ 'Registration.InputYourLastName' | translate }}
         </div>
       </div>
 
       <div class="form-group">
-          <label>phone</label>
+          <label> {{ 'Registration.phone' | translate }}</label>
           <input class="form-control" type="number" name="phone" [(ngModel)]="registrations.phone" #phone="ngModel" required />
           <div [hidden]="phone.valid || phone.untouched" class="alert alert-danger">
-            Input your phone!
+              {{ 'Registration.InputYourPhone' | translate }}
           </div>
         </div>
 
         <div class="form-group">
-            <label>role</label>
+            <label>{{ 'Registration.role' | translate }}</label>
             <select class="form-control" (change)="selectChangeHandler($event)">
             <option value="member"></option>
 
-                <option value="member">Member</option>
-                <option value="admin">Admin</option>
-                <option value="restaurantOwner">Restaurant manager</option>
+                <option value="member">{{ 'Registration.Member' | translate }}</option>
+                <option value="admin">{{ 'Registration.Admin' | translate }}</option>
+                <option value="restaurantOwner">{{ 'Registration.RestaurantManager' | translate }}</option>
             </select>
             <input class="form-control" type="text" name="role" [(ngModel)]="registrations.role" #role="ngModel" required />
             <div [hidden]="role.valid || role.untouched" class="alert alert-danger">
-              Input your role!
+                {{ 'Registration.InputYourRole' | translate }}
             </div>
         </div>
 
 
   <div class="form-group">
     <button
-        class="btn btn-default" (click)="registerUser()">Send</button>
+        class="btn btn-default" (click)="registerUser()">{{ 'Registration.Send' | translate }}</button>
   </div>

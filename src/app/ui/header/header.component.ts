@@ -1,8 +1,8 @@
+import { SchedulerComponent } from './../../scheduler/scheduler.component';
 import { UserService } from './../../user.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   // signUpString = 'Sing Up';
   LoginString = 'Login';
   isMember = (localStorage.getItem('role') === 'Member');
+  isAdmin = (localStorage.getItem('role') === 'Admin');
 
   constructor(private userService: UserService, private router: Router,
     private activatedRoute: ActivatedRoute,  public translate: TranslateService) {
@@ -26,7 +27,6 @@ export class HeaderComponent implements OnInit {
      }
 
   ngOnInit() {
-    alert(localStorage.getItem('role'));
     this.visualManagement();
   }
 

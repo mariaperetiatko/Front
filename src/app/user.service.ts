@@ -54,6 +54,7 @@ export class UserService {
         const decodedJwtData = JSON.parse(decodedJwtJsonData);
 
         const role = decodedJwtData.roles;
+        alert(role);
         localStorage.setItem('role', role);
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
@@ -67,6 +68,7 @@ export class UserService {
     localStorage.removeItem('role');
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
+    localStorage.setItem('redirect', '');
   }
 
   isLoggedIn() {

@@ -1,0 +1,8 @@
+.table-bordered td, .table-bordered th{
+  border-color: transparent transparent black transparent;
+}
+
+.brd {
+  border: 2px solid green;
+  border-radius: 5px;
+}

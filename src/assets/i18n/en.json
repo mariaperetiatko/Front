@@ -1,7 +1,9 @@
 {
   "HOME": {
     "TITLE": "Hello Angular with ngx-translate!",
-    "SELECT": "Change language"
+    "SELECT": "Change language",
+    "dateformat": "MM/dd/yyyy",
+    "timeformat": "hh:mm a"
   },
 
   "CUSTOMERACCOUNT": {
@@ -33,20 +35,167 @@
     "DELIVERYDATE": "Delivery date",
     "UPDATE": "Update",
     "DISHES": "Dishes",
-    "DISHE": "Dishe",
+    "DISHE": "Dish",
     "RESTAURANT": "Restaurant",
     "COUNT": "Count",
     "TEMPERATURE": "Temperature",
     "CHANGE": "Change",
     "DELETE": "Delete",
-    "CREATEORDER": "Create order"
+    "CREATEORDER": "Create order",
+    "Caloric": "Caloric"
   },
 
   "deliveryAddress": {
     "Ukraine": "Ukraine",
     "Kharkiv": "Kharkiv",
     "Petrova": "Petrova",
+    "Pushkinskya": "Pushkinska",
     "Lviv": "Lviv"
+  },
+  "addressCreate": {
+    "Addresses": "Addresses",
+    "CreateAddress":"Create address",
+    "Country": "Country",
+    "InputCountry": "Input country!",
+    "City": "City",
+    "InputCity": "Input city!",
+    "Streete": "Streete",
+    "InputStreete": "Input streete!",
+    "HouseNumber": "House number",
+    "InputHouseNamber": "Input houseNamber!",
+    "FlatNumber": "Flat number",
+    "InputFlatNamber": "Input flatNamber!",
+    "Lantitude": "Lantitude",
+    "InputLantitude": "Input lantitude!",
+    "Longitude": "Longitude",
+    "InputLongitude": "Input longitude!",
+    "Save": "Save",
+    "UpdateAddress": "Update address"
+
+  },
+  "Common": {
+    "Update": "Update",
+    "Delete": "Delete",
+    "CreateNew": "Create new",
+    "Details": "Details",
+    "Hide": "Hide",
+    "Add": "Add",
+    "Cancel": "Cancel",
+    "Bank": "Bank",
+    "View": "View"
+  },
+  "Map": {
+    "BoxMap": "Box map",
+    "Terrain": "Terrain",
+    "Satellite": "Satellite",
+    "RoadMap": "Road map",
+    "ToggleMap": "Toggle Map",
+    "ShowBox": "Show box",
+    "FoodOrders": "Food orders",
+    "Map": "Map",
+    "InputRadiusForSearching": "Input radius for searching",
+    "InputRadius": "Input radius!",
+    "YouCanSelectAddressOrUseRuntimeCoordinates": "You can select address or use runtime coordinates",
+    "SelectAddress": "Select address",
+    "ShowAppropriateRealtimeRestaurants": "Show appropriate realtime restaurants",
+    "ShowFavouriteRealtimeRestaurants": "Show favourite realtime restaurants",
+    "ShowAppropriateRestaurantsByAddress": "Show appropriate restaurants by address",
+    "ShowFavouriteRestaurantsByAddress": "Show favourite restaurants by address",
+    "ShowAllRestaurants": "Show all restaurants",
+    "Go": "Go",
+    "Temperature": "Temperature",
+    "Speed":"Speed",
+    "Time":"Time",
+    "Distance":"Distance"
+  },
+  "Dish": {
+    "FavouriteDishes": "Favourite dishes",
+    "Name": "Name",
+    "Description": "Description",
+    "OtherDishes":"Other dishes"
+  },
+  "Ingredient": {
+    "Ingredients": "Ingredients",
+    "Name": "Name",
+    "Weight": "Weight"
+  },
+  "FoodOrder": {
+    "Cart": "Cart",
+    "CreateOrder": "Create order",
+    "TotalCost": "Total cost",
+    "Date": "Date",
+    "Address": "Address",
+    "Pay": "Pay",
+    "AllOrders": "All orders",
+    "Location": "Location",
+    "FoodOrders": "Food orders"
+  },
+  "FoodStyle": {
+    "FoodStyle": "Food style",
+    "MyFoodStyle": "My food style",
+    "Name": "Name",
+    "CaloricValue": "Caloric value",
+    "ProductsIn": "Products in",
+    "ProductName": "Product name",
+    "FoodStyles": "Food styles",
+    "TryIt": "Try it"
+
+  },
+  "LogIn": {
+    "LogIn": "Log in",
+    "Name": "User name",
+    "InputYourName": "Input your name!",
+    "Password": "Password",
+    "InputYourPassword": "Input your password!",
+    "Send": "Send"
+  },
+  "Registration": {
+    "Registration": "Registration",
+    "Email": "Email",
+    "InvalidPattern": "Invalid pattern!",
+    "Password": "Password",
+    "InputYourPassword": "Input your password!",
+    "firstName": "First name",
+    "InputYourFirstName": "Input your first name!",
+    "lastName": "Last name",
+    "InputYourLastName": "Input your last name!",
+    "phone": "Phone",
+    "InputYourPhone": "Input your phone!",
+    "role": "Role",
+    "Member": "CLient",
+    "Admin": "Admin",
+    "RestaurantManager": "Restaurant manager",
+    "InputYourRole": "Input your role!",
+    "Send": "Send"
+  },
+  "Restaurant": {
+    "Restaurant": "Restaurant",
+    "RestaurantName": "Restaurant name",
+    "Country": "Country",
+    "City": "City",
+    "Street": "Street",
+    "HouseNumber": "House number",
+    "Menu": "Menu",
+    "Dish": "Dish",
+    "Description": "Description",
+    "Cost": "Cost",
+    "Count": "Count",
+    "Temperature": "Temperature"
+
+  },
+  "header": {
+    "Home": "Home",
+    "SpecialProducts": "Special products",
+    "FoodStyle": "Food style",
+    "FavouriteDishes": "Favourite dishes",
+    "Map": "Map",
+    "Cart": "Cart",
+    "FoodOrders": "Food orders",
+    "Addresses": "Addresses",
+    "SingUp": "Sing Up",
+    "Login": "Login",
+    "Logout": "Logout"
+
   },
   "BREAKFAST": "breakfast",
   "DINNER": "dinner",

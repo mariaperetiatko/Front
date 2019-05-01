@@ -1,0 +1,65 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div *ngIf="!isRequesting">
+
+    <table class="table table-bordered">
+        <colgroup>
+          <col width="30%" />
+          <col width="60%" />
+          <col width="10%" />
+        </colgroup>
+<tbody>
+<tr>
+  <td>
+    Cost
+  </td>
+  <td>
+    <input type="text" class="form-control" [(ngModel)]="searchingViewModel.wantedCost">
+  </td>
+  <td>
+    <button class="btn btn-default details icon" (click)="save()">◰</button>
+  </td>
+  </tr>
+  <tr>
+      <td>
+    Radius
+    </td>
+    <td>
+    <input type="text" class="form-control" [(ngModel)]="searchingViewModel.radius">
+  </td>
+  <td>
+      <button class="btn btn-default details icon" (click)="save()">◰</button>
+    </td>
+    </tr>
+</tbody></table>
+
+    <div class='container'>
+      <h2>Workplace parameters</h2>
+      <div class="panel panel-primary">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Equipment</th>
+                <th>Priority</th>
+                <th>Priopiry No.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of equipmentList">
+                <td>
+                  {{item.name}}
+                </td>
+                <td>
+                  <app-rating [rating]='item.rating' [itemId]='item.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
+                </td>
+                <td>
+                  {{item.rating}} Stars
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p *ngIf='ratingClicked'>The Company {{itemIdRatingClicked}} has been given {{ratingClicked}} stars</p>
+    </div>
+  </div>

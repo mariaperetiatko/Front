@@ -1,7 +1,10 @@
 {
   "HOME": {
     "TITLE": "пвкпвпів",
-    "SELECT": "купвпівпіп"
+    "SELECT": "купвпівпіп",
+    "dateformat": "dd.MM.yyyy",
+    "timeformat": "HH:mm"
+
   },
   "CUSTOMERACCOUNT": {
     "FIRSTNAME": "Ім'я",
@@ -37,15 +40,164 @@
     "TEMPERATURE": "Температура",
     "CHANGE": "Змінити",
     "DELETE": "Видалити",
-    "CREATEORDER": "Сформувати замовлення"
+    "CREATEORDER": "Сформувати замовлення",
+    "Caloric": "Калорійність"
   },
 
   "deliveryAddress": {
     "Ukraine": "Україна",
     "Kharkiv": "Харків",
     "Lviv": "Львів",
+    "Pushkinskya": "Пушкінська",
     "Petrova": "Петрова"
   },
+  "addressCreate": {
+    "Addresses": "Адреси",
+    "CreateAddress":"Створення адреси",
+    "Country": "Країна",
+    "InputCountry": "Введіть назву країни!",
+    "City": "Місто",
+    "InputCity": "Введіть назву міста!",
+    "Streete": "Вулиця",
+    "InputStreete": "Введіть назву вулиці!",
+    "HouseNumber": "Номер будинку",
+    "InputHouseNamber": "Введіть номер будинку!",
+    "FlatNumber": "Номер квартири",
+    "InputFlatNamber": "Введіть номер квартири!",
+    "Lantitude": "Широта",
+    "InputLantitude": "Введіть широту!",
+    "Longitude": "Довгота",
+    "InputLongitude": "Введіть довготу!",
+    "Save": "Зберегти",
+    "UpdateAddress": "Оновлення адреси"
+  },
+
+  "Common": {
+    "Update": "Оновити",
+    "Delete": "Видалити",
+    "Create new": "Створити нову",
+    "Details": "Детально",
+    "Hide": "Приховати",
+    "Add": "Додати",
+    "Cancel": "Скасувати",
+    "Bank": "Банк",
+    "View": "Переглянути"
+  },
+  "Map": {
+    "BoxMap": "Карта термобоксу",
+    "Terrain": "Місцевість",
+    "Satellite": "Супутник",
+    "RoadMap": "Карта дорог",
+    "ToggleMap": "Приховати карту",
+    "ShowBox": "Показати термобокс",
+    "FoodOrders": "Замовлення",
+    "Map": "Карта",
+    "InputRadiusForSearching": "Введіть радіус для пошуку",
+    "InputRadius": "Введіть радіус!",
+    "YouCanSelectAddressOrUseRuntimeCoordinates": "Ви можете обрати адресу або використати координати в режимі реального часу",
+    "SelectAddress": "Оберіть адресу",
+    "ShowAppropriateRealtimeRestaurants": "Показати підходящі ресторани для поточного положення",
+    "ShowFavouriteRealtimeRestaurants": "Показати улюблені ресторани для поточного положення",
+    "ShowAppropriateRestaurantsByAddress": "Показати підходящі ресторани за адресою",
+    "ShowFavouriteRestaurantsByAddress": "Показати улюблені ресторани за адресою",
+    "ShowAllRestaurants": "Показати всі ресторани",
+    "Go": "Показати карту",
+    "Temperature": "Температура",
+    "Speed":"Швидкість",
+    "Time":"Час",
+    "Distance":"Відстань"
+  },
+  "Dish": {
+    "FavouriteDishes": "Улюблені страви",
+    "Name": "Назва",
+    "Description": "Опис",
+    "OtherDishes":"Інші страви"
+  },
+  "Ingredient": {
+    "Ingredients": "Інгрідієнті",
+    "Name": "Назва",
+    "Weight": "Вага"
+  },
+  "FoodOrder": {
+    "Cart": "Кошик",
+    "CreateOrder": "Створити замовлення",
+    "TotalCost": "Загальна вартість",
+    "Date": "Дата",
+    "Address": "Адреса",
+    "Pay": "Сплатити",
+    "AllOrders": "Всі замовлення",
+    "Location": "Місце знаходження",
+    "FoodOrders": "Замовлення"
+  },
+  "FoodStyle": {
+    "FoodStyle": "Стиль харчування",
+    "MyFoodStyle": "Мій стиль харчування",
+    "Name": "Назва",
+    "CaloricValue": "Кількість калорій",
+    "ProductsIn": "Продукти в",
+    "ProductName": "Назва продукта",
+    "FoodStyles": "Стилі харчування",
+    "TryIt": "Спробувати"
+
+  },
+  "LogIn": {
+    "LogIn": "Вчід",
+    "Name": "Ім'я користувача",
+    "InputYourName": "Введіть ваше ім'я користувача!",
+    "Password": "Пароль",
+    "InputYourPassword": "Введіть ваш пароль!",
+    "Send": "Відправити"
+  },
+"Registration": {
+  "Registration": "Реєстрація",
+  "Email": "Електронна пошта",
+  "InvalidPattern": "Неправильний запис!",
+  "Password": "Пароль",
+  "InputYourPassword": "Ввевіть ваш пароль!",
+  "firstName": "Ім'я",
+  "InputYourFirstName": "Введіть ваше ім'я!",
+  "lastName": "Прізвище",
+  "InputYourLastName": "Введіть ваше прізвище!",
+  "phone": "Телефон",
+  "InputYourPhone": "Введіть ваш телефон!",
+  "role": "Роль",
+  "Member": "Клієнт",
+  "Admin": "Адміністратор",
+  "RestaurantManager": "Ресторанний менержер",
+  "InputYourRole": "Введіть вашу роль!",
+  "Send": "Відправити"
+},
+"Restaurant": {
+  "Restaurant": "Ресторан",
+  "RestaurantName": "Назва ресторану",
+  "Country": "Країна",
+  "City": "Місто",
+  "Street": "Вулиця",
+  "HouseNumber": "Номер будинку",
+  "Menu": "Меню",
+  "Dish": "Страва",
+  "Description": "Опис",
+  "Cost": "Ціна",
+  "Count": "Кількість",
+  "Temperature": "Температура"
+
+},
+"header": {
+  "Home": "Домашня сторінка",
+  "SpecialProducts": "Спеціальні продукти",
+  "FoodStyle": "Стиль харчування",
+  "FavouriteDishes": "Улюблені страви",
+  "Map": "Карта",
+  "Cart": "Кошик",
+  "FoodOrders": "Замовлення",
+  "Addresses": "Адреси",
+  "SingUp": "Зареєструватись",
+  "Login": "Увійти",
+  "Logout": "Вийти"
+
+},
+
+
   "BREAKFAST": "сніданок",
   "DINNER": "обід",
   "SUPPER": "вечеря"

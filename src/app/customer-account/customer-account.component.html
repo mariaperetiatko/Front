@@ -1,4 +1,4 @@
-<div *ngIf="!isRequesting">
+<!--<div *ngIf="!isRequesting">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">Home</li>
@@ -6,89 +6,194 @@
   </nav>
 
   <div *ngIf="!isFoodNameRequesting">
-
+      <div class="panel panel-default">
+          <div class="panel-body">
 <table class="table table-bordered">
+    <colgroup>
+      <col class="first-allowed" />
+      <col class="second-allowed" />
+      <col class="third-allowed" />
+    </colgroup>
     <tbody>
       <tr>
         <td>{{ 'CUSTOMERACCOUNT.FIRSTNAME' | translate }}</td>
-
-        <td>{{customer.firstName}}</td>
+        <td>{{client.firstName}}</td>
         <td>
-            <input type="text" [(ngModel)]="firstName">
-            <button class="btn btn-default" (click)="changeFirstName(customer.id, firstName)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
-         </td>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <input type="text" class="form-control" [(ngModel)]="firstName">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-default details" (click)="changeFirstName(customer.id, firstName)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
+                </div>
+            </div>
+        </td>
       </tr>
       <tr>
         <td>{{ 'CUSTOMERACCOUNT.LASTNAME' | translate }}</td>
         <td>{{customer.lastName}}</td>
         <td>
-            <input type="text" [(ngModel)]="lastName">
-            <button class="btn btn-default" (click)="changeLastName(customer.id, lastName)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
-         </td>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <input type="text" class="form-control" [(ngModel)]="lastName">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-default details" (click)="changeLastName(customer.id, lastName)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
+                </div>
+            </div>
+        </td>
       </tr>
       <tr>
         <td>{{ 'CUSTOMERACCOUNT.PHONE' | translate }}</td>
         <td>{{customer.phone}}</td>
         <td>
-            <input type="number" [(ngModel)]="phoneNumber">
-            <button class="btn btn-default" min="1" step="1" oninput="validity.valid||(value='');" (click)="changePhoneNumber(customer.id, phoneNumber)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
-         </td>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <input type="number" class="form-control" placeholder="xxxxxxxxxx" [(ngModel)]="phoneNumber">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-default details" min="1" step="1" oninput="validity.valid||(value='');" (click)="changePhoneNumber(customer.id, phoneNumber)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
+                </div>
+            </div>
+        </td>
       </tr>
       <tr>
         <td>{{ 'CUSTOMERACCOUNT.BALANCE' | translate }}</td>
-         <td>{{customer.balance}}</td>
+         <td>{{customer.balance}} grn</td>
           <td>
-            <input type="number" [(ngModel)]="moneySum">
-            <button class="btn btn-default" min="1" step="1" oninput="validity.valid||(value='');" (click)="changeBalance(customer.id, moneySum)">{{ 'CUSTOMERACCOUNT.INCREASE' | translate }}</button>
-         </td>
+              <div class="form-row align-items-center">
+                  <div class="col-auto">
+                      <input type="number" class="form-control" [(ngModel)]="moneySum">
+                  </div>
+                  <div class="col-auto">
+                      <button class="btn btn-default details" min="1" step="1" oninput="validity.valid||(value='');" (click)="changeBalance(customer.id, moneySum)">{{ 'CUSTOMERACCOUNT.INCREASE' | translate }}</button>
+                  </div>
+              </div>
+          </td>
       </tr>
       <tr>
         <td>{{ 'CUSTOMERACCOUNT.CALORICGOAL' | translate }}</td>
-          <td>{{customer.caloricGoal}}</td>
+          <td>{{customer.caloricGoal}} kkl</td>
           <td>
-              <input type="number" [(ngModel)]="caloric">
-              <button class="btn btn-default" min="1" step="1" oninput="validity.valid||(value='');" (click)="changeCaloricGoal(customer.id, caloric)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
-            </td>
-        </tr>
-        <tr>
-            <td>{{ 'CUSTOMERACCOUNT.FOODSTYLE' | translate }}</td>
+              <div class="form-row align-items-center">
+                  <div class="col-auto">
+                      <input type="number" class="form-control" [(ngModel)]="caloric">
+                  </div>
+                  <div class="col-auto">
+                      <button class="btn btn-default details" min="1" step="1" oninput="validity.valid||(value='');" (click)="changeCaloricGoal(customer.id, caloric)">{{ 'CUSTOMERACCOUNT.CHANGE' | translate }}</button>
+                  </div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td>{{ 'CUSTOMERACCOUNT.FOODSTYLE' | translate }}</td>
               <td> {{foodStyle.foodStyleName}}</td>
-                <td><button class="btn btn-default" (click)="getFoodStyle()">{{ 'CUSTOMERACCOUNT.VIEWDETAILS' | translate }}</button>
+                <td><button class="btn btn-default details" (click)="getFoodStyle()">{{ 'CUSTOMERACCOUNT.VIEWDETAILS' | translate }}</button>
               </td>
           </tr>
       <tr>
         <td>{{ 'CUSTOMERACCOUNT.SPECIALPRODUCTS' | translate }}</td>
           <td>
-            <button class="btn btn-default" (click)="getSpecialProducts()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
+            <button class="btn btn-default details" (click)="getSpecialProducts()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
           </td>
         </tr>
 
       <tr>
           <td>{{ 'CUSTOMERACCOUNT.CART' | translate }}</td>
             <td>
-              <button class="btn btn-default" (click)="cart()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
+              <button class="btn btn-default details" (click)="cart()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
             </td>
         </tr>
         <tr>
             <td>{{ 'CUSTOMERACCOUNT.ADDRESSES' | translate }}</td>
               <td>
-                <button class="btn btn-default" (click)="addresses()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
+                <button class="btn btn-default details" (click)="addresses()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
               </td>
           </tr>
           <tr>
               <td>{{ 'CUSTOMERACCOUNT.FAVOURITEDISHES' | translate }}</td>
                 <td>
-                  <button class="btn btn-default" (click)="favouriteDishes()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
+                  <button class="btn btn-default details" (click)="favouriteDishes()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
                 </td>
             </tr>
             <tr>
                 <td>{{ 'CUSTOMERACCOUNT.FOODORDERS' | translate }}</td>
                   <td>
-                    <button class="btn btn-default" (click)="favouriteDish()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
+                    <button class="btn btn-default details" (click)="foodOrders()">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
                   </td>
               </tr>
     </tbody>
 </table>
-  <button class="btn btn-default" (click)="getFoodStyleById(customer.foodStyleId)">{{ 'CUSTOMERACCOUNT.VIEW' | translate }}</button>
 </div>
+
+</div>
+-->
+<div *ngIf="!isRequesting">
+    <table class="table table-bordered">
+        <colgroup>
+          <col width="20%" />
+          <col width="30%" />
+          <col width="10%" />
+          <col width="40%" />
+        </colgroup>
+<tbody>
+<tr>
+  <td>Client name</td>
+<td>{{client.firstName}}</td>
+<td><button class="btn btn-default details" (click)="showHideFirstNameInput()">Modify</button></td>
+  <td><div *ngIf="isFirstNameVisible">
+    <input type="text" class="form-control" [(ngModel)]="client.firstName">
+  </div></td>
+</tr>
+
+<tr>
+    <td>Client last name</td>
+  <td>{{client.lastName}}</td>
+  <td><button class="btn btn-default details" (click)="showHideLastNameInput()">Modify</button></td>
+    <td><div *ngIf="isLastNameVisible">
+      <input type="text" class="form-control" [(ngModel)]="client.lastName">
+    </div></td>
+  </tr>
+
+  <tr>
+      <td>Birthday</td>
+    <td>
+
+      {{client.birthday | date:  ('HOME.dateformat' | translate)}}</td>
+    <td><button class="btn btn-default details" (click)="showHideBirthdayInput()">Modify</button></td>
+      <td><div *ngIf="isBirthdayVisible">
+        <input type="text" class="form-control" [(ngModel)]="client.birthday">
+      </div></td>
+    </tr>
+
+    <tr>
+        <td>Passport number</td>
+      <td>{{client.passportNumber}}</td>
+      <td><button class="btn btn-default details" (click)="showHidePassportNumberInput()">Modify</button></td>
+        <td><div *ngIf="isPassportNumberVisible">
+          <input type="text" class="form-control" [(ngModel)]="client.passportNumber">
+        </div></td>
+      </tr>
+
+      <tr>
+          <td>Phone</td>
+        <td>{{client.phone}}</td>
+        <td><button class="btn btn-default details" (click)="showHidePhoneInput()">Modify</button></td>
+          <td><div *ngIf="isPhoneVisible">
+            <input type="text" class="form-control" [(ngModel)]="client.phone">
+          </div></td>
+        </tr>
+
+        <tr>
+            <td>Email</td>
+          <td>{{client.email}}</td>
+          <td><button class="btn btn-default details" (click)="showHideEmailInput()">Modify</button></td>
+            <td><div *ngIf="isEmailVisible">
+              <input type="text" class="form-control" [(ngModel)]="client.email">
+            </div></td>
+          </tr>
+</tbody>
+</table>
+<button class="btn btn-default details" (click)="updateClient(client)">Save</button>
+
 </div>

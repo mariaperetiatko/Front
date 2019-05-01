@@ -14,7 +14,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./login-form.component.css']
 })
 
-export class LoginFormComponent implements OnInit, OnDestroy {
+export class LoginFormComponent implements OnInit {
 
   private subscription: Subscription;
   brandNew: boolean;
@@ -26,6 +26,10 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
+      const redirect = localStorage.getItem('redirect');
+      if (redirect !== '') {
+        this.router.navigate([redirect]);
+      }
 
     // subscribe to router event
     /*this.subscription = this.activatedRoute.queryParams.subscribe(
@@ -34,10 +38,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
          this.credentials.userName = param['email'];
       });*/
     }
-      ngOnDestroy() {
-        // prevent memory leak by unsubscribing
-        // this.subscription.unsubscribe();
-      }
+
 
       login() {
         this.submitted = true;
@@ -45,12 +46,20 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         this.errors = '';
         // if (valid) {
           this.userService.login(this.credentials.userName, this.credentials.password)
-            .pipe(finalize(() => this.isRequesting = false)).
+            .pipe(finalize(() => {
+              this.isRequesting = false;
+            })).
             subscribe(
             result => {
               if (result) {
+                const isMember = (localStorage.getItem('role') === 'Member');
+                const isAdmin = (localStorage.getItem('role') === 'Admin');
+                if (isMember) {
+                  localStorage.setItem('redirect', '/home');
+                } else {
+                  localStorage.setItem('redirect', '/cartController');
+                }
                 window.location.reload();
-                this.router.navigate(['/map']);
               }
             },
             error => this.errors = error);
