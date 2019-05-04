@@ -1,0 +1,140 @@
+<!--<button type="button" (click)="createClient()" class="btn btn-default">Create new client</button>-->
+<div *ngIf="isOrders">
+  Orders
+    <table class="table table-bordered">
+        <thead>
+           <tr>
+              <td>Start time</td>
+              <td>Finish time</td>
+              <td>Sum to pay</td>
+              <td>Workplace number</td>
+              <td>Delete</td>
+           </tr>
+        </thead>
+        <tbody>
+           <tr *ngFor="let order of workplaceOrdersList">
+              <td> {{order.startTime | date:  ('HOME.wholeDate' | translate)}}</td>
+              <td>{{order.finishTime | date:  ('HOME.wholeDate' | translate)}}</td>
+              <td>{{order.sumToPay}}</td>
+              <td>{{order.workplaceId}}</td>
+              <td> <button type="button" (click)="delepeWorkplaceOrder(order)" class="btn btn-default">Delete</button></td>
+           </tr>
+        </tbody>
+     </table>
+<button class="btn btn-default details" (click)="hide()">Hide</button>
+</div>
+<div *ngIf="isUsed">
+    <div class="form-group">
+       <label>Client first name</label>
+       <input class="form-control" type="text" name="firstName" [(ngModel)]="client.firstName">
+    </div>
+    <div class="form-group">
+       <label>Client last name</label>
+       <input class="form-control" type="text" name="lastName" [(ngModel)]="client.lastName">
+    </div>
+    <div class="form-group">
+        <label>Birthday</label>
+        <input type="text" class="form-control" [(ngModel)]="client.birthday">
+      </div>
+      <div class="form-group">
+      <label>Passport number</label>
+          <input type="text" class="form-control" [(ngModel)]="client.passportNumber">
+      </div>
+      <div class="form-group">
+          <label>Phone</label>
+            <input type="text" class="form-control" [(ngModel)]="client.phone">
+      </div>
+      <div class="form-group">
+          <label>Email</label>
+              <input type="text" class="form-control" [(ngModel)]="client.email">
+      </div>
+      <div class="form-group">
+          <label>Height</label>
+          <input type="text" class="form-control" [(ngModel)]="client.hight">
+        </div>
+        <div class="form-group">
+            <label>Vision</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.vision">
+        </div>
+        <div class="form-group">
+            <label>Table height</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.tableHight">
+        </div>
+        <div class="form-group">
+            <label>Chair height</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.chairHight">
+        </div>
+        <div class="form-group">
+            <label>Light</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.light">
+        </div>
+        <div class="form-group">
+            <label>Temperature</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.temperature">
+        </div>
+        <div class="form-group">
+            <label>Music</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.music">
+        </div>
+        <div class="form-group">
+            <label>Drink</label>
+
+          <input type="text" class="form-control" [(ngModel)]="client.drink">
+        </div>
+<div *ngIf="isCreate">
+<button class="btn btn-default details" (click)="onCreate(client)">Create</button>
+</div>
+<div *ngIf="isUpdate">
+    <button class="btn btn-default details" (click)="onUpdate(client)">Update</button>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+       <tr>
+          <td>Client first name</td>
+          <td>Client last name</td>
+          <td>Passport</td>
+          <td>Phone</td>
+          <td>Email</td>
+          <td>Height</td>
+          <td>Vision</td>
+          <td>Table</td>
+          <td>Chair</td>
+          <td>Light</td>
+          <td>Temp</td>
+          <td>Orders</td>
+
+          <td>Update</td>
+          <td>Delete</td>
+       </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let cl of clientsList">
+          <td>{{cl.firstName}}</td>
+          <td>{{cl.lastName}}</td>
+          <td>{{cl.passportNumber}}</td>
+          <td>{{cl.phone}}</td>
+          <td>{{cl.email}}</td>
+          <td>{{cl.hight}}</td>
+          <td>{{cl.vision}}</td>
+
+          <td>{{cl.tableHight}}</td>
+          <td>{{cl.chairHight}}</td>
+          <td>{{cl.light}}</td>
+          <td>{{cl.temperature}}</td>
+
+
+          <td> <button type="button" (click)="getWorkplaceOrders(cl.id)" class="btn btn-default">Orders</button></td>
+          <td> <button type="button" (click)="updateClient(cl)" class="btn btn-default">Update</button></td>
+          <td> <button type="button" (click)="deleteClient(cl.id)" class="btn btn-default">Delete</button></td>
+       </tr>
+    </tbody>
+ </table>
+

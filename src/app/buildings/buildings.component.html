@@ -1,0 +1,65 @@
+<div class="left-floating">
+Country
+<select #countrySelect class="form-control" (change)="filter(countrySelect.value, citySelect.value, streetSelect.value)">
+  <option></option>
+    <option *ngFor="let item of countries" [value]="item">{{ item }}</option>
+  </select>
+  </div>
+  <div class="center-floating">
+City
+  <select #citySelect class="form-control" (change)="filter(countrySelect.value, citySelect.value, streetSelect.value)">
+      <option></option>
+      <option *ngFor="let item of cities" [value]="item">{{ item }}</option>
+    </select>
+</div>
+<div class="right-floating">
+Street
+    <select #streetSelect class="form-control" (change)="filter(countrySelect.value, citySelect.value, streetSelect.value)">
+        <option></option>
+        <option *ngFor="let item of streets" [value]="item">{{ item }}</option>
+      </select>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+
+<div *ngFor="let data of filteredBuildingList; let i = index">
+    <table class="table table-bordered">
+        <colgroup>
+          <col width="25%" />
+          <col width="25%" />
+          <col width="25%" />
+          <col width="25%" />
+        </colgroup>
+<tbody>
+<tr style="border: 2px solid lightgreen">
+  <td>House number: {{data.house}}</td>
+  <td>Flat number: {{data.flat}}</td>
+  <td>{{showLandlordByBuilding(data)}}</td>
+  <td><button class="btn btn-default details" (click)="showWorkplaceBuilding(i)">Workplaces</button></td>
+</tr>
+</tbody>
+</table>
+<div *ngIf="isWorkplaceVisibleArray[i]">
+    <table class="table table-bordered">
+        <colgroup>
+          <col width="30%" />
+          <col width="25%" />
+          <col width="35%" />
+          <col width="10%" />
+        </colgroup>
+        <tbody>
+            <tr *ngFor="let item of getWorkplacesInBuilding(data.id)">
+               <td> Workplace number: {{item.id}}</td>
+               <td>Workplace mark: {{item.mark}}</td>
+               <td>Mark</td>
+               <td><button class="btn btn-default details" (click)="navigateToWorkplace(item)">Go</button></td>
+              </tr>
+             </tbody>
+             </table>
+
+</div>
+
+</div>

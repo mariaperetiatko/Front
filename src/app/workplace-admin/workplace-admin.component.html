@@ -1,0 +1,75 @@
+
+    <div *ngIf="isEq">
+    <table class="table table-bordered">
+        <thead>
+           <tr>
+              <td>Name</td>
+              <td>Delete</td>
+           </tr>
+
+        </thead>
+        <tbody>
+           <tr *ngFor="let item of apprEqupment">
+              <td>{{item.name}}</td>
+
+              <td> <button type="button" (click)="deleteEquipmentFromWorkplace(item.id)" class="btn btn-default">Delete</button></td>
+           </tr>
+        </tbody>
+     </table>
+     <label>Landlord</label>
+        <select #langSelect class="form-control"(change)="eqId=langSelect.value">
+          <option *ngFor="let land of eqList" [value]="land.id" [selected]="eqId">{{ land.name }}</option>
+        </select>
+     <button type="button" (click)="createWorkplaceEquipment()" class="btn btn-default">Add equipment</button>
+</div>
+<button type="button" (click)="createWorkplace()" class="btn btn-default">Create new workplace</button>
+<div *ngIf="isUsed">
+    <div class="form-group">
+       <label>Mark</label>
+       <input class="form-control" type="text" name="mark" [(ngModel)]="workplace.mark">
+    </div>
+    <div class="form-group">
+       <label>Cost</label>
+       <input class="form-control" type="text" name="cost" [(ngModel)]="workplace.cost">
+    </div>
+     <li class="nav-item mr-2">
+        <label>Building</label>
+        <select #langSelect class="form-control"(change)="workplace.buildingId=langSelect.value">
+          <option *ngFor="let land of buildingsList" [value]="land.id" [selected]="workplace.buildingId">{{ land.country + ' ' + land.city + ' ' + land.street + ' ' + land.house + ' ' + land.flat }}</option>
+        </select>
+    </li>
+
+
+    <div *ngIf="isCreate">
+        <button class="btn btn-default details" (click)="onCreate(workplace)">Create</button>
+        </div>
+        <div *ngIf="isUpdate">
+            <button class="btn btn-default details" (click)="onUpdate(workplace)">Update</button>
+            </div>
+        </div>
+    <table class="table table-bordered">
+        <thead>
+           <tr>
+              <td>Mark</td>
+              <td>Cost</td>
+              <td>Building</td>
+
+              <td>Equipment</td>
+              <td>Update</td>
+              <td>Delete</td>
+           </tr>
+
+        </thead>
+        <tbody>
+           <tr *ngFor="let cl of workplacesList">
+              <td>{{cl.mark}}</td>
+              <td>{{cl.cost}}</td>
+              <td>{{cl.buildingId}}</td>
+              <td> <button type="button" (click)="getEquipmentByWorkplace(cl.id)" class="btn btn-default">Equipment</button></td>
+
+                  <td> <button type="button" (click)="updateWorkplace(cl)" class="btn btn-default">Update</button></td>
+              <td> <button type="button" (click)="deleteWorkplace(cl.id)" class="btn btn-default">Delete</button></td>
+           </tr>
+        </tbody>
+     </table>
+

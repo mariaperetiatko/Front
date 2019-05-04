@@ -10,5 +10,13 @@
   .brd1 {
     border: 2px solid lightgreen;
     border-radius: 5px;
-  }
 
+  }
+.right-floating {
+  width: 300px;
+  float: right;
+}
+.left-floating {
+  width: 300px;
+  float: left;
+}

@@ -1,8 +1,19 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">Workplace</li>
+    </ol>
+  </nav>
+<div class="brd1 right-floating" *ngIf="!isRequesting">
+    <p style="font-weight:bold">Landlord</p>
+  First name: {{landlord.firstName}}<br>
+  Lst name: {{landlord.lastName}}<br>
+  Email: {{landlord.email}}<br>
+  Phone number: {{landlord.phone}}<br>
+  </div>
 <button type="button" (click)="showEquipment()" class="btn btn-primary">Show equipment</button>
 
 <div *ngIf="isEqShow">
-<h4>Equipment</h4>
-<div class="brd1">
+<div class="brd1 left-floating">
 {{showObject()}}</div>
 </div>
 <table class="table table-bordered">

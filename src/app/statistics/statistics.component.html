@@ -1,0 +1,74 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">Statistics</li>
+    </ol>
+  </nav>
+<button mat-button mat-raised-button color="primary" (click)="showStatByYear()">Year</button>
+<button mat-button mat-raised-button color="primary" (click)="showStatByMonth()">Month</button>
+<button mat-button mat-raised-button color="primary" (click)="showStatByWeek()">Week</button>
+<div *ngIf="isYearVisible">
+Year
+<input type="number" class="form-control" [(ngModel)]="yearForYear">
+BuildingId
+<input type="number" class="form-control" [(ngModel)]="buildingIdForYear">
+<div>
+    <div>
+      <div style="display: block">
+        <canvas baseChart
+          [datasets]="barChartDataForYear"
+          [labels]="barChartLabelsForYear"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType">
+        </canvas>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="isMonthVisible">
+  Year
+<input type="number" class="form-control" [(ngModel)]="yearForMonth">
+Month
+<input type="number" class="form-control" [(ngModel)]="monthForMonth">
+BuildingId
+<input type="number" class="form-control" [(ngModel)]="buildingIdForMonth">
+  <div>
+      <div>
+        <div style="display: block">
+          <canvas baseChart
+            [datasets]="barChartDataForMonth"
+            [labels]="barChartLabelsForMonth"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+          </canvas>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isWeekVisible">
+
+    BuildingId
+    <input type="number" class="form-control" [(ngModel)]="buildingIdForWeek">
+      <div>
+          <div>
+            <div style="display: block">
+              <canvas baseChart
+                [datasets]="barChartDataForWeek"
+                [labels]="barChartLabelsForWeek"
+                [options]="barChartOptions"
+                [plugins]="barChartPlugins"
+                [legend]="barChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+
+          </div>
+        </div>
+</div>

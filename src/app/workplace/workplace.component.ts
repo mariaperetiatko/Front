@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Workplace, Client, APIClient, WorkplaceOrder, WorkplaceEquipment, Equipment } from './../api.service';
+import { Workplace, Client, APIClient, WorkplaceOrder, WorkplaceEquipment, Equipment, Building, Landlord } from './../api.service';
 import { List } from 'linqts';
-// import { delay } from 'rxjs/operators';
 
 
 @Component({
@@ -13,6 +12,7 @@ import { List } from 'linqts';
 export class WorkplaceComponent implements OnInit {
 
   client: Client;
+  landlord: Landlord;
   isOrdersVisible = false;
   workplace: Workplace;
   selectedYear = (new Date()).getFullYear();
@@ -37,7 +37,7 @@ export class WorkplaceComponent implements OnInit {
   minFinishMinutes = (new Date()).getMinutes();
   selectedFinishHours =  (new Date()).getHours();
   selectedFinishMinutes = (new Date()).getMinutes();
-
+isRequesting = true;
   creatingResult = '';
 
   constructor(private apiClient: APIClient) { }
@@ -50,21 +50,28 @@ export class WorkplaceComponent implements OnInit {
   }
 
   getWorkplace() {
-
     this.workplace = JSON.parse(localStorage.getItem('selectedWorkplace'));
+
     this.apiClient.getWorkplaceOrdersList()
     .subscribe((data: WorkplaceOrder[]) => {
       this.workplaceOrdersList = new List<WorkplaceOrder>(data);
       this.appropriateWorkplaceOrders = this.workplaceOrdersList
       .Where(x => x.workplaceId === this.workplace.id);
-
     });
+
+    this.apiClient.getBuildingById(this.workplace.buildingId)
+    .subscribe((data: Building) => {
+      this.apiClient.getLandlordById(data.landlordId)
+        .subscribe((landlord: Landlord) => {
+          this.landlord = landlord;
+          this.isRequesting = false;
+        });
+      });
   }
 
   getEquipment() {
     this.apiClient.getWorkplaceEquipmentsList()
     .subscribe((data: WorkplaceEquipment[]) => {
-      console.log(data);
       this.workplaceEquipmentsList = new List<WorkplaceEquipment>(data);
       this.appropriateWorkplaceEquipment = this.workplaceEquipmentsList
       .Where(x => x.workplaceId === this.workplace.id).ToArray();
@@ -74,8 +81,6 @@ export class WorkplaceComponent implements OnInit {
           this.equipment.push(eqData.name);
         });
       }
-
-
     });
   }
 

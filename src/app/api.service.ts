@@ -22,8 +22,68 @@ export class APIClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : 'https://172.29.186.125';
+        this.baseUrl = baseUrl ? baseUrl : 'https://172.29.185.238';
     }
+
+     /**
+     * @return Success
+     */
+    getSchedule(clientId: number): Observable<Scheduler[]> {
+      let url_ = this.baseUrl + "/api/Scheduler/GetSchedule/{clientId}";
+      if (clientId === undefined || clientId === null)
+          throw new Error("The parameter 'clientId' must be defined.");
+      url_ = url_.replace("{clientId}", encodeURIComponent("" + clientId));
+      url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem('auth_token');
+
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+              "Accept": "application/json",
+                'Authorization': `Bearer ${authToken}`
+          })
+      };
+
+      return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+          return this.processGetSchedule(response_);
+      })).pipe(_observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+              try {
+                  return this.processGetSchedule(<any>response_);
+              } catch (e) {
+                  return <Observable<Scheduler[]>><any>_observableThrow(e);
+              }
+          } else
+              return <Observable<Scheduler[]>><any>_observableThrow(response_);
+      }));
+  }
+
+  protected processGetSchedule(response: HttpResponseBase): Observable<Scheduler[]> {
+      const status = response.status;
+      const responseBlob =
+          response instanceof HttpResponse ? response.body :
+          (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+      let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+      if (status === 200) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          let result200: any = null;
+          let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+              result200 = [];
+              for (let item of resultData200)
+                  result200.push(Scheduler.fromJS(item));
+          }
+          return _observableOf(result200);
+          }));
+      } else if (status !== 200 && status !== 204) {
+          return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+          return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+          }));
+      }
+      return _observableOf<Scheduler[]>(<any>null);
+  }
 
     /**
      * @param model (optional)
@@ -3033,6 +3093,59 @@ export class Workplace implements IWorkplace {
         }
         return data;
     }
+}
+
+
+export class Scheduler implements IScheduler {
+  id?: string | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  text?: string | undefined;
+  details?: string | undefined;
+
+  constructor(data?: IScheduler) {
+      if (data) {
+          for (var property in data) {
+              if (data.hasOwnProperty(property))
+                  (<any>this)[property] = (<any>data)[property];
+          }
+      }
+  }
+
+  init(data?: any) {
+      if (data) {
+          this.id = data["id"];
+          this.start_date = data["start_date"];
+          this.end_date = data["end_date"];
+          this.text = data["text"];
+          this.details = data["details"];
+      }
+  }
+
+  static fromJS(data: any): Scheduler {
+      data = typeof data === 'object' ? data : {};
+      let result = new Scheduler();
+      result.init(data);
+      return result;
+  }
+
+  toJSON(data?: any) {
+      data = typeof data === 'object' ? data : {};
+      data["id"] = this.id;
+      data["start_date"] = this.start_date;
+      data["end_date"] = this.end_date;
+      data["text"] = this.text;
+      data["details"] = this.details;
+      return data;
+  }
+}
+
+export interface IScheduler {
+  id?: string | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  text?: string | undefined;
+  details?: string | undefined;
 }
 
 export interface IWorkplace {

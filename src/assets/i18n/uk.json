@@ -3,7 +3,8 @@
     "TITLE": "пвкпвпів",
     "SELECT": "купвпівпіп",
     "dateformat": "dd.MM.yyyy",
-    "timeformat": "HH:mm"
+    "timeformat": "HH:mm",
+    "wholeDate": "dd.MM.yyyy HH:mm"
 
   },
   "CUSTOMERACCOUNT": {

@@ -3,7 +3,8 @@
     "TITLE": "Hello Angular with ngx-translate!",
     "SELECT": "Change language",
     "dateformat": "MM/dd/yyyy",
-    "timeformat": "hh:mm a"
+    "timeformat": "hh:mm a",
+    "wholeDate": "MM/dd/yyyy hh:mm a"
   },
 
   "CUSTOMERACCOUNT": {

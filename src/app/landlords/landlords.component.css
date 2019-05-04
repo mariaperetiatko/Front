@@ -1,0 +1,17 @@
+.right-floating {
+  width: 50%;
+  float: right;
+}
+.green {
+  border: 2px solid lightgreen;
+  border-radius: 5px;
+}
+.left-floating {
+  width: 50%;
+  float: left;
+}
+.gray {
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+

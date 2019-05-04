@@ -1,0 +1,21 @@
+.right-floating {
+  width: 34%;
+  float: right;
+}
+.left-floating {
+  width: 33%;
+  float: left;
+}
+.center-floating {
+  width: 33%;
+  float: right;
+  left: -49%;
+}
+.brd {
+  border: 2px solid lightgreen;
+}
+.table-bordered th, .table-bordered td{
+  border-color: transparent transparent transparent transparent;
+  border-radius: 5px;
+}
+

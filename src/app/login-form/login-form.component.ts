@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -30,13 +30,6 @@ export class LoginFormComponent implements OnInit {
       if (redirect !== '') {
         this.router.navigate([redirect]);
       }
-
-    // subscribe to router event
-    /*this.subscription = this.activatedRoute.queryParams.subscribe(
-      (param: any) => {
-         this.brandNew = param['brandNew'];
-         this.credentials.userName = param['email'];
-      });*/
     }
 
 
@@ -57,7 +50,7 @@ export class LoginFormComponent implements OnInit {
                 if (isMember) {
                   localStorage.setItem('redirect', '/home');
                 } else {
-                  localStorage.setItem('redirect', '/cartController');
+                  localStorage.setItem('redirect', '/clients-admin');
                 }
                 window.location.reload();
               }

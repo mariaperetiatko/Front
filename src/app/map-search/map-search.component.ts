@@ -4,7 +4,6 @@ import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
 import { List } from 'linqts';
 
 
@@ -36,13 +35,6 @@ export class MapSearchComponent implements AfterContentInit {
     {
       text: 'Restaurant', value: 'ylw-pushpin.png'
     }
-    // ,
-    // {
-    //   text: "Library", value: "library_maps.png"
-    // },
-    // {
-    //   text: "Information", value: "info-i_maps.png"
-    // }
   ];
   selectedMarkerType = 'ylw-pushpin.png';
 
@@ -92,7 +84,6 @@ export class MapSearchComponent implements AfterContentInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-
       });
       this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
 
@@ -170,9 +161,6 @@ export class MapSearchComponent implements AfterContentInit {
     // const restaurantJson = restaurant.toJSON();
     this.selectedBuilding = building;
     this.workplacesByBuilding = this.worlplacesList.Where(x => x.buildingId === building.id).ToArray();
-
-    //localStorage.setItem('restaurant', JSON.stringify(restaurant));
-   //this.router.navigate(['/restaurantPage']);
   };
 
   navigateToWorkplace(workpl: Workplace) {
