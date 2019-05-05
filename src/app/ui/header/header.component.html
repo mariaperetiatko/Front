@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">EasyEat</a>
+  <a class="navbar-brand" href="#">JustShare</a>
   <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"  aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarTogglerDemo02">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -10,54 +10,48 @@
         <a class="nav-link" href="/home">{{ 'header.Home' | translate }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/settings">Settings</a>
+        <a class="nav-link d-block jumping" href="/settings">{{ 'Settings' | translate }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/workplace-parameters">Workplace parameters</a>
+        <a class="nav-link d-block jumping" href="/workplace-parameters">{{ 'Workplace parameters' | translate }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/map-search">Map search</a>
+        <a class="nav-link d-block jumping" href="/map-search">{{ 'Map search' | translate }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/scheduler">Scheduler</a>
+        <a class="nav-link d-block jumping" href="/scheduler">{{ 'Scheduler' | translate }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-block jumping" href="/statistics">Statistics</a>
+        <a class="nav-link d-block jumping" href="/statistics">{{ 'Statistics' | translate }}</a>
       </li>
       <li class="nav-item">
-          <a class="nav-link d-block jumping" href="/buildings">Buildings</a>
+          <a class="nav-link d-block jumping" href="/buildings">{{ 'Buildings' | translate }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link d-block jumping" href="/landlords">Landlords</a>
+            <a class="nav-link d-block jumping" href="/landlords">{{ 'Landlords' | translate }}</a>
           </li>
     </ul>
 
     <ul *ngIf="isAdmin" class="navbar-nav mr-auto mt-2 mt-lg-0">
 
         <li class="nav-item active">
-          <a class="nav-link  d-block jumping" href="/clients-admin">Clients</a>
+          <a class="nav-link  d-block jumping" href="/clients-admin">{{ 'Clients' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-block jumping" href="/equipment-admin">Equipment</a>
+          <a class="nav-link d-block jumping" href="/equipment-admin">{{ 'Equipment' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-block jumping" href="/buildings-admin">Buildings</a>
+          <a class="nav-link d-block jumping" href="/buildings-admin">{{ 'Buildings' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-block jumping" href="/workplace-admin">Workplaces</a>
+          <a class="nav-link d-block jumping" href="/workplace-admin">{{ 'Workplaces' | translate }}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link d-block jumping" href="/productController">Products</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link d-block jumping" href="/restaurantController">Restaurants</a>
-          </li>
       </ul>
     <ul class="nav navbar-nav navbar-right">
 
         <li class="nav-item mr-2">
-            <select #langSelect class="form-control"(change)="translate.use(langSelect.value)">
-              <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            <select #langSelect class="form-control"(change)="setLang(langSelect.value)">
+              <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === getlang()">{{ lang }}</option>
             </select>
         </li>
       <li class="nav-item mr-2">

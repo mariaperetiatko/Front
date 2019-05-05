@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class AppComponent implements OnInit {
-  title = 'EasyEat';
+  title = 'JushShare';
 
   clients: Client[] = [];
 

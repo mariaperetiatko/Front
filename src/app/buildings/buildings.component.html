@@ -1,19 +1,24 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">{{ 'Buildings' | translate }}</li>
+    </ol>
+  </nav>
 <div class="left-floating">
-Country
+{{ 'Country' | translate }}
 <select #countrySelect class="form-control" (change)="filter(countrySelect.value, citySelect.value, streetSelect.value)">
   <option></option>
     <option *ngFor="let item of countries" [value]="item">{{ item }}</option>
   </select>
   </div>
   <div class="center-floating">
-City
+{{ 'City' | translate }}
   <select #citySelect class="form-control" (change)="filter(countrySelect.value, citySelect.value, streetSelect.value)">
       <option></option>
       <option *ngFor="let item of cities" [value]="item">{{ item }}</option>
     </select>
 </div>
 <div class="right-floating">
-Street
+{{ 'Street' | translate }}
     <select #streetSelect class="form-control" (change)="filter(countrySelect.value, citySelect.value, streetSelect.value)">
         <option></option>
         <option *ngFor="let item of streets" [value]="item">{{ item }}</option>
@@ -35,10 +40,10 @@ Street
         </colgroup>
 <tbody>
 <tr style="border: 2px solid lightgreen">
-  <td>House number: {{data.house}}</td>
-  <td>Flat number: {{data.flat}}</td>
+  <td>{{ 'House number' | translate }}: {{data.house}}</td>
+  <td>{{ 'Flat number' | translate }}: {{data.flat}}</td>
   <td>{{showLandlordByBuilding(data)}}</td>
-  <td><button class="btn btn-default details" (click)="showWorkplaceBuilding(i)">Workplaces</button></td>
+  <td><button class="btn btn-default details" (click)="showWorkplaceBuilding(i)">{{ 'Workplaces' | translate }}</button></td>
 </tr>
 </tbody>
 </table>
@@ -52,10 +57,10 @@ Street
         </colgroup>
         <tbody>
             <tr *ngFor="let item of getWorkplacesInBuilding(data.id)">
-               <td> Workplace number: {{item.id}}</td>
-               <td>Workplace mark: {{item.mark}}</td>
-               <td>Mark</td>
-               <td><button class="btn btn-default details" (click)="navigateToWorkplace(item)">Go</button></td>
+               <td>{{ 'Workplace number' | translate }}: {{item.id}}</td>
+               <td>{{ 'Workplace mark' | translate }}: {{item.mark}}</td>
+               <td>{{ 'Mark' | translate }}</td>
+               <td><button class="btn btn-default details" (click)="navigateToWorkplace(item)">{{ 'Go' | translate }}</button></td>
               </tr>
              </tbody>
              </table>

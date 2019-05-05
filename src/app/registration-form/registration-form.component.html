@@ -1,10 +1,10 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">{{ 'Registration.Registration' | translate }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ 'Registration' | translate }}</li>
     </ol>
   </nav>
 <div class="form-group">
-    <label>{{ 'Registration.Email' | translate }}</label>
+    <label>{{ 'Email' | translate }}</label>
     <input class="form-control" type="text" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="registrations.email" placeholder="email@example.com" #email="ngModel" required />
     <div *ngIf="email.errors &&(email.touched || email.dirty)">
         <div [hidden]="!email.errors?.pattern" class ="aler alert-danger">
@@ -17,7 +17,7 @@
   </div>
 
   <div class="form-group">
-    <label>{{ 'Registration.Password' | translate }}</label>
+    <label>{{ 'Password' | translate }}</label>
     <input class="form-control" type="text" name="password" [(ngModel)]="registrations.password" #password="ngModel" required />
     <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
         {{ 'Registration.InputYourPassword' | translate }}
@@ -25,7 +25,7 @@
   </div>
 
   <div class="form-group">
-      <label>{{ 'Registration.firstName' | translate }}</label>
+      <label>{{ 'First name' | translate }}</label>
       <input class="form-control" type="text" name="firstName" [(ngModel)]="registrations.firstName" #firstName="ngModel" required />
       <div [hidden]="firstName.valid || firstName.untouched" class="alert alert-danger">
           {{ 'Registration.InputYourFirstName' | translate }}
@@ -33,7 +33,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{ 'Registration.lastName' | translate }}!</label>
+        <label>{{ 'Last name' | translate }}!</label>
         <input class="form-control" type="text" name="lastName" [(ngModel)]="registrations.lastName" #lastName="ngModel" required />
         <div [hidden]="lastName.valid || lastName.untouched" class="alert alert-danger">
             {{ 'Registration.InputYourLastName' | translate }}
@@ -41,7 +41,7 @@
       </div>
 
       <div class="form-group">
-          <label> {{ 'Registration.phone' | translate }}</label>
+          <label> {{ 'Phone' | translate }}</label>
           <input class="form-control" type="number" name="phone" [(ngModel)]="registrations.phone" #phone="ngModel" required />
           <div [hidden]="phone.valid || phone.untouched" class="alert alert-danger">
               {{ 'Registration.InputYourPhone' | translate }}
@@ -49,7 +49,7 @@
         </div>
 
         <div class="form-group">
-            <label>{{ 'Registration.role' | translate }}</label>
+            <label>{{ 'Role' | translate }}</label>
             <select class="form-control" (change)="selectChangeHandler($event)">
             <option value="member"></option>
 
@@ -66,5 +66,5 @@
 
   <div class="form-group">
     <button
-        class="btn btn-default" (click)="registerUser()">{{ 'Registration.Send' | translate }}</button>
+        class="btn btn-default" (click)="registerUser()">{{ 'Send' | translate }}</button>
   </div>

@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">Home</li>
+      <li class="breadcrumb-item" aria-current="page">{{ 'Home' | translate }}</li>
     </ol>
   </nav>
 
@@ -14,62 +14,62 @@
         </colgroup>
 <tbody>
 <tr>
-  <td>Client name</td>
+  <td>{{ 'First name' | translate }}</td>
 <td>{{client.firstName}}</td>
-<td><button class="btn btn-default details" (click)="showHideFirstNameInput()">Modify</button></td>
+<td><button class="btn btn-default details" (click)="showHideFirstNameInput()">{{ 'Modify' | translate }}</button></td>
   <td><div *ngIf="isFirstNameVisible">
     <input type="text" class="form-control" [(ngModel)]="client.firstName">
   </div></td>
 </tr>
 
 <tr>
-    <td>Client last name</td>
+    <td>{{ 'Last name' | translate }}</td>
   <td>{{client.lastName}}</td>
-  <td><button class="btn btn-default details" (click)="showHideLastNameInput()">Modify</button></td>
+  <td><button class="btn btn-default details" (click)="showHideLastNameInput()">{{ 'Modify' | translate }}</button></td>
     <td><div *ngIf="isLastNameVisible">
       <input type="text" class="form-control" [(ngModel)]="client.lastName">
     </div></td>
   </tr>
 
   <tr>
-      <td>Birthday</td>
+      <td>{{ 'Birthday' | translate }}</td>
     <td>
 
       {{client.birthday | date:  ('HOME.dateformat' | translate)}}</td>
-    <td><button class="btn btn-default details" (click)="showHideBirthdayInput()">Modify</button></td>
+    <td><button class="btn btn-default details" (click)="showHideBirthdayInput()">{{ 'Modify' | translate }}</button></td>
       <td><div *ngIf="isBirthdayVisible">
         <input type="text" class="form-control" [(ngModel)]="client.birthday">
       </div></td>
     </tr>
 
     <tr>
-        <td>Passport number</td>
+        <td>{{ 'Passport number' | translate }}</td>
       <td>{{client.passportNumber}}</td>
-      <td><button class="btn btn-default details" (click)="showHidePassportNumberInput()">Modify</button></td>
+      <td><button class="btn btn-default details" (click)="showHidePassportNumberInput()">{{ 'Modify' | translate }}</button></td>
         <td><div *ngIf="isPassportNumberVisible">
           <input type="text" class="form-control" [(ngModel)]="client.passportNumber">
         </div></td>
       </tr>
 
       <tr>
-          <td>Phone</td>
+          <td>{{ 'Phone' | translate }}</td>
         <td>{{client.phone}}</td>
-        <td><button class="btn btn-default details" (click)="showHidePhoneInput()">Modify</button></td>
+        <td><button class="btn btn-default details" (click)="showHidePhoneInput()">{{ 'Modify' | translate }}</button></td>
           <td><div *ngIf="isPhoneVisible">
             <input type="text" class="form-control" [(ngModel)]="client.phone">
           </div></td>
         </tr>
 
         <tr>
-            <td>Email</td>
+            <td>{{ 'Email' | translate }}</td>
           <td>{{client.email}}</td>
-          <td><button class="btn btn-default details" (click)="showHideEmailInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideEmailInput()">{{ 'Modify' | translate }}</button></td>
             <td><div *ngIf="isEmailVisible">
               <input type="text" class="form-control" [(ngModel)]="client.email">
             </div></td>
           </tr>
 </tbody>
 </table>
-<button class="btn btn-default details" (click)="updateClient(client)">Save</button>
+<button class="btn btn-default details" (click)="updateClient(client)">{{ 'Save' | translate }}</button>
 
 </div>

@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">Workplace parameters</li>
+      <li class="breadcrumb-item" aria-current="page">{{ 'Workplace parameters' | translate }}</li>
     </ol>
   </nav>
 <div *ngIf="!isRequesting">
@@ -14,7 +14,7 @@
 <tbody>
 <tr>
   <td>
-    Cost
+      {{ 'Cost' | translate }}
   </td>
   <td>
     <input type="text" class="form-control" [(ngModel)]="searchingViewModel.wantedCost">
@@ -25,7 +25,7 @@
   </tr>
   <tr>
       <td>
-    Radius
+          {{ 'Radius' | translate }}
     </td>
     <td>
     <input type="text" class="form-control" [(ngModel)]="searchingViewModel.radius">
@@ -42,9 +42,9 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Equipment</th>
-                <th>Priority</th>
-                <th>Priopiry No.</th>
+                <th>{{ 'Equipment' | translate }}</th>
+                <th>{{ 'Priority' | translate }}</th>
+                <th>{{ 'Priopiry No.' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -56,7 +56,7 @@
                   <app-rating [rating]='item.rating' [itemId]='item.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
                 </td>
                 <td>
-                  {{item.rating}} Stars
+                  {{item.rating}} {{ 'stars' | translate }}
                 </td>
               </tr>
             </tbody>

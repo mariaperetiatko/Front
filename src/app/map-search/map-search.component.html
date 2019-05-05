@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">Map search</li>
+      <li class="breadcrumb-item" aria-current="page">{{ 'Map search' | translate }}</li>
     </ol>
   </nav>
 
@@ -15,17 +15,17 @@
           <div class="form-group">
             <input type="text" class="form-control" name="longitude" [(ngModel)]="longitude" placeholder="Enter longitude" required>
           </div>
-          <button type="button" (click)="setCurrentPosition()" class="btn btn-primary" [disabled]="form.invalid">{{ 'Map.Go' | translate }}</button>
+          <button type="button" (click)="setCurrentPosition()" class="btn btn-primary" [disabled]="form.invalid">{{ 'Go' | translate }}</button>
         </form>
       </div>
     </div>
     <br>
     <div class="row">
-      <button (click)="showAppropriate()" class="btn btn-default">Search</button>
-      <button (click)="setMapType('terrain')" class="btn btn-primary">{{ 'Map.Terrain' | translate }}</button>
-      <button (click)="setMapType('satellite')" class="btn btn-danger">{{ 'Map.Satellite' | translate }}</button>
-      <button (click)="setMapType('roadmap')" class="btn btn-warning">{{ 'Map.RoadMap' | translate }}</button>
-      <button type="button" (click)="toggleMap()" class="btn btn-primary">{{ 'Map.ToggleMap' | translate }}</button>
+      <button (click)="showAppropriate()" class="btn btn-default">{{ 'Search' | translate }}</button>
+      <button (click)="setMapType('terrain')" class="btn btn-primary">{{ 'Terrain' | translate }}</button>
+      <button (click)="setMapType('satellite')" class="btn btn-danger">{{ 'Satellite' | translate }}</button>
+      <button (click)="setMapType('roadmap')" class="btn btn-warning">{{ 'RoadMap' | translate }}</button>
+      <button type="button" (click)="toggleMap()" class="btn btn-primary">{{ 'ToggleMap' | translate }}</button>
     </div>
     <br>
     <div class="row" >
@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  Address:
+  {{ 'Address' | translate }}:
   {{selectedBuilding.country}},
   {{selectedBuilding.city}},
   {{selectedBuilding.street}},
@@ -53,10 +53,10 @@
     </colgroup>
     <thead>
       <tr>
-        <td>Cost</td>
-        <td>Mark</td>
-        <td>Approptiation</td>
-        <td>Go</td>
+        <td>{{ 'Cost' | translate }}</td>
+        <td>{{ 'Mark' | translate }}</td>
+        <td>{{ 'Approptiation' | translate }}</td>
+        <td>{{ 'Go' | translate }}</td>
       </tr>
     </thead>
     <tbody>
@@ -72,7 +72,7 @@
             {{getFindedWorkplaceById(workpl.id).appropriationPercentage}}
           </div>
         </td>
-        <td><button class="btn btn-default custom icon" (click)="navigateToWorkplace(workpl)">Go</button> </td>
+        <td><button class="btn btn-default custom icon" (click)="navigateToWorkplace(workpl)">{{ 'Go' | translate }}</button> </td>
       </tr>
     </tbody>
   </table>

@@ -22,8 +22,18 @@ export class HeaderComponent implements OnInit {
       translate.addLangs(['en', 'uk']);
     translate.setDefaultLang('en');
 
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|uk/) ? browserLang : 'en');
+
+    //const browserLang = translate.getBrowserLang();
+    translate.use(localStorage.getItem('lang'));
+     }
+
+     setLang(val: string) {
+      this.translate.use(val);
+      localStorage.setItem('lang', val)
+     }
+
+     getlang(): string {
+       return localStorage.getItem('lang');
      }
 
   ngOnInit() {

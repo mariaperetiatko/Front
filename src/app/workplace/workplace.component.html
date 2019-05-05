@@ -1,16 +1,16 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">Workplace</li>
+      <li class="breadcrumb-item" aria-current="page">{{ 'Workplace' | translate }}</li>
     </ol>
   </nav>
 <div class="brd1 right-floating" *ngIf="!isRequesting">
-    <p style="font-weight:bold">Landlord</p>
-  First name: {{landlord.firstName}}<br>
-  Lst name: {{landlord.lastName}}<br>
-  Email: {{landlord.email}}<br>
-  Phone number: {{landlord.phone}}<br>
+    <p style="font-weight:bold">{{ 'Landlord' | translate }}</p>
+    {{ 'First name' | translate }}: {{landlord.firstName}}<br>
+    {{ 'Last name' | translate }}: {{landlord.lastName}}<br>
+    {{ 'Email' | translate }}: {{landlord.email}}<br>
+    {{ 'Phone number' | translate }} : {{landlord.phone}}<br>
   </div>
-<button type="button" (click)="showEquipment()" class="btn btn-primary">Show equipment</button>
+<button type="button" (click)="showEquipment()" class="btn btn-primary">{{ 'Show equipment' | translate }}</button>
 
 <div *ngIf="isEqShow">
 <div class="brd1 left-floating">
@@ -26,16 +26,16 @@
       <col width="26%" />
     </colgroup>
     <tr>
-      <td>Year</td>
+      <td>{{ 'Year' | translate }}</td>
       <td><input type="number" class="form-control" min="2019" max="2025" [(ngModel)]="selectedYear" (change)="minMontChanged()"></td>
-      <td>Month</td>
+      <td>{{ 'Month' | translate }}</td>
       <td><input type="number" class="form-control" min={{minMonth}} max="12" [(ngModel)]="selectedMonth" (change)="minDayChanged()"></td>
-      <td>Day</td>
+      <td>{{ 'Day' | translate }}</td>
       <td><input type="number" class="form-control" min={{minDay}} max={{dateItems[selectedMonth-1]}} [(ngModel)]="selectedDay" (change)="minHoursChanged()"></td>
     </tr>
     </table>
 
-    <button type="button" (click)="getDayOrders()" class="btn btn-primary">Get list of busy times</button>
+    <button type="button" (click)="getDayOrders()" class="btn btn-primary">{{ 'Get list of busy times' | translate }}</button>
     <br>
     <br>
     <div *ngIf="isOrdersVisible" >
@@ -44,7 +44,7 @@
     {{item.finishTime | date:  ('HOME.timeformat' | translate)}}
 </div>
 </div>
-Start time
+{{ 'Start time' | translate }}
 <table class="table table-bordered">
     <colgroup>
       <col width="25%" />
@@ -53,13 +53,13 @@ Start time
       <col width="25%" />
     </colgroup>
     <tr>
-        <td>Hours</td>
+        <td>{{ 'Hours' | translate }}</td>
         <td><input type="number" class="form-control" min={{minHours}} max="20" [(ngModel)]="selectedHours" (change)="minMinutesChanged()"></td>
-        <td>Minutes</td>
+        <td>{{ 'Minutes' | translate }}</td>
         <td><input type="number" class="form-control" min={{minMinutes}} max="59" [(ngModel)]="selectedMinutes" (change)="minFinishMinutesChanged()"></td>
 </tr>
 </table>
-Finish time
+{{ 'Finish time' | translate }}
 <table class="table table-bordered">
     <colgroup>
       <col width="25%" />
@@ -68,13 +68,13 @@ Finish time
       <col width="25%" />
     </colgroup>
     <tr>
-        <td>Hours</td>
+        <td>{{ 'Hours' | translate }}</td>
         <td><input type="number" class="form-control" min={{selectedHours}} max="21" [(ngModel)]="selectedFinishHours" (change)="minFinishChanged()"></td>
-        <td>Minutes</td>
+        <td>{{ 'Minutes' | translate }}</td>
         <td><input type="number" class="form-control" min={{minFinishMinutes}} max="59" [(ngModel)]="selectedFinishMinutes" (change)="minMinFinishChanged()"></td>
 </tr>
 </table>
-<button type="button" (click)="createWorkplaceOrder()" class="btn btn-primary">Create order</button>
+<button type="button" (click)="createWorkplaceOrder()" class="btn btn-primary">{{ 'Create order' | translate }}</button>
 <br><br> <h5>{{creatingResult}}</h5>
 
 

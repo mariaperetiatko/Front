@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">Settings</li>
+      <li class="breadcrumb-item" aria-current="page">{{ 'Settings' | translate }}</li>
     </ol>
   </nav>
 
@@ -13,10 +13,10 @@
       <tbody>
         <tr>
           <td>
-            <div class="brd">Recommended table height {{recommendedTableHeight}}</div>
+            <div class="brd">{{ 'Recommended table height' | translate }} {{recommendedTableHeight}}</div>
           </td>
           <td>
-            <button class="btn btn-default" (click)="applyRecommendedTable()">Apply</button>
+            <button class="btn btn-default" (click)="applyRecommendedTable()">{{ 'Apply' | translate }}</button>
           </td>
         </tr>
       </tbody>
@@ -31,10 +31,10 @@
       <tbody>
         <tr>
           <td>
-            <div class="brd">Recommended chair height {{recommendedChairHeight}}</div>
+            <div class="brd">{{ 'Recommended chair height' | translate }} {{recommendedChairHeight}}</div>
           </td>
           <td>
-            <button class="btn btn-default" (click)="applyRecommendedChair()">Apply</button>
+            <button class="btn btn-default" (click)="applyRecommendedChair()">{{ 'Apply' | translate }}</button>
           </td>
         </tr>
       </tbody>
@@ -50,9 +50,9 @@
       </colgroup>
       <tbody>
         <tr>
-          <td>Height</td>
+          <td>{{ 'Height' | translate }}</td>
           <td>{{client.hight}}</td>
-          <td><button class="btn btn-default details" (click)="showHideHeightInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideHeightInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isHeightVisible">
               <input type="text" class="form-control" [(ngModel)]="client.hight">
@@ -60,9 +60,9 @@
           </td>
         </tr>
         <tr>
-          <td>Vision</td>
+          <td>{{ 'Vision' | translate }}</td>
           <td>{{client.vision}}</td>
-          <td><button class="btn btn-default details" (click)="showHideVisionInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideVisionInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isVisionVisible">
               <input type="text" class="form-control" [(ngModel)]="client.vision">
@@ -70,9 +70,9 @@
           </td>
         </tr>
         <tr>
-          <td>Table height</td>
+          <td>{{ 'Table height' | translate }}</td>
           <td>{{client.tableHight}}</td>
-          <td><button class="btn btn-default details" (click)="showHideTableHeightInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideTableHeightInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isTableHeightVisible">
               <input type="text" class="form-control" [(ngModel)]="client.tableHight">
@@ -80,9 +80,9 @@
           </td>
         </tr>
         <tr>
-          <td>Chair height</td>
+          <td>{{ 'Chair height' | translate }}</td>
           <td>{{client.chairHight}}</td>
-          <td><button class="btn btn-default details" (click)="showHideChairHeightInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideChairHeightInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isChairHeightVisible">
               <input type="text" class="form-control" [(ngModel)]="client.chairHight">
@@ -90,9 +90,9 @@
           </td>
         </tr>
         <tr>
-          <td>Light</td>
+          <td>{{ 'Light' | translate }}</td>
           <td>{{client.light}}</td>
-          <td><button class="btn btn-default details" (click)="showHideLightInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideLightInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isLightVisible">
               <input type="text" class="form-control" [(ngModel)]="client.light">
@@ -100,9 +100,9 @@
           </td>
         </tr>
         <tr>
-          <td>Temperature</td>
+          <td>{{ 'Temperature' | translate }}</td>
           <td>{{client.temperature}}</td>
-          <td><button class="btn btn-default details" (click)="showHideTemperatureInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideTemperatureInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isTemperatureVisible">
               <input type="text" class="form-control" [(ngModel)]="client.temperature">
@@ -110,9 +110,9 @@
           </td>
         </tr>
         <tr>
-          <td>Music</td>
+          <td>{{ 'Music' | translate }}</td>
           <td>{{client.music}}</td>
-          <td><button class="btn btn-default details" (click)="showHideMusicInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideMusicInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isMusicVisible">
               <input type="text" class="form-control" [(ngModel)]="client.music">
@@ -120,9 +120,9 @@
           </td>
         </tr>
         <tr>
-          <td>Drink</td>
+          <td>{{ 'Drink' | translate }}</td>
           <td>{{client.drink}}</td>
-          <td><button class="btn btn-default details" (click)="showHideDrinkInput()">Modify</button></td>
+          <td><button class="btn btn-default details" (click)="showHideDrinkInput()">{{ 'Modify' | translate }}</button></td>
           <td>
             <div *ngIf="isDrinkVisible">
               <input type="text" class="form-control" [(ngModel)]="client.drink">
@@ -131,5 +131,5 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-default details" (click)="updateClient(client)">Save</button>
+    <button class="btn btn-default details" (click)="updateClient(client)">{{ 'Save' | translate }}</button>
   </div>

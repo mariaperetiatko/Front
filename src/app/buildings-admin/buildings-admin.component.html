@@ -1,27 +1,32 @@
-<button type="button" (click)="createBuilding()" class="btn btn-default">Create new building</button>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">{{ 'Buildings' | translate }}</li>
+    </ol>
+  </nav>
+<button type="button" (click)="createBuilding()" class="btn btn-default">{{ 'Create new building' | translate }}</button>
 <div *ngIf="isUsed">
     <div class="form-group">
-       <label>Country</label>
+       <label>{{ 'Country' | translate }}</label>
        <input class="form-control" type="text" name="country" [(ngModel)]="building.country">
     </div>
     <div class="form-group">
-       <label>City</label>
+       <label>{{ 'City' | translate }}</label>
        <input class="form-control" type="text" name="city" [(ngModel)]="building.city">
     </div>
     <div class="form-group">
-        <label>Street</label>
+        <label>{{ 'Street' | translate }}</label>
         <input class="form-control" type="text" name="street" [(ngModel)]="building.street">
      </div>
      <div class="form-group">
-        <label>House</label>
+        <label>{{ 'House' | translate }}</label>
         <input class="form-control" type="text" name="house" [(ngModel)]="building.house">
      </div>
      <div class="form-group">
-        <label>Flat</label>
+        <label>{{ 'Flat' | translate }}</label>
         <input class="form-control" type="number" name="flat" [(ngModel)]="building.flat">
      </div>
      <li class="nav-item mr-2">
-        <label>Landlord</label>
+        <label>{{ 'Landlord' | translate }}</label>
         <select #langSelect class="form-control"(change)="building.landlordId=langSelect.value">
           <option *ngFor="let land of landlordsList" [value]="land.id" [selected]="building.landlordId">{{ land.firstName + ' ' + land.lastName }}</option>
         </select>
@@ -36,25 +41,25 @@
      </div>
 
     <div *ngIf="isCreate">
-        <button class="btn btn-default details" (click)="onCreate(building)">Create</button>
+        <button class="btn btn-default details" (click)="onCreate(building)">{{ 'Create' | translate }}</button>
         </div>
         <div *ngIf="isUpdate">
-            <button class="btn btn-default details" (click)="onUpdate(building)">Update</button>
+            <button class="btn btn-default details" (click)="onUpdate(building)">{{ 'Update' | translate }}</button>
             </div>
         </div>
     <table class="table table-bordered">
         <thead>
            <tr>
-              <td>Country</td>
-              <td>City</td>
-              <td>Street</td>
-              <td>House</td>
-              <td>Flat</td>
-              <td>Landlord</td>
+              <td>{{ 'Country' | translate }}</td>
+              <td>{{ 'City' | translate }}</td>
+              <td>{{ 'Street' | translate }}</td>
+              <td>{{ 'House' | translate }}</td>
+              <td>{{ 'Flat' | translate }}</td>
+              <td>{{ 'Landlord' | translate }}</td>
               <td>x</td>
               <td>y</td>
-              <td>Update</td>
-              <td>Delete</td>
+              <td>{{ 'Update' | translate }}</td>
+              <td>{{ 'Delete' | translate }}</td>
            </tr>
 
         </thead>
@@ -68,8 +73,8 @@
               <td>{{cl.landlordId}}</td>
               <td>{{cl.x}}</td>
               <td>{{cl.y}}</td>
-                  <td> <button type="button" (click)="updateBuilding(cl)" class="btn btn-default">Update</button></td>
-              <td> <button type="button" (click)="deleteBuilding(cl.id)" class="btn btn-default">Delete</button></td>
+                  <td> <button type="button" (click)="updateBuilding(cl)" class="btn btn-default">{{ 'Update' | translate }}</button></td>
+              <td> <button type="button" (click)="deleteBuilding(cl.id)" class="btn btn-default">{{ 'Delete' | translate }}</button></td>
            </tr>
         </tbody>
      </table>

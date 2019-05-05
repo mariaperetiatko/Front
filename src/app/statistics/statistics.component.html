@@ -1,13 +1,13 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">Statistics</li>
+      <li class="breadcrumb-item" aria-current="page">{{ 'Statistics' | translate }}</li>
     </ol>
   </nav>
-<button mat-button mat-raised-button color="primary" (click)="showStatByYear()">Year</button>
-<button mat-button mat-raised-button color="primary" (click)="showStatByMonth()">Month</button>
-<button mat-button mat-raised-button color="primary" (click)="showStatByWeek()">Week</button>
+<button mat-button mat-raised-button color="primary" (click)="showStatByYear()">{{ 'Year' | translate }}</button>
+<button mat-button mat-raised-button color="primary" (click)="showStatByMonth()">{{ 'Month' | translate }}</button>
+<button mat-button mat-raised-button color="primary" (click)="showStatByWeek()">{{ 'Week' | translate }}</button>
 <div *ngIf="isYearVisible">
-Year
+    {{ 'Year' | translate }}
 <input type="number" class="form-control" [(ngModel)]="yearForYear">
 BuildingId
 <input type="number" class="form-control" [(ngModel)]="buildingIdForYear">
@@ -30,9 +30,9 @@ BuildingId
 </div>
 
 <div *ngIf="isMonthVisible">
-  Year
+    {{ 'Year' | translate }}
 <input type="number" class="form-control" [(ngModel)]="yearForMonth">
-Month
+{{ 'Month' | translate }}
 <input type="number" class="form-control" [(ngModel)]="monthForMonth">
 BuildingId
 <input type="number" class="form-control" [(ngModel)]="buildingIdForMonth">
