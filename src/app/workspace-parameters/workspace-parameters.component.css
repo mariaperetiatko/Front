@@ -38,6 +38,7 @@
 }
 
 .right-column {
+  padding-right: 10px;
   width: 35%;
   float:right;
   overflow: hidden;
@@ -52,6 +53,10 @@
   background-color:#f3f4f6;
 }
 
+.columns-button:hover {
+  background-color: #f3f4f6b7;
+}
+
 .greed-button {
   background-color:#cad5df;
 }
@@ -62,9 +67,19 @@
   background-color:#f3f4f6;
 }
 
+.form-button:hover {
+  background-color: #f3f4f6b7;
+}
+
+
 .form-button1 {
   margin-right: 3%;
   margin-top: 3%;
   float: right;
   background-color:#f3f4f6;
 }
+
+.form-button1:hover {
+  background-color: #f3f4f6b7;
+}
+

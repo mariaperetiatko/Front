@@ -1,15 +1,104 @@
 .brd {
-    border: 2px solid red;
-    border-radius: 5px;
-  }
+  border: 2px solid red;
+  border-radius: 5px;
+}
 
-  .table-bordered td, .table-bordered th{
-    border-color: transparent transparent black transparent;
-  }
+.table-bordered td,
+.table-bordered th {
+  border-color: transparent transparent black transparent;
+}
 
-  .icon {
-    background-color: rgb(104, 216, 113);
-    width: 70px !important;
-    height: 30px !important;
+.icon {
+  background-color: rgb(104, 216, 113);
+  width: 70px !important;
+  height: 30px !important;
+}
 
-  }
+.body-background {
+  background-color: #f3f4f6;
+  padding: 30px;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 10%;
+}
+
+.workplace-background {
+  background-color: #f3f4f6;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.workplace-background:hover {
+  background-color: #f3f4f6b7;
+}
+
+.workplace-background-column {
+  width: 45%;
+  float: left;
+}
+
+.map-background {
+  background-color: #cad5df;
+  padding: 30px;
+  border-radius: 0.25rem;
+  margin-bottom: 20px;
+}
+
+.map-button {
+  background-color: #f3f4f6;
+}
+
+.map-button:hover {
+  background-color: #f3f4f6b7;
+}
+
+.buildings {
+  overflow: hidden;
+}
+
+.building-background {
+  width: 45%;
+  float: left;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  margin-right: 2.5%;
+  margin-left: 2.5%;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+}
+
+.bradcrumps-style {
+  background-color: #cad5df !important;
+  color: black !important;
+}
+
+.form-button {
+  float: right;
+  background-color: #f3f4f6;
+}
+
+.form-button:hover {
+  background-color: #f3f4f6b7;
+}
+
+.button-show {
+  float: right;
+  background-color: #cad5df;
+}
+.one-building {
+  width: 45%;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+  margin-top: auto !important;
+  margin-left: 27% !important;
+  margin-right: 27% !important;
+  margin-bottom: auto !important;
+}

@@ -5,7 +5,9 @@
 
 body {
   background-image: url(/assets/back5.jpg) !important; /* Путь к фоновому изображению */
-  background-size: cover;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
  }
 
  .spinner-border {

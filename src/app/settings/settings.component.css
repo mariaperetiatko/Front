@@ -64,6 +64,10 @@
   background-color:#f3f4f6;
 }
 
+.apply-button:hover {
+  background-color: #f3f4f6b7;
+}
+
 .recommend-button {
   float: left;
   margin-left: 5px;

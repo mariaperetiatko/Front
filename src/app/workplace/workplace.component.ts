@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Workplace, Client, APIClient, WorkplaceOrder, WorkplaceEquipment, Equipment, Building, Landlord } from './../api.service';
 import { List } from 'linqts';
 import { TranslateService } from '@ngx-translate/core';
+import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -10,9 +12,64 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./workplace.component.css']
 })
 
-export class WorkplaceComponent implements OnInit {
+export class WorkplaceComponent implements OnInit, OnDestroy {
 
-  client: Client;
+  workplaceId: number;
+  isRequesting = false;
+  workplace: Workplace;
+  workplaceEquipmentList: WorkplaceEquipment [];
+  workplaceOrderList: WorkplaceOrder [];
+  workplaceDate = {};
+  startWorkingTime;
+  finishWorkingTime;
+
+  constructor(private apiClient: APIClient) {}
+
+  ngOnInit() {
+    this.workplaceId = Number.parseFloat(localStorage.getItem('workplaceId'));
+    if (this.workplaceId >= 0) {
+      this.getData();
+    }
+   // this.getValues();
+    //this.getClientsWorkplaceParameters();
+   // this.getSearchSetting();
+  }
+
+  getData() {
+      this.isRequesting = true;
+
+      const workplaceQuery = this.apiClient.getWorkplaceById(this.workplaceId);
+      const workplaceEquipmentsQuery = this.apiClient.GetWorkplaceEquipmentByWorkplaceWithEquipment(this.workplaceId);
+      const workplaceOrdersQuery = this.apiClient.GetWorkplaceOrdersByWorkplaceId(this.workplaceId);
+
+      forkJoin([workplaceQuery, workplaceEquipmentsQuery, workplaceOrdersQuery])
+        .pipe(finalize(() => (this.isRequesting = false)))
+        .subscribe((results) => {
+          this.workplace = results[0];
+          this.workplaceEquipmentList = results[1];
+          this.workplaceOrderList = results[2];
+          if (this.workplace.building.startMinute === 0) {
+            this.startWorkingTime = this.workplace.building.startHour + ':00';
+          } else {
+            this.startWorkingTime = this.workplace.building.startHour + ':30';
+          }
+          if (this.workplace.building.finishMinute === 0) {
+            this.finishWorkingTime = this.workplace.building.finistHour + ':00';
+          } else {
+            this.finishWorkingTime = this.workplace.building.finistHour + ':30';
+          }
+
+          console.log(this.workplace);
+          console.log(this.workplaceEquipmentList);
+          console.log(this.workplaceOrderList);
+        });
+      }
+
+  ngOnDestroy() {
+    localStorage.removeItem('workplaceId');
+  }
+
+ /* client: Client;
   landlord: Landlord;
   isOrdersVisible = false;
   workplace: Workplace;
@@ -251,6 +308,6 @@ isRequesting = true;
   getClient(): void {
     this.apiClient.getClientById(1)
     .subscribe((data: Client) =>  this.client = data);
-  }
+  }*/
 
 }

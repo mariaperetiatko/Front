@@ -1,9 +1,75 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">{{ 'Workplace' | translate }}</li>
-    </ol>
-  </nav>
-<div class="brd1 right-floating" *ngIf="!isRequesting">
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item bradcrumps-style" aria-current="page">
+      {{ "Workplace" | translate }}
+    </li>
+  </ol>
+</nav>
+<div *ngIf="isRequesting" class="spinner-border"></div>
+<div class="body-background" *ngIf="!isRequesting">
+  <div class="left-background">
+    <div class="info-background">
+      Infomation
+      <hr />
+      <div class="left-column"><p>Address</p></div>
+      <div class="right-column">
+        <p>
+          {{ workplace.building.country }}, {{ workplace.building.city }},
+          {{ workplace.building.street }}, {{ workplace.building.flat }}
+        </p>
+      </div>
+      <div class="left-column"><p>Cost</p></div>
+      <div class="right-column">
+        <p>{{ workplace.cost }}</p>
+      </div>
+      <div class="left-column"><p>Landlord</p></div>
+      <div class="right-column">
+        <p>
+          {{ workplace.building.landlord.firstName }}
+          {{ workplace.building.landlord.lastName }}
+        </p>
+      </div>
+      <div class="left-column"><p>Phone</p></div>
+      <div class="right-column">
+        <p>{{ workplace.building.landlord.phone }}</p>
+      </div>
+
+      <div class="left-column"><p>Working hours</p></div>
+
+      <div class="right-column">
+        <p>{{ this.startWorkingTime }} - {{ this.finishWorkingTime }}</p>
+      </div>
+    </div>
+    <div class="order-background">
+      <div class="form-group">
+        <div class="left-column">
+          <label>Select date</label>
+        </div>
+        <div class="right-column" style="padding-right: 0;">
+          <input
+            type="date"
+            name="workplaceDate"
+            class="form-control"
+            [(ngModel)]="workplaceDate"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="window-background">
+    Equipment
+    <hr />
+    <div
+      *ngFor="let equipment of workplaceEquipmentList"
+      class="workplace-background"
+    >
+      <div class="left-column1">{{ equipment.equipment.name }}</div>
+      <div class="right-column1">{{ equipment.count }}</div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="brd1 right-floating" *ngIf="!isRequesting">
     <p style="font-weight:bold">{{ 'Landlord' | translate }}</p>
     {{ 'First name' | translate }}: {{landlord.firstName}}<br>
     {{ 'Last name' | translate }}: {{landlord.lastName}}<br>
@@ -79,3 +145,4 @@
 
 
 
+-->

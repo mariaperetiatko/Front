@@ -1,79 +1,84 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">{{ 'Map search' | translate }}</li>
-    </ol>
-  </nav>
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Map search" | translate }}
+    </li>
+  </ol>
+</nav>
+<div class="body-background">
+  <div class="map-background">
+    <button
+      (click)="setCurrentPosition()"
+      style="margin-bottom: 10px;"
+      class="btn btn-default map-button"
+    >
+      {{ "Set current position" | translate }}
+    </button>
+    <input
+      id="address"
+      #address
+      class="form-control"
+      style="margin-bottom: 10px;"
+      type="text"
+      placeholder="Search Box"
+    />
 
-<div class="container">
-  <!--  <br>
-    <div class="row">
-      <div class="col-md-6 col-sm-12 col-xs-12">
-        <form class="form-inline" #form="ngForm">
-          <div class="form-group">
-            <input type="text" class="form-control" name="latitude" [(ngModel)]="latitude" placeholder="Enter latitude" required>
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" name="longitude" [(ngModel)]="longitude" placeholder="Enter longitude" required>
-          </div>
-          <button type="button" (click)="setCurrentPosition()" class="btn btn-primary" [disabled]="form.invalid">{{ 'Go' | translate }}</button>
-        </form>
-      </div>
-    </div>
-    <br>-->
-    {{latitude}}
-
-    {{longitude}}
-    <div class="row">
-      <button  (click)="setCurrentPosition()" class="btn btn-default">{{ 'Set current position' | translate }}</button>
-    </div>
-    <br>
-    <input id="address" #address class="form-control" style="margin-bottom:10px" type="text" placeholder="Search Box">
-
-    <div class="row" >
-      <div class="col-md-12">
-        <div class="text-center">
-          <h3>
-            <div #gmap style="width:100%;height:400px" ></div>
-          </h3>
+    <div #gmap style="width: 100%; height: 400px; overflow: hidden;"></div>
+  </div>
+  <button
+    (click)="showAllBuildings()"
+    class="btn btn-default button-show"
+    *ngIf="isOneBuildingShown"
+  >Show all coworkings</button>
+  <div class="buildings" *ngIf="isOneBuildingShown">
+    <div class="one-building">
+      {{ buildingToShow.building.country }}
+      <hr />
+      <div
+        *ngFor="let workplaceResult of buildingToShow.workplaceSearchingResults"
+        (click)="visitWorkplace(workplaceResult.workplaceId)"
+        class="workplace-background"
+      >
+        <div class="workplace-background-column">
+          <p>Workplace Number</p>
+          <p>Equipment Appropriation</p>
+          <p>Cost Appropriation</p>
+        </div>
+        <div class="workplace-background-column">
+          <p>{{ workplaceResult.workplaceId }}</p>
+          <p>
+            {{ workplaceResult.equipmentAppropriation | number: "1.0-0" }} %
+          </p>
+          <p>{{ workplaceResult.costAppropriation | number: "1.0-0" }} %</p>
         </div>
       </div>
     </div>
   </div>
-  {{ 'Address' | translate }}:
-  {{selectedBuilding.country}},
-  {{selectedBuilding.city}},
-  {{selectedBuilding.street}},
-  {{selectedBuilding.house}},
-  {{selectedBuilding.flat}}
-  <table class="table table-bordered">
-    <colgroup>
-      <col width="25%" />
-      <col width="25%" />
-      <col width="25%" />
-      <col width="25%" />
-    </colgroup>
-    <thead>
-      <tr>
-        <td>{{ 'Cost' | translate }}</td>
-        <td>{{ 'Mark' | translate }}</td>
-        <td>{{ 'Approptiation' | translate }}</td>
-        <td>{{ 'Go' | translate }}</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let workpl of workplacesByBuilding">
-        <td>
-          <div class="brd" [ngStyle]="{'background-color': getFindedWorkplaceById(workpl.id).costColor}">
-            {{workpl.cost}}
-          </div>
-        </td>
-        <td>{{workpl.mark}}</td>
-        <td>
-          <div class="brd" [ngStyle]="{'background-color': getFindedWorkplaceById(workpl.id).appropriationColor}">
-            {{getFindedWorkplaceById(workpl.id).appropriationPercentage}}
-          </div>
-        </td>
-        <td><button class="btn btn-default custom icon" (click)="navigateToWorkplace(workpl)">{{ 'Go' | translate }}</button> </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="buildings" *ngIf="!isRequesting && !isOneBuildingShown">
+    <div
+      class="building-background"
+      *ngFor="let buildingResult of buildingSearchingResults"
+    >
+      {{ buildingResult.building.name }}
+      <hr />
+      <div
+        *ngFor="let workplaceResult of buildingResult.workplaceSearchingResults"
+        (click)="visitWorkplace(workplaceResult.workplaceId)"
+        class="workplace-background"
+      >
+        <div class="workplace-background-column">
+          <p>Workplace Number</p>
+          <p>Equipment Appropriation</p>
+          <p>Cost Appropriation</p>
+        </div>
+        <div class="workplace-background-column">
+          <p>{{ workplaceResult.workplaceId }}</p>
+          <p>
+            {{ workplaceResult.equipmentAppropriation | number: "1.0-0" }} %
+          </p>
+          <p>{{ workplaceResult.costAppropriation | number: "1.0-0" }} %</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

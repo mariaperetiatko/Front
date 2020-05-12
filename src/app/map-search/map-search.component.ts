@@ -12,6 +12,7 @@ import { ViewChild } from "@angular/core";
 import { UserService } from "../user.service";
 import { Router } from "@angular/router";
 import { List } from "linqts";
+import { finalize } from "rxjs/operators";
 
 @Component({
   selector: "app-map-search",
@@ -27,6 +28,8 @@ export class MapSearchComponent implements AfterContentInit {
   workplacesByBuilding: Workplace[] = [];
   selectedBuilding: Building = new Building();
   buildingSearchingResults: BuildingSearchingResult[];
+  isRequesting = false;
+  buildingToShow: BuildingSearchingResult;
 
   @ViewChild("gmap") gmapElement: any;
   map: google.maps.Map;
@@ -50,6 +53,7 @@ export class MapSearchComponent implements AfterContentInit {
   infowindow;
   markers = [];
   searchBox;
+  isOneBuildingShown = false;
   constructor(
     private apiClient: APIClient,
     private router: Router,
@@ -60,7 +64,7 @@ export class MapSearchComponent implements AfterContentInit {
     //this.getFindedWorkplacesList();
     const mapProp = {
       center: new google.maps.LatLng(50.01509, 36.22864),
-      zoom: 15,
+      zoom: 10,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
@@ -105,6 +109,11 @@ export class MapSearchComponent implements AfterContentInit {
 
 
    // this.setCurrentPosition();
+  }
+
+  visitWorkplace(workplaceId) {
+    this.router.navigate(["/workplace"]);
+    localStorage.setItem('workplaceId', workplaceId);
   }
 
   boundsListener() {
@@ -238,8 +247,10 @@ export class MapSearchComponent implements AfterContentInit {
   }
 
   getBuildingSearchingResults() {
+    this.isRequesting = true;
     this.apiClient
     .getBuildingSearchingResults(this.latitude, this.longitude)
+    .pipe(finalize(() => this.isRequesting = false))
     .subscribe((data: BuildingSearchingResult[]) => {
       this.buildingSearchingResults = data;
       console.log(data);
@@ -261,7 +272,7 @@ export class MapSearchComponent implements AfterContentInit {
     });
     this.locationMarker = marker;
 
-    marker.addListener("click", this.simpleMarkerHandler);
+  //  marker.addListener("click", this.simpleMarkerHandler);
 
     marker.addListener("click", () => {
       this.markerHandler(marker);
@@ -277,9 +288,7 @@ export class MapSearchComponent implements AfterContentInit {
     );
   }
 
-  simpleMarkerHandler() {
-    alert("Simple Component's function...");
-  }
+
 
   showWorkplace(workplace: Workplace) {
     // this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
@@ -302,7 +311,7 @@ export class MapSearchComponent implements AfterContentInit {
           position: location,
           map: this.map,
           icon: this.iconBase + this.selectedMarkerType,
-          title: building.country,
+          title: building.name,
         });
         this.gmarkers.push(marker); // marker.addListener('click', this.simpleMarkerHandler);
 
@@ -348,10 +357,19 @@ export class MapSearchComponent implements AfterContentInit {
         position: location,
         map: this.map,
         icon: this.iconBase + this.selectedMarkerType,
-        title: "hhhh",
+        title: this.buildingSearchingResults[i].building.name,
       });
+      let building = this.buildingSearchingResults[i];
+      marker.addListener('click', function() {
+          this.isOneBuildingShown = true;
+          this.buildingToShow = building;
+      }.bind(this));
       this.gmarkers.push(marker); // marker.addListener('click', this.simpleMarkerHandler);
 
     }
+  }
+
+  showAllBuildings() {
+    this.isOneBuildingShown = false;
   }
 }

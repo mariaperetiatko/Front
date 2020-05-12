@@ -4092,6 +4092,193 @@ export class APIClient {
     return _observableOf<WorkplaceEquipment>(<any>null);
   }
 
+
+  /**
+   * @return Success
+   */
+  GetWorkplaceOrdersByWorkplaceId(workplaceId): Observable<WorkplaceOrder[]> {
+    let url_ = this.baseUrl + "/api/WorkplaceOrder/GetWorkplaceOrdersByWorkplaceId/{workplaceId}";
+    if (workplaceId === undefined || workplaceId === null) {
+      throw new Error("The parameter 'workplaceId' must be defined.");
+    }
+    url_ = url_.replace("{workplaceId}", encodeURIComponent("" + workplaceId));
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetWorkplaceOrdersByWorkplaceId(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetWorkplaceOrdersByWorkplaceId(<any>response_);
+            } catch (e) {
+              return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(e));
+            }
+          } else {
+            return <Observable<WorkplaceOrder[]>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetWorkplaceOrdersByWorkplaceId(
+    response: HttpResponseBase
+  ): Observable<WorkplaceOrder[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (const item of resultData200) {
+              result200.push(WorkplaceOrder.fromJS(item));
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<WorkplaceOrder[]>(<any>null);
+  }
+
+  /**
+   * @return Success
+   */
+  GetWorkplaceEquipmentByWorkplaceWithEquipment(workplaceId): Observable<WorkplaceEquipment[]> {
+    let url_ = this.baseUrl + "/api/WorkplaceEquipment/GetWorkplaceEquipmentByWorkplaceWithEquipment/{workplaceId}";
+    if (workplaceId === undefined || workplaceId === null) {
+      throw new Error("The parameter 'workplaceId' must be defined.");
+    }
+    url_ = url_.replace("{workplaceId}", encodeURIComponent("" + workplaceId));
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetWorkplaceEquipmentByWorkplaceWithEquipment(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetWorkplaceEquipmentByWorkplaceWithEquipment(<any>response_);
+            } catch (e) {
+              return <Observable<WorkplaceEquipment[]>>(<any>_observableThrow(e));
+            }
+          } else {
+            return <Observable<WorkplaceEquipment[]>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetWorkplaceEquipmentByWorkplaceWithEquipment(
+    response: HttpResponseBase
+  ): Observable<WorkplaceEquipment[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (const item of resultData200) {
+              result200.push(WorkplaceEquipment.fromJS(item));
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<WorkplaceEquipment[]>(<any>null);
+  }
+
   /**
    * @return Success
    */
@@ -4960,6 +5147,11 @@ export class Building implements IBuilding {
   landlordId?: number | undefined;
   x?: number | undefined;
   y?: number | undefined;
+  name?: string | undefined;
+  startHour?: number | undefined;
+  startMinute?: number | undefined;
+  finistHour?: number | undefined;
+  finishMinute?: number | undefined;
   landlord?: Landlord | undefined;
   workplace?: Workplace[] | undefined;
 
@@ -4981,6 +5173,11 @@ export class Building implements IBuilding {
       this.landlordId = data["landlordId"];
       this.x = data["x"];
       this.y = data["y"];
+      this.name = data["name"];
+      this.startHour = data["startHour"];
+      this.startMinute = data["startMinute"];
+      this.finistHour = data["finistHour"];
+      this.finishMinute = data["finishMinute"];
       this.landlord = data["landlord"]
         ? Landlord.fromJS(data["landlord"])
         : <any>undefined;
@@ -5004,6 +5201,11 @@ export class Building implements IBuilding {
     data["landlordId"] = this.landlordId;
     data["x"] = this.x;
     data["y"] = this.y;
+    data["name"] = this.name;
+    data["startHour"] = this.startHour;
+    data["startMinute"] = this.startMinute;
+    data["finistHour"] = this.finistHour;
+    data["finishMinute"] = this.startMinute;
     data["landlord"] = this.landlord ? this.landlord.toJSON() : <any>undefined;
     if (this.workplace && this.workplace.constructor === Array) {
       data["workplace"] = [];
@@ -5025,6 +5227,11 @@ export interface IBuilding {
   landlordId?: number | undefined;
   x?: number | undefined;
   y?: number | undefined;
+  name?: string | undefined;
+  startHour?: number | undefined;
+  startMinute?: number | undefined;
+  finistHour?: number | undefined;
+  finishMinute?: number | undefined;
   landlord?: Landlord | undefined;
   workplace?: Workplace[] | undefined;
 }
@@ -5560,6 +5767,7 @@ export class WorkplaceEquipment implements IWorkplaceEquipment {
   id?: number | undefined;
   equipmentId?: number | undefined;
   workplaceId?: number | undefined;
+  count?: number | undefined;
   equipment?: Equipment | undefined;
   workplace?: Workplace | undefined;
 
@@ -5575,6 +5783,7 @@ export class WorkplaceEquipment implements IWorkplaceEquipment {
       this.id = data["id"];
       this.equipmentId = data["equipmentId"];
       this.workplaceId = data["workplaceId"];
+      this.count = data["count"];
       this.equipment = data["equipment"]
         ? Equipment.fromJS(data["equipment"])
         : <any>undefined;
@@ -5589,6 +5798,7 @@ export class WorkplaceEquipment implements IWorkplaceEquipment {
     data["id"] = this.id;
     data["equipmentId"] = this.equipmentId;
     data["workplaceId"] = this.workplaceId;
+    data["count"] = this.count;
     data["equipment"] = this.equipment
       ? this.equipment.toJSON()
       : <any>undefined;
@@ -5603,6 +5813,7 @@ export interface IWorkplaceEquipment {
   id?: number | undefined;
   equipmentId?: number | undefined;
   workplaceId?: number | undefined;
+  count?: number | undefined;
   equipment?: Equipment | undefined;
   workplace?: Workplace | undefined;
 }
