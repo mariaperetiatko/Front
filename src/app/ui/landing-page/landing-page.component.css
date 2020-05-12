@@ -11,3 +11,16 @@
     text-align: center;
     font-size: 300%;
   }
+img.center {
+  display:block;
+}
+
+
+#bg {
+  position: fixed;
+
+ left:0;
+  /* Preserve aspet ratio */
+  width: 100%;
+  min-height: 50%;
+}

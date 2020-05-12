@@ -1,0 +1,27 @@
+.body-background {
+  background-color:#f3f4f6;
+  padding:30px;
+  border-radius: .25rem;
+  margin-bottom: 10%;
+}
+
+.form-background {
+  width: 50%;
+  margin-left: auto;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  margin-right: auto;
+  border-radius: .25rem;
+  border: 2px solid #cad5df;
+}
+
+.bradcrumps-style {
+  background-color: #cad5df !important;
+  color: black !important;
+}
+
+.form-button {
+  float: right;
+  background-color:#f3f4f6;
+}

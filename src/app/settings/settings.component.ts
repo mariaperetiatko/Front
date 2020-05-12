@@ -25,6 +25,7 @@ export class SettingsComponent implements OnInit {
   isRecommendedTableVisible = false;
   recommendedChairHeight = 0;
   isRecommendedChairVisible = false;
+  isRequestingRecommendations = false;
 
   constructor(private apiClient: APIClient, private router: Router,  private userService: UserService) {
   }
@@ -33,12 +34,22 @@ export class SettingsComponent implements OnInit {
     this.getClient();
   }
 
+  getRecommendedParams() {
+    if (this.client.hight > 0) {
+      this.isRequestingRecommendations = true;
+      this.getRecommendedChairHeight();
+      this.getRecommendedTableHeight();
+    }
+  }
+
   getClient(): void {
     this.isRequesting = true;
 
-    this.apiClient.getClientById(0)
+    this.apiClient.getClientById(1)
     .pipe(finalize(() => this.isRequesting = false))
-    .subscribe((data: Client) => this.client = data);
+    .subscribe((data: Client) => {
+     this.client = data;
+    });
   }
 
   showHideHeightInput(): void {
@@ -60,7 +71,6 @@ export class SettingsComponent implements OnInit {
   showHideTableHeightInput(): void {
     if (!this.isTableHeightVisible) {
       this.isTableHeightVisible = true;
-      this.getRecommendedTableHeight();
     } else {
       this.isTableHeightVisible = false;
     }
@@ -71,7 +81,6 @@ export class SettingsComponent implements OnInit {
     if (!this.isChairHeightVisible) {
       this.isChairHeightVisible = true;
       this.isChairHeightVisible = true;
-      this.getRecommendedChairHeight();
     } else {
       this.isChairHeightVisible = false;
     }
@@ -110,31 +119,31 @@ export class SettingsComponent implements OnInit {
   }
 
   getRecommendedTableHeight() {
-    this.apiClient.calculateRecommendedTableHeight(this.client.id)
+    this.apiClient.calculateRecommendedTableHeight(this.client.hight)
     .subscribe((data: number) => {
       this.recommendedTableHeight = parseFloat(data.toFixed());
       this.isRecommendedTableVisible = true;
+      this.isRequestingRecommendations = false;
     });
   }
 
   applyRecommendedTable() {
     this.client.tableHight = this.recommendedTableHeight;
     this.isRecommendedTableVisible = false;
-    this.updateClient(this.client);
   }
 
   getRecommendedChairHeight() {
-    this.apiClient.calculateRecommendedChairHeight(this.client.id)
+    this.apiClient.calculateRecommendedChairHeight(this.client.hight)
     .subscribe((data: number) => {
       this.recommendedChairHeight = parseFloat(data.toFixed());
       this.isRecommendedChairVisible = true;
+      this.isRequestingRecommendations = false;
     });
   }
 
   applyRecommendedChair() {
     this.client.chairHight = this.recommendedChairHeight;
     this.isRecommendedChairVisible = false;
-    this.updateClient(this.client);
   }
 
   updateClient(client: Client): void {

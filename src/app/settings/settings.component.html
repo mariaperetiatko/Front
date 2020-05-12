@@ -1,135 +1,279 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">{{ 'Settings' | translate }}</li>
-    </ol>
-  </nav>
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Settings" | translate }}
+    </li>
+  </ol>
+</nav>
+<div *ngIf="isRequesting" class="spinner-border"></div>
+<div *ngIf="!isRequesting">
+  <div class="body-background">
+    <div style="float: right; width: 30%;">
+      <div class="form-background">
+        Info
+        <hr />
+        bdjfhdskfjk nsdjfjsdf bsdjfbsj jnsdfjhsjfe jsbdfjsbefj jsnfjsjdfhjsf
+        jsndfjsbfj jdjgsjf jsjfsjgbf
+      </div>
+      <div *ngIf="client.hight>0">
+        <button
+          class="btn recommend-button"
+          *ngIf="
+            !isRecommendedTableVisible &&
+            !isRecommendedChairVisible
+          "
+          (click)="getRecommendedParams()"
+        >
+          {{ "Get recommendations" | translate }}
+        </button>
+        <div *ngIf="isRequestingRecommendations" class="spinner-border"></div>
 
-<div *ngIf="isRecommendedTableVisible">
-    <table class="table table-bordered">
-      <colgroup>
-        <col width="60%" />
-        <col width="40%" />
-      </colgroup>
-      <tbody>
-        <tr>
-          <td>
-            <div class="brd">{{ 'Recommended table height' | translate }} {{recommendedTableHeight}}</div>
-          </td>
-          <td>
-            <button class="btn btn-default" (click)="applyRecommendedTable()">{{ 'Apply' | translate }}</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <div
+          class="manage-buttons"
+          *ngIf="isRecommendedTableVisible || isRecommendedChairVisible"
+        >
+          <button
+            class="btn recommend-button button-width"
+            (click)="getRecommendedParams()"
+          >
+            {{ "Refresh" | translate }}
+          </button>
+          <button
+            class="btn hide-button button-width"
+            style="margin-bottom: 10px;"
+            (click)="
+              isRecommendedChairVisible = false;
+              isRecommendedTableVisible = false
+            "
+          >
+            {{ "Hide" | translate }}
+          </button>
+        </div>
+        <div
+          class="recommendation-background"
+          *ngIf="isRecommendedTableVisible || isRecommendedChairVisible"
+        >
+          <div *ngIf="isRecommendedTableVisible">
+            {{ "Recommended table height" | translate }}
+            {{ recommendedTableHeight }} ({{ "sm" | translate }})
+            <div class="button-right">
+              <button
+                class="btn btn-default apply-button"
+                (click)="applyRecommendedTable()"
+              >
+                {{ "Apply" | translate }}
+              </button>
+            </div>
+          </div>
+          <div *ngIf="isRecommendedChairVisible">
+            <hr />
+            {{ "Recommended chair height" | translate }}
+            {{ recommendedChairHeight }} ({{ "sm" | translate }})
+            <div class="button-right">
+              <button
+                class="btn btn-default apply-button"
+                (click)="applyRecommendedChair()"
+              >
+                {{ "Apply" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-background-column1">
+      <table class="table table-bordered">
+        <colgroup>
+          <col width="30%" />
+          <col width="20%" />
+          <col width="10%" />
+          <col width="40%" />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>{{ "Height" | translate }} ({{ "sm" | translate }})</td>
+            <td>{{ client.hight }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideHeightInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isHeightVisible">
+                <input
+                  type="number"
+                  min="100"
+                  max="250"
+                  class="form-control"
+                  [(ngModel)]="client.hight"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Vision" | translate }} (%)</td>
+            <td>{{ client.vision }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideVisionInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isVisionVisible">
+                <input
+                  type="number"
+                  class="form-control"
+                  min="0"
+                  max="100"
+                  [(ngModel)]="client.vision"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Table height" | translate }} ({{ "sm" | translate }})</td>
+            <td>{{ client.tableHight }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideTableHeightInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isTableHeightVisible">
+                <input
+                  type="number"
+                  class="form-control"
+                  min="50"
+                  max="250"
+                  [(ngModel)]="client.tableHight"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Chair height" | translate }} ({{ "sm" | translate }})</td>
+            <td>{{ client.chairHight }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideChairHeightInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isChairHeightVisible">
+                <input
+                  type="number"
+                  class="form-control"
+                  min="20"
+                  max="250"
+                  [(ngModel)]="client.chairHight"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Light" | translate }} ({{ "lk" | translate }})</td>
+            <td>{{ client.light }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideLightInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isLightVisible">
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="client.light"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Temperature" | translate }} (°C)</td>
+            <td>{{ client.temperature }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideTemperatureInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isTemperatureVisible">
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="client.temperature"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Music" | translate }}</td>
+            <td>{{ client.music }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideMusicInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isMusicVisible">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="client.music"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{ "Drink" | translate }}</td>
+            <td>{{ client.drink }}</td>
+            <td>
+              <button
+                class="btn btn-default details"
+                (click)="showHideDrinkInput()"
+              >
+                {{ "Modify" | translate }}
+              </button>
+            </td>
+            <td>
+              <div *ngIf="isDrinkVisible">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="client.drink"
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button
+        class="btn btn-default send-button"
+        (click)="updateClient(client)"
+      >
+        {{ "Save" | translate }}
+      </button>
+    </div>
   </div>
-  <div *ngIf="isRecommendedChairVisible">
-    <table class="table table-bordered">
-      <colgroup>
-        <col width="60%" />
-        <col width="40%" />
-      </colgroup>
-      <tbody>
-        <tr>
-          <td>
-            <div class="brd">{{ 'Recommended chair height' | translate }} {{recommendedChairHeight}}</div>
-          </td>
-          <td>
-            <button class="btn btn-default" (click)="applyRecommendedChair()">{{ 'Apply' | translate }}</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div *ngIf="!isRequesting">
-    <table class="table table-bordered">
-      <colgroup>
-        <col width="20%" />
-        <col width="30%" />
-        <col width="10%" />
-        <col width="40%" />
-      </colgroup>
-      <tbody>
-        <tr>
-          <td>{{ 'Height' | translate }}</td>
-          <td>{{client.hight}}</td>
-          <td><button class="btn btn-default details" (click)="showHideHeightInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isHeightVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.hight">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Vision' | translate }}</td>
-          <td>{{client.vision}}</td>
-          <td><button class="btn btn-default details" (click)="showHideVisionInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isVisionVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.vision">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Table height' | translate }}</td>
-          <td>{{client.tableHight}}</td>
-          <td><button class="btn btn-default details" (click)="showHideTableHeightInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isTableHeightVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.tableHight">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Chair height' | translate }}</td>
-          <td>{{client.chairHight}}</td>
-          <td><button class="btn btn-default details" (click)="showHideChairHeightInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isChairHeightVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.chairHight">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Light' | translate }}</td>
-          <td>{{client.light}}</td>
-          <td><button class="btn btn-default details" (click)="showHideLightInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isLightVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.light">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Temperature' | translate }}</td>
-          <td>{{client.temperature}}</td>
-          <td><button class="btn btn-default details" (click)="showHideTemperatureInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isTemperatureVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.temperature">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Music' | translate }}</td>
-          <td>{{client.music}}</td>
-          <td><button class="btn btn-default details" (click)="showHideMusicInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isMusicVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.music">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ 'Drink' | translate }}</td>
-          <td>{{client.drink}}</td>
-          <td><button class="btn btn-default details" (click)="showHideDrinkInput()">{{ 'Modify' | translate }}</button></td>
-          <td>
-            <div *ngIf="isDrinkVisible">
-              <input type="text" class="form-control" [(ngModel)]="client.drink">
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="btn btn-default details" (click)="updateClient(client)">{{ 'Save' | translate }}</button>
-  </div>
+</div>

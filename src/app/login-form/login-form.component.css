@@ -1,1 +1,29 @@
 .new-user-alert{padding-top:2.5rem}
+
+.body-background {
+  background-color:#f3f4f6;
+  padding:30px;
+  border-radius: .25rem;
+}
+
+.form-background {
+  width: 50%;
+  margin-left: auto;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cdcdcd;
+  margin-right: auto;
+  border-radius: .25rem;
+  border: 2px solid #cdcdcd;
+}
+
+.bradcrumps-style {
+  background-color: #cdcdcd !important;
+  color: black !important;
+
+}
+
+.form-button {
+  float: right;
+  background-color:#f3f4f6;
+}

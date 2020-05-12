@@ -1,1 +1,5 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+.footer-style {
+  background-color: #f3f4f6 !important;
+}

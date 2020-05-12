@@ -20,7 +20,7 @@
            </tr>
         </tbody>
      </table>
-     <label>{{ 'Landlord' | translate }}</label>
+     <label>{{ 'Equipment' | translate }}</label>
         <select #langSelect class="form-control"(change)="eqId=langSelect.value">
           <option *ngFor="let land of eqList" [value]="land.id" [selected]="eqId">{{ land.name }}</option>
         </select>

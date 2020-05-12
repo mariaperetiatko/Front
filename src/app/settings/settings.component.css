@@ -2,7 +2,112 @@
   border-color: transparent transparent black transparent;
 }
 
-.brd {
-  border: 2px solid green;
-  border-radius: 5px;
+.details {
+  background-color: #cad5df;
+}
+
+.body-background {
+  background-color:#f3f4f6;
+  padding-top:30px;
+  padding-bottom:30px;
+  padding-left:50px;
+  padding-right:50px;
+  border-radius: .25rem;
+  overflow: hidden;
+}
+
+.body-background-column1 {
+  background-color:#f3f4f6;
+
+  padding-bottom:30px;
+  padding-left:50px;
+  padding-right:50px;
+  border-radius: .25rem;
+  overflow: hidden;
+  width: 70%;
+  float: left;
+}
+
+.form-background {
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  border-radius: .25rem;
+  border: 2px solid #cad5df;
+  margin-bottom: 5%;
+  margin-left: 5px;
+}
+
+.recommendation-background {
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  border-radius: 0 0 .25rem .25rem;
+  border: 2px solid #cad5df;
+  margin-bottom: 5%;
+  margin-left: 5px;
+}
+
+
+.bradcrumps-style {
+  background-color: #cad5df !important;
+  color: black !important;
+}
+
+.send-button {
+  float: right;
+  background-color:#cad5df;
+}
+
+.apply-button {
+  float: right;
+  background-color:#f3f4f6;
+}
+
+.recommend-button {
+  float: left;
+  margin-left: 5px;
+  background-color:#cad5df;
+}
+
+
+.hide-button {
+  float: right;
+  background-color:#cad5df;
+}
+
+.manage-buttons {
+  border-radius: .25rem .25rem 0 0;
+  border: 2px solid #cad5df;
+  overflow: auto;
+  margin-left: 5px;
+  padding-top:10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.manage-buttons::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.button-right::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.button-width {
+  width: 40%;
+}
+
+.button-right {
+  margin-bottom:10px;
+  margin-top:10px;
+  overflow: auto;
+}
+
+.modify-button {
+  background-color:#cad5df;
 }

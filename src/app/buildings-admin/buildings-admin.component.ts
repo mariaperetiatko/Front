@@ -15,6 +15,8 @@ export class BuildingsAdminComponent implements OnInit {
   isUpdate = false;
   isCreate = false;
   isUsed = false;
+  buildX;
+  buildY;
 
   constructor(private apiClient: APIClient) { }
 
@@ -39,12 +41,16 @@ export class BuildingsAdminComponent implements OnInit {
 
   updateBuilding(building: Building): void {
     this.building = building;
+    this.buildX = building.x / 100000;
+    this.buildY = building.y / 100000;
     this.isCreate = false;
     this.isUpdate = true;
     this.isUsed = true;
   }
 
   onUpdate(building: Building): void {
+    building.x = this.buildX * 100000;
+    building.y = this.buildY * 100000;
     this.apiClient.updateBuilding(building)
     .subscribe(result => {
       this.ngOnInit();
@@ -60,6 +66,8 @@ export class BuildingsAdminComponent implements OnInit {
   }
 
   onCreate(building: Building): void {
+    building.x = this.buildX * 100000;
+    building.y = this.buildY * 100000;
     this.apiClient.createBuilding(building)
     .subscribe(result => {
       this.ngOnInit();

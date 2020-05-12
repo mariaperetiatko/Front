@@ -9,8 +9,10 @@
 <div *ngIf="isYearVisible">
     {{ 'Year' | translate }}
 <input type="number" class="form-control" [(ngModel)]="yearForYear">
-BuildingId
-<input type="number" class="form-control" [(ngModel)]="buildingIdForYear">
+{{ 'Building' | translate }}
+<select #buildYear class="form-control"(change)="changeYearBuilding(buildYear.value)">
+    <option *ngFor="let land of buildings" [value]="land.id" [selected]="land.id===buildingIdForYear">{{ land.country + ' ' + land.city + ' ' + land.street + ' ' + land.house + ' ' + land.flat }}</option>
+</select>
 <div>
     <div>
       <div style="display: block">
@@ -34,8 +36,10 @@ BuildingId
 <input type="number" class="form-control" [(ngModel)]="yearForMonth">
 {{ 'Month' | translate }}
 <input type="number" class="form-control" [(ngModel)]="monthForMonth">
-BuildingId
-<input type="number" class="form-control" [(ngModel)]="buildingIdForMonth">
+Building
+<select #buildMonth class="form-control"(change)="changeMonthBuilding(buildMonth.value)">
+    <option *ngFor="let land of buildings" [value]="land.id" [selected]="land.id===buildingIdForMonth">{{ land.country + ' ' + land.city + ' ' + land.street + ' ' + land.house + ' ' + land.flat }}</option>
+</select>
   <div>
       <div>
         <div style="display: block">
@@ -54,8 +58,10 @@ BuildingId
   </div>
   <div *ngIf="isWeekVisible">
 
-    BuildingId
-    <input type="number" class="form-control" [(ngModel)]="buildingIdForWeek">
+    Building
+    <select #buildWeek class="form-control"(change)="changeWeekBuilding(buildWeek.value)">
+        <option *ngFor="let land of buildings" [value]="land.id" [selected]="land.id===buildingIdForWeek">{{ land.country + ' ' + land.city + ' ' + land.street + ' ' + land.house + ' ' + land.flat }}</option>
+    </select>
       <div>
           <div>
             <div style="display: block">

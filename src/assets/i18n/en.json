@@ -1,11 +1,33 @@
 {
+  "LogInVals": {
+  "InputYourName": "Please, input login",
+  "InputYourPassword": "Please, input password: should be between 6 and 12 characters"
+  },
+  "smtWentWrong": "Something went wrong! Please, check your data and retry!",
+  "RegistrationVals": {
+    "Member": "Client",
+    "RestaurantManager": "Landlord",
+    "Admin": "Admin",
+    "InvalidEmail": "Please, input valid email: should consist @",
+    "InputYourFirstName": "Please, input First Name",
+    "InputYourLastName": "Please, input Last Name",
+    "InputYourPhone": "Please, input valid phone"
+  },
   "HOME": {
     "TITLE": "Hello Angular with ngx-translate!",
     "SELECT": "Change language",
-    "dateformat": "MM/dd/yyyy",
-    "timeformat": "hh:mm a",
-    "wholeDate": "MM/dd/yyyy hh:mm a"
+    "dateformat": "dd-MM-yyyy",
+    "timeformat": "HH:mm",
+    "wholeDate": "dd-MM-yyyy HH:mm"
   },
+  "grn": "grn",
+  "Building": "Building",
+  "Successful order creation!": "Successful order creation!",
+  "Total cost is": "Total cost is",
+  "Order creation fails": "Order creation fails!\nSelected time period is busy!",
+  "'Order creation fails!Selected time period is busy!'": "'Order creation fails!\nSelected time period is busy!'",
+  "sm": "sm",
+  "lk": "lk",
   "User name": "User name",
   "Country": "Country",
   "City": "City",
@@ -59,7 +81,7 @@
   "LogIn": "Log in",
   "Password": "Password",
   "Send": "Send",
-  "Go": "Go",
+  "Go": "Visit",
   "Map search": "Map search",
   "Terrain": "Terrain",
   "Satellite": "Satellite",

@@ -1,68 +1,139 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">{{ 'Workplace parameters' | translate }}</li>
-    </ol>
-  </nav>
-<div *ngIf="!isRequesting">
+<nav aria-label="breadcrumb" style="margin-top:10px">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item bradcrumps-style" aria-current="page">
+      {{ "Workplace parameters" | translate }}
+    </li>
+  </ol>
+</nav>
+<div *ngIf="isRequesting||isSettingRequesting" class="spinner-border"></div>
+<div class="body-background" *ngIf="!isRequesting&&!isSettingRequesting">
+  <div class="columnls">
+    <div class="left-column">
 
-    <table class="table table-bordered">
-        <colgroup>
-          <col width="30%" />
-          <col width="60%" />
-          <col width="10%" />
-        </colgroup>
-<tbody>
-<tr>
-  <td>
-      {{ 'Cost' | translate }}
-  </td>
-  <td>
-    <input type="text" class="form-control" [(ngModel)]="searchingViewModel.wantedCost">
-  </td>
-  <td>
-    <button class="btn btn-default details icon" (click)="save()">◰</button>
-  </td>
-  </tr>
-  <tr>
-      <td>
-          {{ 'Radius' | translate }}
-    </td>
-    <td>
-    <input type="text" class="form-control" [(ngModel)]="searchingViewModel.radius">
-  </td>
-  <td>
-      <button class="btn btn-default details icon" (click)="save()">◰</button>
-    </td>
-    </tr>
-</tbody></table>
 
-    <div class='container'>
-      <div class="panel panel-primary">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>{{ 'Equipment' | translate }}</th>
-                <th>{{ 'Priority' | translate }}</th>
-                <th>{{ 'Priopiry No.' | translate }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of equipmentList">
-                <td>
-                  {{item.name}}
-                </td>
-                <td>
-                  <app-rating [rating]='item.rating' [itemId]='item.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
-                </td>
-                <td>
-                  {{item.rating}} {{ 'stars' | translate }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <table class="table table-bordered">
+    <colgroup>
+      <col width="10%" />
+      <col width="40%" />
+      <col width="50%" />
+    </colgroup>
+    <tbody>
+      <tr>
+        <td>
+          {{ "Cost" | translate }}
+        </td>
+        <td>
+          <select
+            #val
+            class="form-control"
+            (click)="changedClickCusre(val.value)"
+          >
+            <option [value]="0" [selected]="0">&#36;</option>
+            <option [value]="1" [selected]="1">&euro;</option>
+            <option [value]="2" [selected]="2">&#8372;</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" class="form-control" [(ngModel)]="cost" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ "Radius" | translate }}
+        </td>
+        <td>
+          <select
+            #lng
+            class="form-control"
+            (click)="changedClickLong(lng.value)"
+          >
+            <option [value]="0" [selected]="selectedLong">km</option>
+            <option [value]="1" [selected]="selectedLong">ml</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" style="margin-bottom: 5px" class="form-control" [(ngModel)]="long" />
+
+          <button class="btn btn-default form-button" (click)="updateSearchSetting()">
+            Save cost/radius
+          </button>
+        </td>
+      </tr>
+     </tbody>
+  </table>
+
+</div>
+<div class="right-column">
+  <div class="form-group">
+    <label>{{ "Equipment" | translate }}</label>
+    <select
+      class="form-control"
+      (change)="selectNewEquipment($event)"
+      [(ngModel)]="selectedNewEquipment"
+    >
+      <option
+        *ngFor="let equipment of equipmentList"
+        [value]="equipment.id"
+        [attr.selected]="selectedNewEquipment === equipment.id ? true : null"
+      >
+        {{ equipment.name }}
+      </option>
+    </select>
+    <button
+      class="btn btn-default form-button"
+      *ngIf="addButtonShown"
+      (click)="addWorkplaceParameter()"
+    >Add</button>
+  </div>
+</div>
+</div>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{{ "Equipment" | translate }}</th>
+              <th>{{ "Priority" | translate }}</th>
+              <th>{{ "Count" | translate }}</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of workplaceParametersList">
+              <td>
+                {{getEquipmentNameById(item.equipmentId)}}
+              </td>
+              <td>
+                <app-rating
+                  [rating]="item.priority"
+                  [itemId]="item.id"
+                  (ratingClick)="ratingComponentClick($event)"
+                ></app-rating>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min="0"
+                  class="form-control"
+                  [(ngModel)]="item.count"
+                />
+              </td>
+              <td>
+                <button class="btn btn-default greed-button" (click)="updateWorkplaceParameter(item)">
+                  Update
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-default greed-button" (click)="deleteWorkplaceParameter(item)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <p *ngIf='ratingClicked'>The Company {{itemIdRatingClicked}} has been given {{ratingClicked}} stars</p>
     </div>
   </div>
+</div>

@@ -3,3 +3,38 @@
 @import "~font-awesome/css/font-awesome.css";
 @import '~open-iconic/font/css/open-iconic-bootstrap.css';
 
+body {
+  background-image: url(/assets/back5.jpg) !important; /* Путь к фоновому изображению */
+  background-size: cover;
+ }
+
+ .spinner-border {
+  margin: auto;
+  margin-top: 25%;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: .25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border .75s linear infinite;
+  animation: spinner-border .75s linear infinite;
+ }
+
+ .block-spinner-border {
+  margin: auto;
+  margin-top: 25%;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: .25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border .75s linear infinite;
+  animation: spinner-border .75s linear infinite;
+ }
+
+ @keyframes spinner-border {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+ }

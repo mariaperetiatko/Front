@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Label } from 'ng2-charts';
-import { APIClient } from '../api.service';
+import { APIClient, Building } from '../api.service';
 
 
 @Component({
@@ -21,6 +21,7 @@ export class StatisticsComponent implements OnInit {
   isYearVisible = true;
   isMonthVisible = true;
   isWeekVisible = true;
+  buildings: Building[] = [];
 
 
   public barChartOptions: ChartOptions = {
@@ -48,7 +49,16 @@ export class StatisticsComponent implements OnInit {
   constructor(private apiClient: APIClient) { }
 
   ngOnInit() {
+    this.buildingIdForYear = 2;
     this.showStatByYear();
+    this.getBuildings();
+  }
+
+  getBuildings() {
+    this.apiClient.getBuildingsList()
+    .subscribe((res: Building[]) => {
+      this.buildings = res;
+    });
   }
 
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
@@ -57,6 +67,11 @@ export class StatisticsComponent implements OnInit {
 
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
+  }
+
+  changeYearBuilding(buildYearId: number) {
+    this.buildingIdForYear = buildYearId;
+    this. showStatByYear();
   }
 
   showStatByYear() {
@@ -70,6 +85,11 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  changeMonthBuilding(buildMonthId: number) {
+    this.buildingIdForMonth = buildMonthId;
+    this. showStatByMonth();
+  }
+
   showStatByMonth() {
     this.apiClient.getStatisticsByMonth(this.yearForMonth, this.monthForMonth, this.buildingIdForMonth)
     .subscribe((res) => {
@@ -79,6 +99,11 @@ export class StatisticsComponent implements OnInit {
       this.barChartLabelsForMonth = Object.keys(res);
       this.barChartDataForMonth[0].data = Object.values(res);
     });
+  }
+
+  changeWeekBuilding(buildWeekId: number) {
+    this.buildingIdForWeek = buildWeekId;
+    this. showStatByWeek();
   }
 
   showStatByWeek() {

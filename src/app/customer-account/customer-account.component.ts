@@ -28,10 +28,21 @@ export class CustomerAccountComponent implements OnInit {
     this.getClient();
   }
 
+  isValidModel()
+  {
+    const emailPattern = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
+    const phonePattern = new RegExp('^[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$');
+
+    return this.client.firstName !== '' &&
+           this.client.lastName !== '' &&
+           emailPattern.test(this.client.email) &&
+           phonePattern.test(this.client.phone);
+  }
+
   getClient(): void {
     this.isRequesting = true;
 
-    this.apiClient.getClientById(0)
+    this.apiClient.getClientById(1)
     .pipe(finalize(() => this.isRequesting = false))
     .subscribe((data: Client) => this.client = data);
   }
@@ -96,6 +107,6 @@ export class CustomerAccountComponent implements OnInit {
 
     this.apiClient.updateClient(client)
     .pipe(finalize(() => this.isRequesting = false))
-    .subscribe((result: Client) => {this.client = result; });
+    .subscribe((result: Client) => { this.client = result; });
   }
 }

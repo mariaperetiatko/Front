@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Workplace, Client, APIClient, WorkplaceOrder, WorkplaceEquipment, Equipment, Building, Landlord } from './../api.service';
 import { List } from 'linqts';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -40,7 +41,10 @@ export class WorkplaceComponent implements OnInit {
 isRequesting = true;
   creatingResult = '';
 
-  constructor(private apiClient: APIClient) { }
+  constructor(private apiClient: APIClient, public trans: TranslateService) {
+    //trans.use(localStorage.getItem('lang'));
+
+  }
 
   ngOnInit() {
     this.getClient();
@@ -228,17 +232,24 @@ isRequesting = true;
     this.apiClient.createWorkplaceOrder(workplaceOrder)
     .subscribe((data: WorkplaceOrder) => {
       if (data.id !== undefined) {
-        this.creatingResult = 'Successful order creation!\n Total cost is ' + data.sumToPay + ' grn';
+        let text = '';
+        this.trans.get('Successful order creation!').subscribe((res: string) => { text += (res + '\n'); } );
+        this.trans.get('Total cost is ').subscribe((res: string) => { text += (res + data.sumToPay + ' '); } );
+        this.trans.get('grn').subscribe((res: string) => { text += res; } );
+
+        this.creatingResult =  text;
        // this.isOrdersVisible = false;
       } else {
-        this.creatingResult = 'Order creation fails!\nSelected time period is busy!';
+        let text = '';
+        this.trans.get('Order creation fails').subscribe((res: string) => { text = res; } );
+        this.creatingResult = text;
       }
       console.log(data);
     });
   }
 
   getClient(): void {
-    this.apiClient.getClientById(0)
+    this.apiClient.getClientById(1)
     .subscribe((data: Client) =>  this.client = data);
   }
 

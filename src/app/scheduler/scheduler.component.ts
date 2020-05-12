@@ -103,7 +103,7 @@ export class SchedulerComponent implements OnInit {
           }
         };
       }
-      scheduler.init(this.schedulerContainer.nativeElement, new Date(2019, 4, 1));
+      scheduler.init(this.schedulerContainer.nativeElement, new Date(2020, 2, 16));
       scheduler.parse(res, 'json');
     });
   }

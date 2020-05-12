@@ -5,7 +5,7 @@
   </nav>
 
 <div class="container">
-    <br>
+  <!--  <br>
     <div class="row">
       <div class="col-md-6 col-sm-12 col-xs-12">
         <form class="form-inline" #form="ngForm">
@@ -19,15 +19,16 @@
         </form>
       </div>
     </div>
-    <br>
+    <br>-->
+    {{latitude}}
+
+    {{longitude}}
     <div class="row">
-      <button (click)="showAppropriate()" class="btn btn-default">{{ 'Search' | translate }}</button>
-      <button (click)="setMapType('terrain')" class="btn btn-primary">{{ 'Terrain' | translate }}</button>
-      <button (click)="setMapType('satellite')" class="btn btn-danger">{{ 'Satellite' | translate }}</button>
-      <button (click)="setMapType('roadmap')" class="btn btn-warning">{{ 'RoadMap' | translate }}</button>
-      <button type="button" (click)="toggleMap()" class="btn btn-primary">{{ 'ToggleMap' | translate }}</button>
+      <button  (click)="setCurrentPosition()" class="btn btn-default">{{ 'Set current position' | translate }}</button>
     </div>
     <br>
+    <input id="address" #address class="form-control" style="margin-bottom:10px" type="text" placeholder="Search Box">
+
     <div class="row" >
       <div class="col-md-12">
         <div class="text-center">

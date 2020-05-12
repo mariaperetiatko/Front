@@ -54,7 +54,6 @@ export class UserService {
         const decodedJwtData = JSON.parse(decodedJwtJsonData);
 
         const role = decodedJwtData.roles;
-        alert(role);
         localStorage.setItem('role', role);
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
@@ -75,10 +74,9 @@ export class UserService {
     return this.loggedIn;
   }
 
-  register(email: string, password: string, firstName: string, lastName: string, phone: number,
+  register(email: string, password: string, firstName: string, lastName: string, phone: string, birthday: Date,
     role: string): Observable<RegistrationViewModel> {
-      alert(role );
-    const body = JSON.stringify({ email, password, firstName, lastName, phone, role });
+    const body = JSON.stringify({ email, password, firstName, lastName, phone, birthday, role });
     const headers = new Headers();
     headers.append('Access-Control-Allow-Origin',  '*');
     headers.append('Content-Type', 'application/json');

@@ -14,3 +14,24 @@
 .table-bordered td, .table-bordered th{
   border-color: transparent transparent black transparent;
 }
+
+.body-background {
+  background-color:#f3f4f6;
+  padding:30px;
+  border-radius: .25rem;
+  overflow: hidden;
+}
+
+.bradcrumps-style {
+  background-color: #cad5df !important;
+  color: black !important;
+}
+
+.send-button {
+  float: right;
+  background-color:#cad5df;
+}
+
+.modify-button {
+  background-color:#cad5df;
+}

@@ -1,3 +1,4 @@
+import { VisionDiagramsComponent } from './vision-diagrams/vision-diagrams.component';
 import { LandlordsComponent } from './landlords/landlords.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { StatisticsComponent } from './statistics/statistics.component';
@@ -35,7 +36,8 @@ const routes: Routes = [
                          { path: 'clients-admin', component: ClientsAdminComponent},
                          { path: 'equipment-admin', component: EquipmentAdminComponent},
                          { path: 'buildings-admin', component: BuildingsAdminComponent},
-                         { path: 'workplace-admin', component: WorkplaceAdminComponent}
+                         { path: 'workplace-admin', component: WorkplaceAdminComponent},
+                         { path: 'vision-diagrams', component: VisionDiagramsComponent}
 
                          ];
 
