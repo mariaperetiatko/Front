@@ -41,17 +41,56 @@
       </div>
     </div>
     <div class="order-background">
-      <div class="form-group">
-        <div class="left-column">
-          <label>Select date</label>
+
+      <p *ngIf="workplaceDate">Selected date: {{workplaceDate | date:"MM/dd/yyyy"}}</p>
+      <p *ngIf="startTime">Selected start time: {{startTime.time}}</p>
+      <p *ngIf="finishTime">Selected finish time: {{finishTime}}</p>
+      <p *ngIf="sumToPay">Cost: {{sumToPay}}</p>
+
+    </div>
+    <div class="order-background1">
+      <p *ngIf="isDateSelecting" style="margin-left: 2.1%;">Select Date</p>
+      <div class="form-group" *ngIf="isDateSelecting">
+        <div class="left-column" style="margin-left: 0.5%;">
+          Date
         </div>
-        <div class="right-column" style="padding-right: 0;">
+        <div class="right-column" style="margin-right: 2.1%;">
           <input
+            min="2020-05-14"
             type="date"
             name="workplaceDate"
             class="form-control"
+            (change)="getWorkplaceOrdersByWorkplaceAndDate()"
             [(ngModel)]="workplaceDate"
+            style="margin-bottom:200px"
           />
+        </div>
+      </div>
+      <p *ngIf="!isTimesLoading" style="margin-left: 2.1%;"><a (click)="sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / Select Start time</p>
+      <div *ngIf="!isTimesLoading" class="times">
+        <div
+          *ngFor="let item of timesToBook"
+          class="time-background"
+          (click)="selectStartTime(item)"
+        >
+          <div class="time-background-column" style="width: 70%;">
+            <p>Start time:</p>
+            <p>Available:</p>
+          </div>
+          <div class="time-background-column">
+            <p>{{ item.time }}</p>
+            <p>{{ item.rest }}</p>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="!isSelectedTimesLoading" style="margin-left: 2.1%;"><a (click)="sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / <a (click)="getAvailableTimesDyDate();finishTime=null;sumToPay=null;" href="javascript:void(0)">Select Start time</a> / Select Duration </p>
+      <div *ngIf="!isSelectedTimesLoading" class="times">
+        <div
+          *ngFor="let item of durationTimesToBook"
+          class="time-background1"
+          (click)="bookWorkplace(item)"
+        >
+          <p>{{ item.rest }}</p>
         </div>
       </div>
     </div>

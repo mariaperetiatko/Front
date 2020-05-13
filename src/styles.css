@@ -4,7 +4,7 @@
 @import '~open-iconic/font/css/open-iconic-bootstrap.css';
 
 body {
-  background-image: url(/assets/back5.jpg) !important; /* Путь к фоновому изображению */
+  background-image: url(/assets/back5.jpg); /* Путь к фоновому изображению */
   background-size: 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;

@@ -1,75 +1,209 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Workplace, Client, APIClient, WorkplaceOrder, WorkplaceEquipment, Equipment, Building, Landlord } from './../api.service';
-import { List } from 'linqts';
-import { TranslateService } from '@ngx-translate/core';
-import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Workplace,
+  APIClient,
+  WorkplaceOrder,
+  WorkplaceEquipment,
+} from "./../api.service";
+import { List } from "linqts";
+import { TranslateService } from "@ngx-translate/core";
+import { forkJoin } from "rxjs";
+import { finalize } from "rxjs/operators";
 
 @Component({
-  selector: 'app-workplace',
-  templateUrl: './workplace.component.html',
-  styleUrls: ['./workplace.component.css']
+  selector: "app-workplace",
+  templateUrl: "./workplace.component.html",
+  styleUrls: ["./workplace.component.css"],
 })
-
 export class WorkplaceComponent implements OnInit, OnDestroy {
-
+  isSelectedTimesLoading = true;
   workplaceId: number;
   isRequesting = false;
   workplace: Workplace;
-  workplaceEquipmentList: WorkplaceEquipment [];
-  workplaceOrderList: WorkplaceOrder [];
-  workplaceDate = {};
+  workplaceEquipmentList: WorkplaceEquipment[];
+  workplaceOrderList: WorkplaceOrder[];
+  workplaceDate: Date;
   startWorkingTime;
   finishWorkingTime;
+  timesToBook = [];
+  durationTimesToBook = [];
+  isTimesLoading = true;
+  startTime;
+  finishTime;
+  isDateSelecting = true;
+  workplaceOrders;
+  busyTimes = [];
+  sumToPay;
+  todayDate = new Date();
+  minDateString = this.todayDate.getFullYear() + '-' + (this.todayDate.getMonth() + 1) + '-' + this.todayDate.getDate();
 
   constructor(private apiClient: APIClient) {}
 
   ngOnInit() {
-    this.workplaceId = Number.parseFloat(localStorage.getItem('workplaceId'));
+    console.log(this.minDateString);
+    this.workplaceId = Number.parseFloat(localStorage.getItem("workplaceId"));
     if (this.workplaceId >= 0) {
       this.getData();
     }
-   // this.getValues();
-    //this.getClientsWorkplaceParameters();
-   // this.getSearchSetting();
   }
 
   getData() {
-      this.isRequesting = true;
+    this.isRequesting = true;
 
-      const workplaceQuery = this.apiClient.getWorkplaceById(this.workplaceId);
-      const workplaceEquipmentsQuery = this.apiClient.GetWorkplaceEquipmentByWorkplaceWithEquipment(this.workplaceId);
-      const workplaceOrdersQuery = this.apiClient.GetWorkplaceOrdersByWorkplaceId(this.workplaceId);
+    const workplaceQuery = this.apiClient.getWorkplaceById(this.workplaceId);
+    const workplaceEquipmentsQuery = this.apiClient.GetWorkplaceEquipmentByWorkplaceWithEquipment(
+      this.workplaceId
+    );
+    const workplaceOrdersQuery = this.apiClient.GetWorkplaceOrdersByWorkplaceId(
+      this.workplaceId
+    );
 
-      forkJoin([workplaceQuery, workplaceEquipmentsQuery, workplaceOrdersQuery])
-        .pipe(finalize(() => (this.isRequesting = false)))
-        .subscribe((results) => {
-          this.workplace = results[0];
-          this.workplaceEquipmentList = results[1];
-          this.workplaceOrderList = results[2];
-          if (this.workplace.building.startMinute === 0) {
-            this.startWorkingTime = this.workplace.building.startHour + ':00';
-          } else {
-            this.startWorkingTime = this.workplace.building.startHour + ':30';
-          }
-          if (this.workplace.building.finishMinute === 0) {
-            this.finishWorkingTime = this.workplace.building.finistHour + ':00';
-          } else {
-            this.finishWorkingTime = this.workplace.building.finistHour + ':30';
-          }
-
-          console.log(this.workplace);
-          console.log(this.workplaceEquipmentList);
-          console.log(this.workplaceOrderList);
-        });
-      }
-
-  ngOnDestroy() {
-    localStorage.removeItem('workplaceId');
+    forkJoin([workplaceQuery, workplaceEquipmentsQuery, workplaceOrdersQuery])
+      .pipe(finalize(() => (this.isRequesting = false)))
+      .subscribe((results) => {
+        this.workplace = results[0];
+        this.workplaceEquipmentList = results[1];
+        this.workplaceOrderList = results[2];
+        if (this.workplace.building.startMinute === 0) {
+          this.startWorkingTime = this.workplace.building.startHour + ":00";
+        } else {
+          this.startWorkingTime = this.workplace.building.startHour + ":30";
+        }
+        if (this.workplace.building.finishMinute === 0) {
+          this.finishWorkingTime = this.workplace.building.finistHour + ":00";
+        } else {
+          this.finishWorkingTime = this.workplace.building.finistHour + ":30";
+        }
+      });
   }
 
- /* client: Client;
+  getWorkplaceOrdersByWorkplaceAndDate() {
+    this.isRequesting = true;
+
+    this.apiClient
+      .getWorkplaceOrdersByWorkplaceAndDate(
+        this.workplaceId,
+        this.workplaceDate
+      )
+      .pipe(finalize(() => (this.isRequesting = false)))
+      .subscribe((data: WorkplaceOrder[]) => {
+        this.workplaceOrders = data;
+        this.busyTimes = [];
+        for (let i = 0; i < this.workplaceOrders.length; i++) {
+          const startHour = this.workplaceOrders[i].startTime.getHours();
+          const startMinute = this.workplaceOrders[i].startTime.getMinutes();
+          let start: number;
+
+          if (startMinute === 0) {
+            start = startHour;
+          } else {
+            start = startHour + 0.5;
+          }
+
+          const finishHour = this.workplaceOrders[i].finishTime.getHours();
+          const finishMinute = this.workplaceOrders[i].finishTime.getMinutes();
+          let finish: number;
+
+          if (finishMinute === 0) {
+            finish = finishHour;
+          } else {
+            finish = finishHour + 0.5;
+          }
+          this.busyTimes.push({ start: start, finish: finish });
+        }
+
+        this.getAvailableTimesDyDate();
+      });
+  }
+
+  getAvailableTimesDyDate() {
+    this.isDateSelecting = false;
+    this.isSelectedTimesLoading = true;
+    this.isTimesLoading = true;
+    this.timesToBook = [];
+    let startPoint = this.workplace.building.startHour;
+
+    if (this.workplace.building.startMinute !== 0) {
+      startPoint += 0.5;
+    }
+
+    let endPoint = this.workplace.building.finistHour;
+
+    if (this.workplace.building.finishMinute !== 0) {
+      endPoint += 0.5;
+    }
+
+    this.busyTimes.unshift({ finish: startPoint });
+    this.busyTimes.push({ start: endPoint });
+
+    for (let j = 0; j < this.busyTimes.length - 1; j++) {
+      for (
+        let i = this.busyTimes[j].finish;
+        i < this.busyTimes[j + 1].start;
+        i += 0.5
+      ) {
+        let time;
+        let rest;
+
+        const timeNumeric = i;
+        const restNumeric = this.busyTimes[j + 1].start - i;
+        if (i % 1 === 0) {
+          time = i + ":00";
+        } else {
+          time = i - 0.5 + ":30";
+        }
+        if ((this.busyTimes[j + 1].start - i) % 1 === 0) {
+          rest = this.busyTimes[j + 1].start - i + ":00";
+        } else {
+          rest = this.busyTimes[j + 1].start - i - 0.5 + ":30";
+        }
+        this.timesToBook.push({
+          time: time,
+          rest: rest,
+          timeNumeric: timeNumeric,
+          restNumeric: restNumeric,
+        });
+      }
+    }
+    this.isTimesLoading = false;
+  }
+
+  ngOnDestroy() {
+    localStorage.removeItem("workplaceId");
+  }
+
+  bookWorkplace(duration) {
+    const finishTimeNumeric = this.startTime.timeNumeric + duration.restNumeric;
+
+    if (finishTimeNumeric % 1 === 0) {
+      this.finishTime = finishTimeNumeric + ":00";
+    } else {
+      this.finishTime = finishTimeNumeric - 0.5 + ":30";
+    }
+    this.sumToPay = duration.restNumeric * this.workplace.cost;
+    console.log(this.sumToPay);
+  }
+
+  selectStartTime(item) {
+    this.isDateSelecting = false;
+    this.startTime = item;
+    this.isTimesLoading = true;
+    this.isSelectedTimesLoading = true;
+    this.durationTimesToBook = [];
+    for (let i = 0.5; i <= item.restNumeric; i += 0.5) {
+      let rest;
+      if (i % 1 === 0) {
+        rest = i + ":00";
+      } else {
+        rest = i - 0.5 + ":30";
+      }
+
+      this.durationTimesToBook.push({ rest: rest, restNumeric: i });
+    }
+
+    this.isSelectedTimesLoading = false;
+  }
+  /* client: Client;
   landlord: Landlord;
   isOrdersVisible = false;
   workplace: Workplace;
@@ -309,5 +443,4 @@ isRequesting = true;
     this.apiClient.getClientById(1)
     .subscribe((data: Client) =>  this.client = data);
   }*/
-
 }

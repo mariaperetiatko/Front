@@ -28,8 +28,7 @@ export class CustomerAccountComponent implements OnInit {
     this.getClient();
   }
 
-  isValidModel()
-  {
+  isValidModel() {
     const emailPattern = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
     const phonePattern = new RegExp('^[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$');
 

@@ -24,3 +24,11 @@ img.center {
   width: 100%;
   min-height: 50%;
 }
+.landing {
+  background-image: url(/assets/forproj.jpg) !important; /* Путь к фоновому изображению */
+  background-size: 100%;
+  height: 100%;
+
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
