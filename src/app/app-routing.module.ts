@@ -1,3 +1,4 @@
+import { BookingsComponent } from './bookings/bookings.component';
 import { VisionDiagramsComponent } from './vision-diagrams/vision-diagrams.component';
 import { LandlordsComponent } from './landlords/landlords.component';
 import { BuildingsComponent } from './buildings/buildings.component';
@@ -37,8 +38,8 @@ const routes: Routes = [
                          { path: 'equipment-admin', component: EquipmentAdminComponent},
                          { path: 'buildings-admin', component: BuildingsAdminComponent},
                          { path: 'workplace-admin', component: WorkplaceAdminComponent},
-                         { path: 'vision-diagrams', component: VisionDiagramsComponent}
-
+                         { path: 'vision-diagrams', component: VisionDiagramsComponent},
+                         { path: 'bookings', component: BookingsComponent}
                          ];
 
 @NgModule({

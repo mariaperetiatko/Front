@@ -4,6 +4,7 @@
   background-color:#f3f4f6;
   padding:30px;
   border-radius: .25rem;
+  margin-bottom: 10%;
 }
 
 .form-background {
@@ -11,16 +12,15 @@
   margin-left: auto;
   padding: 10px;
   overflow: hidden;
-  background-color: #cdcdcd;
+  background-color: #cad5df;
   margin-right: auto;
   border-radius: .25rem;
-  border: 2px solid #cdcdcd;
+  border: 2px solid #cad5df;
 }
 
 .bradcrumps-style {
-  background-color: #cdcdcd !important;
+  background-color: #cad5df !important;
   color: black !important;
-
 }
 
 .form-button {

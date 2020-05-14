@@ -1,6 +1,5 @@
 .body-background {
   overflow: hidden;
-
   background-color: #f3f4f6;
   padding: 30px;
   border-radius: 0.25rem;
@@ -38,6 +37,34 @@
   margin-right: auto;
   margin-top: 20px;
   overflow: auto;
+  padding: 10px;
+  background-color: #cad5df;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+}
+
+.checque-background {
+  background-color: #f3f4f6;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 10px;
+}
+
+.checque-wrapper::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.checque-wrapper {
+  margin-bottom: 10px;
+}
+
+.checque-background-column {
+  width: 45%;
+  float: left;
 }
 
 .order-background1 {
@@ -58,18 +85,29 @@
   margin-bottom: 10px;
   cursor: pointer;
 }
+
 .left-column {
-  width: 20%;
   float: left;
   overflow: hidden;
   padding-left: 10px;
-
 }
 
 .right-column {
   padding-right: 10px;
-
   width: 70%;
+  float: right;
+  overflow: hidden;
+}
+
+.left-column-checque {
+  float: left;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.right-column-checque {
+  padding-right: 10px;
+  width: 50%;
   float: right;
   overflow: hidden;
 }

@@ -2,6 +2,8 @@ import {
   mergeMap as _observableMergeMap,
   catchError as _observableCatch,
 } from "rxjs/operators";
+import * as moment from "moment";
+
 import {
   Observable,
   throwError as _observableThrow,
@@ -13,6 +15,7 @@ import {
   HttpHeaders,
   HttpResponse,
   HttpResponseBase,
+  HttpParams
 } from "@angular/common/http";
 
 @Injectable({
@@ -37,8 +40,124 @@ export class APIClient {
     @Optional() @Inject(API_BASE_URL) baseUrl?: string
   ) {
     this.http = http;
-    this.baseUrl = baseUrl ? baseUrl : "https://192.168.1.4:45456";
+    this.baseUrl = baseUrl ? baseUrl : "https://aapz-backend.conveyor.cloud";
   }
+
+  toJSON(filter:Filter) {
+
+
+    if (filter === null) {
+      return '';
+    } else if (filter.startTime !== null && filter.finishTime !== null) {
+      return '?StartTime=' + filter.startTime.toLocaleString() + '&FinishTime' + filter.finishTime.toLocaleString();
+    } else if (filter.startTime !== null) {
+      return '?StartTime=' + filter.startTime.toLocaleString()
+    } else {
+      return '?FinishTime=' + filter.finishTime.toLocaleString()
+    }
+
+
+
+  }
+
+ /**
+   * @return Success
+   */
+  getFilteredWorkplaceOrdersListByClient(filter: Filter): Observable<WorkplaceOrder[]> {
+    let url_ = this.baseUrl + "/api/WorkplaceOrder/GetFilteredWorkplaceOrdersListByClient";
+    let params = new HttpParams();
+    if (filter != null && filter.startTime !== null) {
+      params = params.set('StartTime', moment(filter.startTime).format("YYYY-MM-DD"));
+      console.log(params);
+    }
+      if (filter != null && filter.finishTime !== null)
+        params = params.append('FinishTime', moment(filter.finishTime).format("YYYY-MM-DD"));
+
+    console.log(params);
+    url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem("auth_token");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+      params: params
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetFilteredWorkplaceOrdersListByClient(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetFilteredWorkplaceOrdersListByClient(<any>response_);
+            } catch (e) {
+              return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetFilteredWorkplaceOrdersListByClient(
+    response: HttpResponseBase
+  ): Observable<WorkplaceOrder[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (let item of resultData200)
+              result200.push(WorkplaceOrder.fromJS(item));
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<WorkplaceOrder[]>(<any>null);
+  }
+
+
+
 
   /**
    * @return Success
@@ -5755,16 +5874,19 @@ export class WorkplaceOrder implements IWorkplaceOrder {
     data["clientId"] = this.clientId;
     data["workplaceId"] = this.workplaceId;
     data["startTime"] = this.startTime
-      ? this.startTime.toISOString()
+      ? this.startTime.toLocaleString()
       : <any>undefined;
     data["finishTime"] = this.finishTime
-      ? this.finishTime.toISOString()
+      ? this.finishTime.toLocaleString()
       : <any>undefined;
     data["sumToPay"] = this.sumToPay;
     data["client"] = this.client ? this.client.toJSON() : <any>undefined;
     data["workplace"] = this.workplace
       ? this.workplace.toJSON()
       : <any>undefined;
+
+      console.log(data);
+
     return data;
   }
 }
@@ -6272,6 +6394,48 @@ export interface IWorkplaceSearchingResult {
   workplaceId?: number | undefined;
   equipmentAppropriation?: number | undefined;
   costAppropriation?: number | undefined;
+}
+
+export interface IFilter {
+  startTime?: Date | undefined;
+  finishTime?: Date | undefined;
+
+}
+
+export class Filter {
+  constructor(data?: IFilter) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(data?: any) {
+    if (data) {
+      this.startTime = data["startTime"];
+      this.finishTime = data["finishTime"];
+
+    }
+  }
+  startTime?: Date | undefined;
+  finishTime?: Date | undefined;
+
+  toJSON(filter) {
+    let data;
+    data["startTime"] = filter.startTime
+      ? this.startTime.toLocaleString()
+      : <any>undefined;
+    data["finishTime"] = filter.finishTime
+      ? this.finishTime.toLocaleString()
+      : <any>undefined;
+
+
+      console.log(data);
+
+    return data;
+  }
 }
 
 export class WorkplaceSearchingResult implements IWorkplaceSearchingResult {

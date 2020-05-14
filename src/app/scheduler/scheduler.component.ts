@@ -4,6 +4,7 @@ import 'dhtmlx-scheduler';
 import { APIClient, Client, Scheduler} from '../api.service';
 
 import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scheduler',
@@ -17,6 +18,7 @@ export class SchedulerComponent implements OnInit {
   ready: Promise<any>;
   workplaces = [];
   client: Client;
+  isRequesting = false;
 
   constructor(public translate: TranslateService, private apiClient: APIClient) {
   }
@@ -30,23 +32,31 @@ export class SchedulerComponent implements OnInit {
   }
 
   onDel(id: number) {
+    this.isRequesting = true;
     this.apiClient.deleteWorkplaceOrder(id)
+    .pipe(finalize(() => this.isRequesting = false))
     .subscribe(result => console.log(result));
   }
 
   ngOnInit() {
+    this.isRequesting = false;
 
     this.apiClient.getSchedule(1)
+    .pipe(finalize(() => this.isRequesting = false))
     .subscribe((res: Scheduler[]) => {
       console.log('res');
       console.log(res);
+
       scheduler.config.xml_date = '%Y-%m-%d %H:%i';
       scheduler.config.limit_time_select = true;
-      scheduler.config.first_hour = 9;
-      scheduler.config.last_hour = 22;
+      scheduler.config.first_hour = 7;
+      scheduler.config.last_hour = 21;
       scheduler.attachEvent('onEventDeleted', (id, ev) => {
           this.onDel(id);
       });
+      scheduler.config.readonly = true;
+
+
 
       if (this.translate.currentLang === 'uk' && scheduler.locale.labels.dhx_cal_today_button !== 'Сьогодні') {
         scheduler.locale = {
@@ -103,7 +113,7 @@ export class SchedulerComponent implements OnInit {
           }
         };
       }
-      scheduler.init(this.schedulerContainer.nativeElement, new Date(2020, 2, 16));
+      scheduler.init(this.schedulerContainer.nativeElement, new Date());
       scheduler.parse(res, 'json');
     });
   }

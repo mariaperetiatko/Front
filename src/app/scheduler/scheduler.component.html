@@ -1,12 +1,14 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+    <ol class="breadcrumb  bradcrumps-style">
       <li class="breadcrumb-item" aria-current="page">{{ 'Scheduler' | translate }}</li>
     </ol>
   </nav>
 
 <div *ngIf="check(translate.currentLang)" >
 </div>
- <div #scheduler_here class="dhx_cal_container" style="width: 100%; height:100vh">
+<div *ngIf="isRequesting" class="spinner-border"></div>
+
+ <div #scheduler_here class="dhx_cal_container" style="width: 100%; height:100vh" *ngIf="!isRequesting">
       <div class="dhx_cal_navline">
           <div class="dhx_cal_prev_button">&nbsp;</div>
           <div class="dhx_cal_next_button">&nbsp;</div>

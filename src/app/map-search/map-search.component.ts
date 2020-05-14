@@ -19,8 +19,8 @@ import { finalize } from "rxjs/operators";
   templateUrl: "./map-search.component.html",
   styleUrls: ["./map-search.component.css"],
 })
+
 export class MapSearchComponent implements AfterContentInit {
-  //worlplacesList: List<BuildingSearchingResult> = new List<BuildingSearchingResult>();
   findedWorkplacesList: FindedWorkplace[];
   locationMarker: google.maps.Marker = new google.maps.Marker();
   searchingViewModel: SearchingViewModel;

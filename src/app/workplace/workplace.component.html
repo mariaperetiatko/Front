@@ -1,6 +1,9 @@
 <nav aria-label="breadcrumb" style="margin-top: 10px;">
   <ol class="breadcrumb bradcrumps-style">
-    <li class="breadcrumb-item bradcrumps-style" aria-current="page">
+    <li class="breadcrumb-item" aria-current="page">
+     <a href="javascript:void(0)" (click)="doToMap()"> {{ "Map search" | translate }}</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
       {{ "Workplace" | translate }}
     </li>
   </ol>
@@ -11,42 +14,60 @@
     <div class="info-background">
       Infomation
       <hr />
-      <div class="left-column"><p>Address</p></div>
+      <div class="checque-wrapper">
+      <div class="left-column">Address</div>
       <div class="right-column">
-        <p>
+
           {{ workplace.building.country }}, {{ workplace.building.city }},
           {{ workplace.building.street }}, {{ workplace.building.flat }}
-        </p>
-      </div>
-      <div class="left-column"><p>Cost</p></div>
+
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Cost</div>
       <div class="right-column">
-        <p>{{ workplace.cost }}</p>
-      </div>
-      <div class="left-column"><p>Landlord</p></div>
+        {{ workplace.cost }}
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Landlord</div>
       <div class="right-column">
-        <p>
+
           {{ workplace.building.landlord.firstName }}
           {{ workplace.building.landlord.lastName }}
-        </p>
-      </div>
-      <div class="left-column"><p>Phone</p></div>
-      <div class="right-column">
-        <p>{{ workplace.building.landlord.phone }}</p>
-      </div>
 
-      <div class="left-column"><p>Working hours</p></div>
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Phone</div>
+      <div class="right-column">
+        {{ workplace.building.landlord.phone }}
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Working hours</div>
 
       <div class="right-column">
-        <p>{{ this.startWorkingTime }} - {{ this.finishWorkingTime }}</p>
-      </div>
+        {{ this.startWorkingTime }} - {{ this.finishWorkingTime }}
+      </div></div>
     </div>
-    <div class="order-background">
+    <div class="order-background" *ngIf="workplaceDate">
+      Booking
+      <hr>
+      <div class="checque-background" *ngIf="isBookingCreated">Booking created</div>
+      <div *ngIf="isBookingRequesting&&!isBookingCreated" class="spinner-border"></div>
 
-      <p *ngIf="workplaceDate">Selected date: {{workplaceDate | date:"MM/dd/yyyy"}}</p>
-      <p *ngIf="startTime">Selected start time: {{startTime.time}}</p>
-      <p *ngIf="finishTime">Selected finish time: {{finishTime}}</p>
-      <p *ngIf="sumToPay">Cost: {{sumToPay}}</p>
+      <div class="checque-background" *ngIf="!isBookingRequesting">
+      <div class="checque-wrapper" *ngIf="workplaceDate"><div class="left-column-checque">Selected date:</div> <div class="right-column-checque">{{workplaceDate | date:"MM/dd/yyyy"}}</div></div>
+      <div class="checque-wrapper" *ngIf="startTime"><div class="left-column-checque">Selected start time:</div> <div class="right-column-checque">{{startTime.time}}</div></div>
+      <div class="checque-wrapper" *ngIf="finishTime"><div class="left-column-checque">Selected finish time:</div><div class="right-column-checque"> {{finishTime}}</div></div>
+      <div class="checque-wrapper" *ngIf="sumToPay"><div class="left-column-checque">Cost:</div> <div class="right-column-checque">{{sumToPay}}</div></div>
 
+    </div>
+    <div class="form-group" *ngIf="!isBookingRequesting">
+      <button  *ngIf="sumToPay"
+        class="btn btn-default form-button" (click)="createWorkplaceOrder()" >{{ 'Book' | translate }}</button>
+    </div>
     </div>
     <div class="order-background1">
       <p *ngIf="isDateSelecting" style="margin-left: 2.1%;">Select Date</p>
@@ -56,7 +77,7 @@
         </div>
         <div class="right-column" style="margin-right: 2.1%;">
           <input
-            min="2020-05-14"
+            [min]="minDateString"
             type="date"
             name="workplaceDate"
             class="form-control"
@@ -66,7 +87,7 @@
           />
         </div>
       </div>
-      <p *ngIf="!isTimesLoading" style="margin-left: 2.1%;"><a (click)="sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / Select Start time</p>
+      <p *ngIf="!isTimesLoading" style="margin-left: 2.1%;"><a (click)="workplaceDate=null;sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / Select Start time</p>
       <div *ngIf="!isTimesLoading" class="times">
         <div
           *ngFor="let item of timesToBook"
@@ -83,7 +104,7 @@
           </div>
         </div>
       </div>
-      <p *ngIf="!isSelectedTimesLoading" style="margin-left: 2.1%;"><a (click)="sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / <a (click)="getAvailableTimesDyDate();finishTime=null;sumToPay=null;" href="javascript:void(0)">Select Start time</a> / Select Duration </p>
+      <p *ngIf="!isSelectedTimesLoading" style="margin-left: 2.1%;"><a (click)="workplaceDate=null;sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / <a (click)="getAvailableTimesDyDate();finishTime=null;sumToPay=null;" href="javascript:void(0)">Select Start time</a> / Select Duration </p>
       <div *ngIf="!isSelectedTimesLoading" class="times">
         <div
           *ngFor="let item of durationTimesToBook"
@@ -108,80 +129,24 @@
   </div>
 </div>
 
-<!--<div class="brd1 right-floating" *ngIf="!isRequesting">
-    <p style="font-weight:bold">{{ 'Landlord' | translate }}</p>
-    {{ 'First name' | translate }}: {{landlord.firstName}}<br>
-    {{ 'Last name' | translate }}: {{landlord.lastName}}<br>
-    {{ 'Email' | translate }}: {{landlord.email}}<br>
-    {{ 'Phone' | translate }} : {{landlord.phone}}<br>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Booking created</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-<button type="button" (click)="showEquipment()" class="btn btn-primary">{{ 'Show equipment' | translate }}</button>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        Booking created successfully!
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" style="background-color: #cad5df;" (click)="modal.close('Ok click');okClick()">Ok</button>
+  </div>
+</ng-template>
 
-<div *ngIf="isEqShow">
-<div class="brd1 left-floating">
-{{showObject()}}</div>
-</div>
-<table class="table table-bordered">
-    <colgroup>
-      <col width="5%" />
-      <col width="26%" />
-      <col width="5%" />
-      <col width="26%" />
-      <col width="5%" />
-      <col width="26%" />
-    </colgroup>
-    <tr>
-      <td>{{ 'Year' | translate }}</td>
-      <td><input type="number" class="form-control" min="2019" max="2025" [(ngModel)]="selectedYear" (change)="minMontChanged()"></td>
-      <td>{{ 'Month' | translate }}</td>
-      <td><input type="number" class="form-control" min={{minMonth}} max="12" [(ngModel)]="selectedMonth" (change)="minDayChanged()"></td>
-      <td>{{ 'Day' | translate }}</td>
-      <td><input type="number" class="form-control" min={{minDay}} max={{dateItems[selectedMonth-1]}} [(ngModel)]="selectedDay" (change)="minHoursChanged()"></td>
-    </tr>
-    </table>
-
-    <button type="button" (click)="getDayOrders()" class="btn btn-primary">{{ 'Get list of busy times' | translate }}</button>
-    <br>
-    <br>
-    <div *ngIf="isOrdersVisible" >
-<div *ngFor="let item of selectedWorkplaceOrdersByDay" class="brd">
-    {{item.startTime | date:  ('HOME.timeformat' | translate)}} -
-    {{item.finishTime | date:  ('HOME.timeformat' | translate)}}
-</div>
-</div>
-{{ 'Start time' | translate }}
-<table class="table table-bordered">
-    <colgroup>
-      <col width="25%" />
-      <col width="25%" />
-      <col width="25%" />
-      <col width="25%" />
-    </colgroup>
-    <tr>
-        <td>{{ 'Hours' | translate }}</td>
-        <td><input type="number" class="form-control" min={{minHours}} max="20" [(ngModel)]="selectedHours" (change)="minMinutesChanged()"></td>
-        <td>{{ 'Minutes' | translate }}</td>
-        <td><input type="number" class="form-control" min={{minMinutes}} max="59" [(ngModel)]="selectedMinutes" (change)="minFinishMinutesChanged()"></td>
-</tr>
-</table>
-{{ 'Finish time' | translate }}
-<table class="table table-bordered">
-    <colgroup>
-      <col width="25%" />
-      <col width="25%" />
-      <col width="25%" />
-      <col width="25%" />
-    </colgroup>
-    <tr>
-        <td>{{ 'Hours' | translate }}</td>
-        <td><input type="number" class="form-control" min={{selectedHours}} max="21" [(ngModel)]="selectedFinishHours" (change)="minFinishChanged()"></td>
-        <td>{{ 'Minutes' | translate }}</td>
-        <td><input type="number" class="form-control" min={{minFinishMinutes}} max="59" [(ngModel)]="selectedFinishMinutes" (change)="minMinFinishChanged()"></td>
-</tr>
-</table>
-<button type="button" (click)="createWorkplaceOrder()" class="btn btn-primary">{{ 'Create order' | translate }}</button>
-<br><br> <h5>{{creatingResult}}</h5>
-
-
-
--->
+<div id="myDiv" style="display:none" (click)="open()">Launch demo modal</div>

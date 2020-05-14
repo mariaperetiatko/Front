@@ -32,6 +32,7 @@ import { EquipmentAdminComponent } from './equipment-admin/equipment-admin.compo
 import { BuildingsAdminComponent } from './buildings-admin/buildings-admin.component';
 import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.component';
 import { VisionDiagramsComponent } from './vision-diagrams/vision-diagrams.component';
+import { BookingsComponent } from './bookings/bookings.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -56,7 +57,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     EquipmentAdminComponent,
     BuildingsAdminComponent,
     WorkplaceAdminComponent,
-    VisionDiagramsComponent
+    VisionDiagramsComponent,
+    BookingsComponent
   ],
   imports: [
     ChartsModule,

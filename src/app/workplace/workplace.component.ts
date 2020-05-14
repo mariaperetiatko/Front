@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef} from "@angular/core";
 import {
   Workplace,
   APIClient,
@@ -9,6 +9,9 @@ import { List } from "linqts";
 import { TranslateService } from "@ngx-translate/core";
 import { forkJoin } from "rxjs";
 import { finalize } from "rxjs/operators";
+import * as moment from "moment";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-workplace",
@@ -34,13 +37,28 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   workplaceOrders;
   busyTimes = [];
   sumToPay;
-  todayDate = new Date();
-  minDateString = this.todayDate.getFullYear() + '-' + (this.todayDate.getMonth() + 1) + '-' + this.todayDate.getDate();
+  minDateString;
+  finishTimeNumeric;
+  isBookingRequesting = false;
+  isBookingCreated = false;
 
-  constructor(private apiClient: APIClient) {}
+  @ViewChild("content") templateRef: TemplateRef<any>;
+
+  constructor(private apiClient: APIClient, private modalService: NgbModal, private router: Router) {}
+
+  doToMap() {
+    this.router.navigate(["/map-search"]);
+  }
+
+  leftpad(val, resultLength = 2, leftpadChar = "0"): string {
+    return (String(leftpadChar).repeat(resultLength) + String(val)).slice(
+      String(val).length
+    );
+  }
 
   ngOnInit() {
-    console.log(this.minDateString);
+    this.minDateString = moment(new Date()).format("YYYY-MM-DD");
+
     this.workplaceId = Number.parseFloat(localStorage.getItem("workplaceId"));
     if (this.workplaceId >= 0) {
       this.getData();
@@ -54,16 +72,13 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     const workplaceEquipmentsQuery = this.apiClient.GetWorkplaceEquipmentByWorkplaceWithEquipment(
       this.workplaceId
     );
-    const workplaceOrdersQuery = this.apiClient.GetWorkplaceOrdersByWorkplaceId(
-      this.workplaceId
-    );
 
-    forkJoin([workplaceQuery, workplaceEquipmentsQuery, workplaceOrdersQuery])
+    forkJoin([workplaceQuery, workplaceEquipmentsQuery])
       .pipe(finalize(() => (this.isRequesting = false)))
       .subscribe((results) => {
         this.workplace = results[0];
         this.workplaceEquipmentList = results[1];
-        this.workplaceOrderList = results[2];
+
         if (this.workplace.building.startMinute === 0) {
           this.startWorkingTime = this.workplace.building.startHour + ":00";
         } else {
@@ -132,6 +147,29 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     if (this.workplace.building.finishMinute !== 0) {
       endPoint += 0.5;
     }
+    if (
+      this.minDateString === moment(this.workplaceDate).format("YYYY-MM-DD")
+    ) {
+
+      let dt = new Date();
+      let currentNumeric = dt.getHours();
+      if (dt.getMinutes() > 0 && dt.getMinutes() <= 30) {
+        currentNumeric += 0.5;
+      } else if (dt.getMinutes() > 30) {
+        currentNumeric += 1;
+      }
+      startPoint = currentNumeric;
+      for (let i = 0; i < this.busyTimes.length - 1; i++) {
+        if (this.busyTimes[i].start < currentNumeric) {
+          startPoint =
+            this.busyTimes[i].finish > currentNumeric
+              ? this.busyTimes[i].finish
+              : currentNumeric;
+
+          this.busyTimes.shift();
+        }
+      }
+    }
 
     this.busyTimes.unshift({ finish: startPoint });
     this.busyTimes.push({ start: endPoint });
@@ -171,14 +209,13 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     localStorage.removeItem("workplaceId");
   }
-
   bookWorkplace(duration) {
-    const finishTimeNumeric = this.startTime.timeNumeric + duration.restNumeric;
+    this.finishTimeNumeric = this.startTime.timeNumeric + duration.restNumeric;
 
-    if (finishTimeNumeric % 1 === 0) {
-      this.finishTime = finishTimeNumeric + ":00";
+    if (this.finishTimeNumeric % 1 === 0) {
+      this.finishTime = this.finishTimeNumeric + ":00";
     } else {
-      this.finishTime = finishTimeNumeric - 0.5 + ":30";
+      this.finishTime = this.finishTimeNumeric - 0.5 + ":30";
     }
     this.sumToPay = duration.restNumeric * this.workplace.cost;
     console.log(this.sumToPay);
@@ -203,244 +240,62 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
 
     this.isSelectedTimesLoading = false;
   }
-  /* client: Client;
-  landlord: Landlord;
-  isOrdersVisible = false;
-  workplace: Workplace;
-  selectedYear = (new Date()).getFullYear();
-  selectedMonth = (new Date()).getMonth() + 1;
-  selectedDay = (new Date()).getDate();
-  minDay = (new Date()).getDate();
-  minMonth = (new Date()).getMonth() + 1;
-  dateItems = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  workplaceOrdersList: List<WorkplaceOrder> = new List<WorkplaceOrder>();
-  appropriateWorkplaceOrders: List<WorkplaceOrder> =  new List<WorkplaceOrder>();
-  selectedWorkplaceOrdersByDay: WorkplaceOrder[] = [];
-  workplaceEquipmentsList: List<WorkplaceEquipment> = new List<WorkplaceEquipment>();
-  appropriateWorkplaceEquipment: WorkplaceEquipment[] = [];
-  equipment: string[] = [];
-  counts = {};
-  isEqShow = false;
 
-  selectedHours = (new Date()).getHours();
-  selectedMinutes =  (new Date()).getMinutes();
-  minHours = (new Date()).getHours();
-  minMinutes = (new Date()).getMinutes();
-  minFinishMinutes = (new Date()).getMinutes();
-  selectedFinishHours =  (new Date()).getHours();
-  selectedFinishMinutes = (new Date()).getMinutes();
-isRequesting = true;
-  creatingResult = '';
+  createWorkplaceOrder() {
+    this.isBookingRequesting = true;
+    let startBookingTime: Date = new Date(this.workplaceDate);
 
-  constructor(private apiClient: APIClient, public trans: TranslateService) {
-    //trans.use(localStorage.getItem('lang'));
+    if (this.startTime.timeNumeric % 1 === 0) {
+      startBookingTime.setHours(this.startTime.timeNumeric);
+      startBookingTime.setMinutes(0);
+    } else {
+      startBookingTime.setHours(this.startTime.timeNumeric - 0.5);
+      startBookingTime.setMinutes(30);
+    }
+    console.log(startBookingTime);
+    let finishBookingTime: Date = new Date(this.workplaceDate);
 
-  }
+    if (this.finishTimeNumeric % 1 === 0) {
+      finishBookingTime.setHours(this.finishTimeNumeric);
+      finishBookingTime.setMinutes(0);
+    } else {
+      finishBookingTime.setHours(this.finishTimeNumeric - 0.5);
+      finishBookingTime.setMinutes(30);
+    }
 
-  ngOnInit() {
-    this.getClient();
-    this.getWorkplace();
-    this.getEquipment();
-    console.log(this.minHours);
-  }
+    let workplaceOrder: WorkplaceOrder = new WorkplaceOrder();
+    workplaceOrder.startTime = startBookingTime;
+    workplaceOrder.finishTime = finishBookingTime;
+    workplaceOrder.workplaceId = this.workplaceId;
+    workplaceOrder.sumToPay = this.sumToPay;
 
-  getWorkplace() {
-    this.workplace = JSON.parse(localStorage.getItem('selectedWorkplace'));
+    this.apiClient
+      .createWorkplaceOrder(workplaceOrder)
+      .pipe(finalize(() => (this.isBookingRequesting = false)))
+      .subscribe((data: WorkplaceOrder) => {
+        const element: HTMLElement = document.getElementById(
+          "myDiv"
+        ) as HTMLElement;
+        element.click();
 
-    this.apiClient.getWorkplaceOrdersList()
-    .subscribe((data: WorkplaceOrder[]) => {
-      this.workplaceOrdersList = new List<WorkplaceOrder>(data);
-      this.appropriateWorkplaceOrders = this.workplaceOrdersList
-      .Where(x => x.workplaceId === this.workplace.id);
-    });
-
-    this.apiClient.getBuildingById(this.workplace.buildingId)
-    .subscribe((data: Building) => {
-      this.apiClient.getLandlordById(data.landlordId)
-        .subscribe((landlord: Landlord) => {
-          this.landlord = landlord;
-          this.isRequesting = false;
-        });
+        console.log(data);
       });
   }
 
-  getEquipment() {
-    this.apiClient.getWorkplaceEquipmentsList()
-    .subscribe((data: WorkplaceEquipment[]) => {
-      this.workplaceEquipmentsList = new List<WorkplaceEquipment>(data);
-      this.appropriateWorkplaceEquipment = this.workplaceEquipmentsList
-      .Where(x => x.workplaceId === this.workplace.id).ToArray();
-      for (const item of this.appropriateWorkplaceEquipment) {
-        this.apiClient.getEquipmentById(item.equipmentId)
-        .subscribe((eqData: Equipment) => {
-          this.equipment.push(eqData.name);
-        });
-      }
+  okClick() {
+    this.workplaceDate = null;
+    this.sumToPay = null;
+    this.startTime = null;
+    this.finishTime = null;
+    this.isDateSelecting = true;
+    this.isTimesLoading = true;
+    this.isSelectedTimesLoading = true;
+  }
+
+  open() {
+    console.log(this.templateRef);
+    this.modalService.open(this.templateRef, {
+      ariaLabelledBy: "modal-basic-title",
     });
   }
-
-  async delay(ms: number) {
-    await new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
-}
-
-  showEquipment() {
-    if (!this.isEqShow) {
-      var ccc = {};
-      console.log(this.equipment);
-      this.equipment.forEach(function(x) { ccc[x] = (ccc[x] || 0) + 1; });
-      this.counts = ccc;
-      console.log(this.counts);
-    this.isEqShow = true;
-    } else {
-      this.isEqShow = false;
-    }
-  }
-
-  showObject() {
-    var result = "";
-    for (var p in this.counts) {
-      if(this.counts.hasOwnProperty(p) ) {
-        result += p + " - " + this.counts[p] + "\n";
-      }
-    }
-    return result;
-  }
-
-  getDayOrders() {
-    if (!this.isOrdersVisible) {
-      this.getWorkplace();
-      this.delay(1000).then( any => {
-      this.selectedWorkplaceOrdersByDay = this.appropriateWorkplaceOrders
-      .Where(x =>  x.startTime.getFullYear() === this.selectedYear
-      && x.startTime.getMonth() === this.selectedMonth - 1
-      && x.startTime.getDate() === this.selectedDay).ToArray();
-      this.isOrdersVisible = true;
-    });} else {
-      this.isOrdersVisible = false;
-    }
-  }
-
-  minMontChanged() {
-    console.log(this.selectedYear);
-    if (this.selectedYear === (new Date()).getFullYear()) {
-      this.minMonth = ((new Date()).getMonth() + 1);
-    } else {
-      this.minMonth = 1;
-    }
-  }
-
-  minDayChanged() {
-    console.log(this.selectedMonth);
-    if (this.selectedYear === (new Date()).getFullYear() && this.selectedMonth === ((new Date()).getMonth() + 1)) {
-      this.minDay =  (new Date()).getDate();
-    } else {
-      this.minDay = 1;
-    }
-  }
-
-  minHoursChanged() {
-    if (this.selectedYear === (new Date()).getFullYear() && this.selectedMonth === ((new Date()).getMonth() + 1)
-      && this.selectedDay === (new Date()).getDate()) {
-        this.minHours = (new Date()).getHours();
-      } else {
-        this.minHours = 9;
-      }
-  }
-
-  minMinutesChanged() {
-    if (this.selectedFinishHours < this.selectedHours) {
-      this.selectedFinishHours = this.selectedHours;
-      this.minFinishMinutes = this.selectedMinutes;
-    }
-   if ( this.selectedFinishMinutes < this.selectedMinutes) {
-    this.selectedFinishMinutes = this.selectedMinutes;
-   }
-    if (this.selectedYear === (new Date()).getFullYear() && this.selectedMonth === ((new Date()).getMonth() + 1)
-      && this.selectedDay === (new Date()).getDate() &&  this.selectedHours === (new Date()).getHours()) {
-        this.minMinutes = (new Date()).getMinutes();
-      } else {
-        this.minMinutes = 0;
-      }
-      if (this.selectedHours < this.minHours) {
-        this.selectedHours = this.minHours;
-      }
-  }
-
-
-  minFinishMinutesChanged() {
-    if (this.selectedFinishMinutes <= this.selectedMinutes && this.selectedHours === this.selectedFinishHours) {
-     // this.selectedFinishHours = this.selectedHours;
-      this.minFinishMinutes = this.selectedMinutes;
-      this.selectedFinishMinutes = this.selectedMinutes;
-    }  else {
-      this.minFinishMinutes = 0;
-    }
-    if (this.selectedMinutes < this.minMinutes) {
-      this.selectedMinutes = this.minMinutes;
-    }
-  }
-
-  minFinishChanged() {
-    if (this.selectedHours < this.selectedFinishHours) {
-      this.minFinishMinutes = 0;
-    } else {
-      this.minFinishMinutes = this.selectedMinutes;
-      this.selectedFinishMinutes = this.selectedMinutes;
-    }
-    if (this.selectedFinishHours < this.selectedHours) {
-      this.selectedFinishHours = this.selectedHours;
-    }
-  }
-
-  minMinFinishChanged() {
-    if (this.selectedFinishMinutes < this.minFinishMinutes) {
-      this.selectedFinishMinutes = this.minFinishMinutes;
-    }
-  }
-
-  createWorkplaceOrder() {
-    this.isOrdersVisible = false;
-    let startTime = new Date();
-    startTime.setFullYear(this.selectedYear);
-    startTime.setMinutes(this.selectedMonth);
-    startTime.setDate(this.selectedDay);
-    startTime.setHours(this.selectedHours + 3);
-    startTime.setMinutes(this.selectedMinutes);
-
-    let finistTime = new Date();
-    finistTime.setFullYear(this.selectedYear);
-    finistTime.setMinutes(this.selectedMonth);
-    finistTime.setDate(this.selectedDay);
-    finistTime.setHours(this.selectedFinishHours + 3);
-    finistTime.setMinutes(this.selectedFinishMinutes);
-
-    let workplaceOrder = new WorkplaceOrder();
-    workplaceOrder.clientId = this.client.id;
-    workplaceOrder.workplaceId = this.workplace.id;
-    workplaceOrder.startTime = startTime;
-    workplaceOrder.finishTime = finistTime;
-
-    this.apiClient.createWorkplaceOrder(workplaceOrder)
-    .subscribe((data: WorkplaceOrder) => {
-      if (data.id !== undefined) {
-        let text = '';
-        this.trans.get('Successful order creation!').subscribe((res: string) => { text += (res + '\n'); } );
-        this.trans.get('Total cost is ').subscribe((res: string) => { text += (res + data.sumToPay + ' '); } );
-        this.trans.get('grn').subscribe((res: string) => { text += res; } );
-
-        this.creatingResult =  text;
-       // this.isOrdersVisible = false;
-      } else {
-        let text = '';
-        this.trans.get('Order creation fails').subscribe((res: string) => { text = res; } );
-        this.creatingResult = text;
-      }
-      console.log(data);
-    });
-  }
-
-  getClient(): void {
-    this.apiClient.getClientById(1)
-    .subscribe((data: Client) =>  this.client = data);
-  }*/
 }
