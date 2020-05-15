@@ -39,7 +39,7 @@ export class SchedulerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isRequesting = false;
+    this.isRequesting = true;
 
     this.apiClient.getSchedule(1)
     .pipe(finalize(() => this.isRequesting = false))

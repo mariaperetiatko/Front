@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef} from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import {
   Workplace,
   APIClient,
@@ -11,14 +11,14 @@ import { forkJoin } from "rxjs";
 import { finalize } from "rxjs/operators";
 import * as moment from "moment";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-workplace",
   templateUrl: "./workplace.component.html",
   styleUrls: ["./workplace.component.css"],
 })
-export class WorkplaceComponent implements OnInit, OnDestroy {
+export class WorkplaceComponent implements OnInit {
   isSelectedTimesLoading = true;
   workplaceId: number;
   isRequesting = false;
@@ -44,7 +44,8 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
 
   @ViewChild("content") templateRef: TemplateRef<any>;
 
-  constructor(private apiClient: APIClient, private modalService: NgbModal, private router: Router) {}
+  constructor(private apiClient: APIClient, private modalService: NgbModal, private router: Router,
+    private activateRoute: ActivatedRoute) { }
 
   doToMap() {
     this.router.navigate(["/map-search"]);
@@ -59,7 +60,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.minDateString = moment(new Date()).format("YYYY-MM-DD");
 
-    this.workplaceId = Number.parseFloat(localStorage.getItem("workplaceId"));
+    this.workplaceId = Number.parseFloat(this.activateRoute.snapshot.params['workplaceId']);
     if (this.workplaceId >= 0) {
       this.getData();
     }
@@ -206,9 +207,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     this.isTimesLoading = false;
   }
 
-  ngOnDestroy() {
-    localStorage.removeItem("workplaceId");
-  }
+
   bookWorkplace(duration) {
     this.finishTimeNumeric = this.startTime.timeNumeric + duration.restNumeric;
 

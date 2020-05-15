@@ -5,3 +5,16 @@
 .header-style {
   background-color: #f3f4f6 !important;
 }
+
+.dropdown-item:hover {
+  background-color:  #cad5df !important;
+}
+
+.dropdown-item:active {
+  background-color:  #cad5df !important;
+}
+
+.active {
+  background-color:  #cad5df !important;
+}
+

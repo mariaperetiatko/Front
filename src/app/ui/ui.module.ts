@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
@@ -16,6 +17,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, LayoutComponent, LandingPageComponent],
   imports: [
+    RouterModule,
     CommonModule,
     NgbModule.forRoot(),
     TranslateModule.forChild({

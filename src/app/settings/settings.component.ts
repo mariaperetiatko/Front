@@ -36,6 +36,7 @@ export class SettingsComponent implements OnInit {
 
   getRecommendedParams() {
     if (this.client.hight > 0) {
+
       this.isRequestingRecommendations = true;
       this.getRecommendedChairHeight();
       this.getRecommendedTableHeight();

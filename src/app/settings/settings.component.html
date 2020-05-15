@@ -21,6 +21,7 @@
           *ngIf="
             !isRecommendedTableVisible &&
             !isRecommendedChairVisible
+            && !isRequestingRecommendations
           "
           (click)="getRecommendedParams()"
         >
@@ -98,8 +99,8 @@
                 class="btn btn-default details"
                 (click)="showHideHeightInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isHeightVisible">
@@ -121,8 +122,8 @@
                 class="btn btn-default details"
                 (click)="showHideVisionInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isVisionVisible">
@@ -144,8 +145,8 @@
                 class="btn btn-default details"
                 (click)="showHideTableHeightInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isTableHeightVisible">
@@ -167,8 +168,8 @@
                 class="btn btn-default details"
                 (click)="showHideChairHeightInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isChairHeightVisible">
@@ -190,8 +191,8 @@
                 class="btn btn-default details"
                 (click)="showHideLightInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isLightVisible">
@@ -211,8 +212,8 @@
                 class="btn btn-default details"
                 (click)="showHideTemperatureInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isTemperatureVisible">
@@ -232,8 +233,8 @@
                 class="btn btn-default details"
                 (click)="showHideMusicInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isMusicVisible">
@@ -253,8 +254,8 @@
                 class="btn btn-default details"
                 (click)="showHideDrinkInput()"
               >
-                {{ "Modify" | translate }}
-              </button>
+              <i class="fa fa-pencil"></i>
+            </button>
             </td>
             <td>
               <div *ngIf="isDrinkVisible">

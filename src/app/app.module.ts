@@ -33,6 +33,9 @@ import { BuildingsAdminComponent } from './buildings-admin/buildings-admin.compo
 import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.component';
 import { VisionDiagramsComponent } from './vision-diagrams/vision-diagrams.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { BoofingEditComponent } from './boofing-edit/boofing-edit.component';
+import { RouterModule } from '@angular/router';
+import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -58,7 +61,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BuildingsAdminComponent,
     WorkplaceAdminComponent,
     VisionDiagramsComponent,
-    BookingsComponent
+    BookingsComponent,
+    BoofingEditComponent,
+    BookingsArchiveComponent
   ],
   imports: [
     ChartsModule,
@@ -69,6 +74,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     HttpModule,
     UiModule,
+    RouterModule,
     DlDateTimePickerDateModule,
     TranslateModule.forRoot({
       loader: {

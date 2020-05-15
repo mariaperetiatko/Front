@@ -55,16 +55,17 @@ export class APIClient {
     } else {
       return '?FinishTime=' + filter.finishTime.toLocaleString()
     }
-
-
-
   }
 
  /**
    * @return Success
    */
-  getFilteredWorkplaceOrdersListByClient(filter: Filter): Observable<WorkplaceOrder[]> {
-    let url_ = this.baseUrl + "/api/WorkplaceOrder/GetFilteredWorkplaceOrdersListByClient";
+  getFilteredWorkplaceOrdersListByClient(filter: Filter, pageNumber: number): Observable<FilteredPagedResult> {
+    let url_ = this.baseUrl + "/api/WorkplaceOrder/GetFilteredWorkplaceOrdersListByClient/{pageNumber}";
+    if (pageNumber === undefined || pageNumber === null)
+      throw new Error("The parameter 'pageNumber' must be defined.");
+
+    url_ = url_.replace("{pageNumber}", encodeURIComponent("" + pageNumber));
     let params = new HttpParams();
     if (filter != null && filter.startTime !== null) {
       params = params.set('StartTime', moment(filter.startTime).format("YYYY-MM-DD"));
@@ -100,17 +101,17 @@ export class APIClient {
             try {
               return this.processGetFilteredWorkplaceOrdersListByClient(<any>response_);
             } catch (e) {
-              return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(e));
+              return <Observable<FilteredPagedResult>>(<any>_observableThrow(e));
             }
           } else
-            return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(response_));
+            return <Observable<FilteredPagedResult>>(<any>_observableThrow(response_));
         })
       );
   }
 
   protected processGetFilteredWorkplaceOrdersListByClient(
     response: HttpResponseBase
-  ): Observable<WorkplaceOrder[]> {
+  ): Observable<FilteredPagedResult> {
     const status = response.status;
     const responseBlob =
       response instanceof HttpResponse
@@ -129,15 +130,13 @@ export class APIClient {
       return blobToText(responseBlob).pipe(
         _observableMergeMap((_responseText) => {
           let result200: any = null;
-          let resultData200 =
+          const resultData200 =
             _responseText === ""
               ? null
               : JSON.parse(_responseText, this.jsonParseReviver);
-          if (resultData200 && resultData200.constructor === Array) {
-            result200 = [];
-            for (let item of resultData200)
-              result200.push(WorkplaceOrder.fromJS(item));
-          }
+          result200 = resultData200
+            ? FilteredPagedResult.fromJS(resultData200)
+            : new FilteredPagedResult();
           return _observableOf(result200);
         })
       );
@@ -153,7 +152,7 @@ export class APIClient {
         })
       );
     }
-    return _observableOf<WorkplaceOrder[]>(<any>null);
+    return _observableOf<FilteredPagedResult>(<any>null);
   }
 
 
@@ -5580,6 +5579,58 @@ export interface ILandlord {
   identityId?: string | undefined;
   identity?: User | undefined;
   building?: Building[] | undefined;
+}
+
+
+export interface IFilteredPagedResult {
+  workplaceOrders?: WorkplaceOrder[] | undefined;
+  totalCount?: number | undefined;
+}
+
+
+export class FilteredPagedResult implements IFilteredPagedResult {
+  constructor(data?: IFilteredPagedResult) {
+    if (data) {
+      for (const property in data) {
+        if (data.hasOwnProperty(property)) {
+          (<any>this)[property] = (<any>data)[property];
+        }
+      }
+    }
+  }
+  workplaceOrders?: WorkplaceOrder[] | undefined;
+  totalCount?: number | undefined;
+
+  static fromJS(data: any): FilteredPagedResult {
+    data = typeof data === "object" ? data : {};
+    const result = new FilteredPagedResult();
+    result.init(data);
+    return result;
+  }
+
+  init(data?: any) {
+    if (data) {
+      this.totalCount = data["totalCount"];
+      if (data["workplaceOrders"] && data["workplaceOrders"].constructor === Array) {
+        this.workplaceOrders = [];
+        for (const item of data["workplaceOrders"]) {
+          this.workplaceOrders.push(WorkplaceOrder.fromJS(item));
+        }
+      }
+    }
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["totalCount"] = this.totalCount;
+    if (this.workplaceOrders && this.workplaceOrders.constructor === Array) {
+      data["workplaceOrders"] = [];
+      for (const item of this.workplaceOrders) {
+        data["workplaceOrders"].push(item.toJSON());
+      }
+    }
+    return data;
+  }
 }
 
 export class Workplace implements IWorkplace {

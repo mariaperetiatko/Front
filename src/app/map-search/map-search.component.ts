@@ -107,13 +107,10 @@ export class MapSearchComponent implements AfterContentInit {
       this.getBuildingSearchingResults();
     }
 
-
-   // this.setCurrentPosition();
   }
 
   visitWorkplace(workplaceId) {
-    this.router.navigate(["/workplace"]);
-    localStorage.setItem('workplaceId', workplaceId);
+    this.router.navigate(["/map-search/workplace/", workplaceId]);
   }
 
   boundsListener() {

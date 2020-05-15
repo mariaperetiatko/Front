@@ -19,6 +19,7 @@ import { ClientsAdminComponent } from './clients-admin/clients-admin.component';
 import { EquipmentAdminComponent } from './equipment-admin/equipment-admin.component';
 import { BuildingsAdminComponent } from './buildings-admin/buildings-admin.component';
 import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.component';
+import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
 
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -29,7 +30,7 @@ const routes: Routes = [
                          { path: 'settings', component: SettingsComponent},
                          { path: 'workplace-parameters', component: WorkspaceParametersComponent},
                          { path: 'map-search', component: MapSearchComponent},
-                         { path: 'workplace', component: WorkplaceComponent},
+                         { path: 'map-search/workplace/:workplaceId', component: WorkplaceComponent},
                          { path: 'scheduler', component: SchedulerComponent},
                          { path: 'statistics', component: StatisticsComponent},
                          { path: 'buildings', component: BuildingsComponent},
@@ -39,7 +40,8 @@ const routes: Routes = [
                          { path: 'buildings-admin', component: BuildingsAdminComponent},
                          { path: 'workplace-admin', component: WorkplaceAdminComponent},
                          { path: 'vision-diagrams', component: VisionDiagramsComponent},
-                         { path: 'bookings', component: BookingsComponent}
+                         { path: 'bookings/future-bookings', component: BookingsComponent},
+                         { path: 'bookings/bookings-archive', component: BookingsArchiveComponent}
                          ];
 
 @NgModule({
