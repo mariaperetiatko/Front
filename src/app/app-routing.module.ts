@@ -20,6 +20,7 @@ import { EquipmentAdminComponent } from './equipment-admin/equipment-admin.compo
 import { BuildingsAdminComponent } from './buildings-admin/buildings-admin.component';
 import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.component';
 import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
+import { BookingEditComponent } from './booking-edit/booking-edit.component';
 
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -41,7 +42,8 @@ const routes: Routes = [
                          { path: 'workplace-admin', component: WorkplaceAdminComponent},
                          { path: 'vision-diagrams', component: VisionDiagramsComponent},
                          { path: 'bookings/future-bookings', component: BookingsComponent},
-                         { path: 'bookings/bookings-archive', component: BookingsArchiveComponent}
+                         { path: 'bookings/bookings-archive', component: BookingsArchiveComponent},
+                         { path: 'bookings/booking-edit/:workplaceOrderId', component: BookingEditComponent}
                          ];
 
 @NgModule({

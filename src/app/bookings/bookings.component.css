@@ -47,14 +47,20 @@ float:left;
 }
 
 
-.window-background {
-  width: 30%;
-  float: right;
+.window {
+  width: 100%;
   padding: 10px;
   overflow: hidden;
   background-color: #cad5df;
   border-radius: 0.25rem;
   border: 2px solid #cad5df;
+}
+
+.window-background {
+  width: 30%;
+  float: right;
+  overflow: hidden;
+
 }
 
 .checque-background {

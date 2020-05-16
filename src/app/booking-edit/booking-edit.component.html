@@ -1,0 +1,199 @@
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Bookings" | translate }}
+     </li>
+    <li class="breadcrumb-item" aria-current="page">
+     <a href="javascript:void(0)" (click)="goToFutureBookings()"> {{ "Future bookings" | translate }}</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Booking" | translate }} {{workplaceOrderId}}
+    </li>
+  </ol>
+</nav>
+<div *ngIf="isRequesting" class="spinner-border"></div>
+<div class="body-background" *ngIf="!isRequesting">
+  <div class="left-background">
+    <div class="info-background">
+      Infomation
+      <hr />
+      <div class="checque-wrapper">
+      <div class="left-column">Address</div>
+      <div class="right-column">
+
+          {{ workplace.building.country }}, {{ workplace.building.city }},
+          {{ workplace.building.street }}, {{ workplace.building.flat }}
+
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Cost</div>
+      <div class="right-column">
+        {{ workplace.cost }}
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Landlord</div>
+      <div class="right-column">
+
+          {{ workplace.building.landlord.firstName }}
+          {{ workplace.building.landlord.lastName }}
+
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Phone</div>
+      <div class="right-column">
+        {{ workplace.building.landlord.phone }}
+      </div></div>
+      <div class="checque-wrapper">
+
+      <div class="left-column">Working hours</div>
+
+      <div class="right-column">
+        {{ this.startWorkingTime }} - {{ this.finishWorkingTime }}
+      </div></div>
+      <div class="checque-wrapper">
+
+        <div class="left-column">Booking date</div>
+
+        <div class="right-column">
+          {{ this.workplaceOrder.startTime | date: "M/d/yy" }}
+        </div>
+      </div>
+
+        <div class="checque-wrapper">
+
+          <div class="left-column">Sum to pay</div>
+
+          <div class="right-column">
+            {{ this.workplaceOrder.sumToPay }}
+          </div>
+        </div>
+
+    <div class="checque-wrapper">
+
+      <div class="left-column">Booking start time</div>
+
+      <div class="right-column">
+        {{ this.workplaceOrder.startTime | date: "HH:mm" }}
+      </div>
+    </div>
+  <div class="checque-wrapper">
+
+    <div class="left-column">Booking finish time</div>
+
+    <div class="right-column">
+      {{ this.workplaceOrder.finishTime | date: "HH:mm" }}
+    </div>
+  </div>
+
+    <div class="checque-wrapper">
+
+      <div class="left-column">Sum to pay</div>
+
+      <div class="right-column">
+        {{ this.workplaceOrder.sumToPay }}
+      </div>
+    </div>
+</div>
+    <div class="order-background" *ngIf="workplaceDate">
+      Booking information for editing
+      <hr>
+      <div class="checque-background" *ngIf="isBookingCreated">Booking created</div>
+      <div *ngIf="isBookingRequesting&&!isBookingCreated" class="spinner-border"></div>
+
+      <div class="checque-background" *ngIf="!isBookingRequesting">
+      <div class="checque-wrapper" *ngIf="workplaceDate"><div class="left-column-checque">Selected date:</div> <div class="right-column-checque">{{workplaceDate | date:"MM/dd/yyyy"}}</div></div>
+      <div class="checque-wrapper" *ngIf="startTime"><div class="left-column-checque">Selected start time:</div> <div class="right-column-checque">{{startTime.time}}</div></div>
+      <div class="checque-wrapper" *ngIf="finishTime"><div class="left-column-checque">Selected finish time:</div><div class="right-column-checque"> {{finishTime}}</div></div>
+      <div class="checque-wrapper" *ngIf="sumToPay"><div class="left-column-checque">Cost:</div> <div class="right-column-checque">{{sumToPay}}</div></div>
+
+    </div>
+    <div class="form-group" *ngIf="!isBookingRequesting">
+      <button  *ngIf="sumToPay"
+        class="btn btn-default form-button" (click)="editWorkplaceOrder()" >{{ 'Edit' | translate }}</button>
+    </div>
+    </div>
+    <div class="order-background1">
+      <p *ngIf="isDateSelecting" style="margin-left: 2.1%;">Select Date</p>
+      <div class="form-group" *ngIf="isDateSelecting">
+        <div class="left-column" style="margin-left: 0.5%;">
+          Date
+        </div>
+        <div class="right-column" style="margin-right: 2.1%;">
+          <input
+            [min]="minDateString"
+            type="date"
+            name="workplaceDate"
+            class="form-control"
+            (change)="getWorkplaceOrdersByWorkplaceAndDate()"
+            [(ngModel)]="workplaceDate"
+            style="margin-bottom:200px"
+          />
+        </div>
+      </div>
+      <p *ngIf="!isTimesLoading" style="margin-left: 2.1%;"><a (click)="workplaceDate=null;sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / Select Start time</p>
+      <div *ngIf="!isTimesLoading" class="times">
+        <div
+          *ngFor="let item of timesToBook"
+          class="time-background"
+          (click)="selectStartTime(item)"
+        >
+          <div class="time-background-column" style="width: 70%;">
+            <p>Start time:</p>
+            <p>Available:</p>
+          </div>
+          <div class="time-background-column">
+            <p>{{ item.time }}</p>
+            <p>{{ item.rest }}</p>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="!isSelectedTimesLoading" style="margin-left: 2.1%;"><a (click)="workplaceDate=null;sumToPay=null;startTime=null;finishTime=null;isDateSelecting=true;isTimesLoading=true;isSelectedTimesLoading=true;" href="javascript:void(0)">Select Date</a> / <a (click)="getAvailableTimesDyDate();finishTime=null;sumToPay=null;" href="javascript:void(0)">Select Start time</a> / Select Duration </p>
+      <div *ngIf="!isSelectedTimesLoading" class="times">
+        <div
+          *ngFor="let item of durationTimesToBook"
+          class="time-background1"
+          (click)="bookWorkplace(item)"
+        >
+          <p>{{ item.rest }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="window-background">
+    Equipment
+    <hr />
+    <div
+      *ngFor="let equipment of workplaceEquipmentList"
+      class="workplace-background"
+    >
+      <div class="left-column1">{{ equipment.equipment.name }}</div>
+      <div class="right-column1">{{ equipment.count }}</div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Booking edited</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        Booking edited successfully!
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" style="background-color: #cad5df;" (click)="modal.close('Ok click');okClick()">Ok</button>
+  </div>
+</ng-template>
+
+<div id="myDiv" style="display:none" (click)="open()">Launch demo modal</div>
+

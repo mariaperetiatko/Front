@@ -29,8 +29,8 @@ body {
 
  .nav-item.mr-2 {
   margin-top:0;
-  line-height: 50px;
-  height:50px !important;
+  line-height: 55px;
+  height:55px !important;
  }
 
  a.nav-link.d-block.jumping {
@@ -39,8 +39,8 @@ body {
  }
  .nav-item {
   margin-top:0;
-  line-height: 50px;
-  height:50px !important;
+  line-height: 55px;
+  height:55px !important;
  }
 
  .spinner-border {

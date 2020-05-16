@@ -92,6 +92,12 @@
       <hr />
       <div class="checque-background">
         <div class="checque-wrapper">
+          <div class="left-column-checque">Booking number:</div>
+          <div class="right-column-checque">
+            {{ order.id }}
+          </div>
+        </div>
+        <div class="checque-wrapper">
           <div class="left-column-checque">Coworking:</div>
           <div class="right-column-checque">
             {{ order.workplace.building.name }}
@@ -100,7 +106,8 @@
         <div class="checque-wrapper">
           <div class="left-column-checque">Address:</div>
           <div class="right-column-checque">
-            {{ order.workplace.building.country }}
+            {{ order.workplace.building.country }}, {{order.workplace.building.city}}, {{order.workplace.building.street}},
+            {{order.workplace.building.house}}, {{order.workplace.building.flat}}
           </div>
         </div>
         <div class="checque-wrapper">
@@ -112,20 +119,34 @@
           <div class="right-column-checque">{{ order.sumToPay }}</div>
         </div>
       </div>
-      <div class="form-group" *ngIf="isFuture">
+
         <button
           class="btn btn-default form-button"
+          (click)="edit(order.id)"
+        >
+          {{ "Edit" | translate }}
+        </button>
+
+
+        <button
+          class="btn btn-default form-button" style=" margin-right:10px"
           (click)="openDeliteConfirmationWindow(order.id)"
         >
           {{ "Delete" | translate }}
         </button>
-      </div>
+
     </div>
   </div>
 
   <div class="window-background">
-    Information
+    <div class="window">
+    Filters
     <hr />
+    <div class="form-group">
+      <label>Coworking</label>
+      <input class="form-control" type="text" name="userName" [(ngModel)]="filter.like"  #like="ngModel" />
+
+    </div>
     <div class="form-group">
       <label>Select start date</label>
       <input
@@ -156,14 +177,14 @@
         {{ "Filter" | translate }}
       </button>
     </div>
-  </div>
 
-  <div class="form-group" *ngIf="startDate||finishDate">
+</div>
+  <div class="form-group" *ngIf="isFiltered">
     <button class="btn btn-default form-button1" (click)="loadFuture(1)">
       {{ "Load all future" | translate }}
     </button>
   </div>
-
+</div>
 
 </div>
 

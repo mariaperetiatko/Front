@@ -33,9 +33,9 @@ import { BuildingsAdminComponent } from './buildings-admin/buildings-admin.compo
 import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.component';
 import { VisionDiagramsComponent } from './vision-diagrams/vision-diagrams.component';
 import { BookingsComponent } from './bookings/bookings.component';
-import { BoofingEditComponent } from './boofing-edit/boofing-edit.component';
 import { RouterModule } from '@angular/router';
 import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
+import { BookingEditComponent } from './booking-edit/booking-edit.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -62,8 +62,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WorkplaceAdminComponent,
     VisionDiagramsComponent,
     BookingsComponent,
-    BoofingEditComponent,
-    BookingsArchiveComponent
+    BookingsArchiveComponent,
+    BookingEditComponent
   ],
   imports: [
     ChartsModule,

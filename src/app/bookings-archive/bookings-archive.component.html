@@ -60,7 +60,8 @@
         <div class="checque-wrapper">
           <div class="left-column-checque">Address:</div>
           <div class="right-column-checque">
-            {{ order.workplace.building.country }}
+            {{ order.workplace.building.country }}, {{order.workplace.building.city}}, {{order.workplace.building.street}},
+            {{order.workplace.building.house}}, {{order.workplace.building.flat}}
           </div>
         </div>
         <div class="checque-wrapper">
@@ -77,12 +78,12 @@
 
   </div>
   <div class="window-background">
-    Information
+    Info
     <hr />
 
     <div class="checque-wrapper">
-      <div class="left-column-checque">Total Count:</div>
-      <div class="right-column-checque">{{ workplaceOrders.length }}</div>
+      <div class="left-column-checque">Dates:</div>
+      <div class="right-column-checque">{{ workplaceOrders[0].startTime| date: "M/d/yy"}}-{{workplaceOrders[workplaceOrders.length-1].startTime| date: "M/d/yy" }}</div>
     </div>
 
   </div>

@@ -38,6 +38,10 @@ export class BookingsComponent implements OnInit {
   constructor(private apiClient: APIClient, private router: Router, private userService: UserService,
     private modalService: NgbModal) { }
 
+    edit(workplaceOrderId) {
+      this.router.navigate(["/bookings/booking-edit/", workplaceOrderId]);
+    }
+
   ngOnInit() {
     this.todayDateString = moment(new Date()).format("YYYY-MM-DD");
     this.minFinishDate = moment(new Date()).format("YYYY-MM-DD");
@@ -67,11 +71,17 @@ export class BookingsComponent implements OnInit {
   loadFuture(pageNumber) {
     this.isFuture = true;
     this.isPreviouse = false;
-
+    this.todayDateString = moment(new Date()).format("YYYY-MM-DD");
+    this.minFinishDate = moment(new Date()).format("YYYY-MM-DD");
+    this.maxStartDate = null;
     this.page = pageNumber;
     this.filter.startTime = new Date();
     this.filter.finishTime = null;
+    this.startDate = null;
+    this.finishDate = null;
+    this.filter.like = null;
     this.isFiltered = false;
+
     this.getFilteredOrders();
   }
 
@@ -117,13 +127,9 @@ export class BookingsComponent implements OnInit {
       .subscribe((data: FilteredPagedResult) => {
         this.workplaceOrders = data.workplaceOrders;
         this.pageCountNumber = data.totalCount;
-        console.log(data.totalCount);
 
         this.pageCount = Array(data.totalCount).fill(0).map((x, i) => i + 1)
-        this.totalSum = 0;
-        for (let i = 0; i < this.workplaceOrders.length; i++) {
-          this.totalSum += this.workplaceOrders[i].sumToPay;
-        }
+
       });
   }
 }

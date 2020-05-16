@@ -22,7 +22,7 @@ import {
   providedIn: "root",
 })
 export class ApiService {
-  constructor() {}
+  constructor() { }
 }
 
 export const API_BASE_URL = new InjectionToken<string>("API_BASE_URL");
@@ -43,7 +43,7 @@ export class APIClient {
     this.baseUrl = baseUrl ? baseUrl : "https://aapz-backend.conveyor.cloud";
   }
 
-  toJSON(filter:Filter) {
+  toJSON(filter: Filter) {
 
 
     if (filter === null) {
@@ -57,9 +57,9 @@ export class APIClient {
     }
   }
 
- /**
-   * @return Success
-   */
+  /**
+    * @return Success
+    */
   getFilteredWorkplaceOrdersListByClient(filter: Filter, pageNumber: number): Observable<FilteredPagedResult> {
     let url_ = this.baseUrl + "/api/WorkplaceOrder/GetFilteredWorkplaceOrdersListByClient/{pageNumber}";
     if (pageNumber === undefined || pageNumber === null)
@@ -71,8 +71,11 @@ export class APIClient {
       params = params.set('StartTime', moment(filter.startTime).format("YYYY-MM-DD"));
       console.log(params);
     }
-      if (filter != null && filter.finishTime !== null)
-        params = params.append('FinishTime', moment(filter.finishTime).format("YYYY-MM-DD"));
+    if (filter != null && filter.finishTime !== null && filter.finishTime !== undefined)
+      params = params.append('FinishTime', moment(filter.finishTime).format("YYYY-MM-DD"));
+
+    if (filter != null && filter.like !== null && filter.like !== undefined)
+      params = params.append('Like', filter.like);
 
     console.log(params);
     url_ = url_.replace(/[?&]$/, "");
@@ -117,8 +120,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -210,8 +213,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -249,6 +252,183 @@ export class APIClient {
     }
     return _observableOf<WorkplaceOrder[]>(<any>null);
   }
+
+
+
+
+  /**
+   * @return Success
+   */
+  getMonitoringList(): Observable<Monitoring[]> {
+    let url_ = this.baseUrl + "/api/Monitoring/GetMonitoringList";
+    url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem("auth_token");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetMonitoringList(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetMonitoringList(<any>response_);
+            } catch (e) {
+              return <Observable<Monitoring[]>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<Monitoring[]>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetMonitoringList(
+    response: HttpResponseBase
+  ): Observable<Monitoring[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (let item of resultData200)
+              result200.push(Monitoring.fromJS(item));
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<Monitoring[]>(<any>null);
+  }
+
+
+  /**
+   * @return Success
+   */
+  getMonitoringByDate(date: Date): Observable<Monitoring> {
+    let url_ = this.baseUrl + "/api/Monitoring/GetMonitoringByDate/{date}";
+    if (date === undefined || date === null)
+      throw new Error("The parameter 'date' must be defined.");
+    url_ = url_.replace("{date}", encodeURIComponent("" + date));
+    url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem("auth_token");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetMonitoringByDate(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetMonitoringByDate(<any>response_);
+            } catch (e) {
+              return <Observable<Monitoring>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<Monitoring>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetMonitoringByDate(
+      response: HttpResponseBase
+    ): Observable<Monitoring> {
+      const status = response.status;
+      const responseBlob =
+        response instanceof HttpResponse
+          ? response.body
+          : (<any>response).error instanceof Blob
+            ? (<any>response).error
+            : undefined;
+
+      let _headers: any = {};
+      if (response.headers) {
+        for (let key of response.headers.keys()) {
+          _headers[key] = response.headers.get(key);
+        }
+      }
+      if (status === 200) {
+        return blobToText(responseBlob).pipe(
+          _observableMergeMap((_responseText) => {
+            let result200: any = null;
+            const resultData200 =
+              _responseText === ""
+                ? null
+                : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200
+              ? Monitoring.fromJS(resultData200)
+              : new Monitoring();
+            return _observableOf(result200);
+          })
+        );
+      } else if (status !== 200 && status !== 204) {
+        return blobToText(responseBlob).pipe(
+          _observableMergeMap((_responseText) => {
+            return throwException(
+              "An unexpected server error occurred.",
+              status,
+              _responseText,
+              _headers
+            );
+          })
+        );
+      }
+      return _observableOf<Monitoring>(<any>null);
+    }
 
   /**
    * @return Success
@@ -299,8 +479,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -388,8 +568,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -473,8 +653,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -551,8 +731,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -626,8 +806,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -668,18 +848,18 @@ export class APIClient {
   }
 
 
-   /**
-   * @return Success
-   */
+  /**
+  * @return Success
+  */
   getBuildingSearchingResults(latitude: number, longitude: number): Observable<BuildingSearchingResult[]> {
     let url_ = this.baseUrl + "/api/Searching/GetBuildingSearchingResults/{latitude}/{longitude}";
 
-    if (latitude === undefined || latitude === null ) {
+    if (latitude === undefined || latitude === null) {
       throw new Error("The parameter 'latitude' must be defined.");
     }
     url_ = url_.replace("{latitude}", encodeURIComponent("" + latitude));
 
-    if (longitude === undefined || longitude === null ) {
+    if (longitude === undefined || longitude === null) {
       throw new Error("The parameter 'longitude' must be defined.");
     }
     url_ = url_.replace("{longitude}", encodeURIComponent("" + longitude));
@@ -724,8 +904,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -818,8 +998,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -905,8 +1085,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     let _headers: any = {};
     if (response.headers) {
@@ -994,8 +1174,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1087,8 +1267,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1181,8 +1361,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1270,8 +1450,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1362,8 +1542,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1447,8 +1627,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1540,8 +1720,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1630,8 +1810,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1721,8 +1901,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1811,8 +1991,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1895,8 +2075,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -1987,8 +2167,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2079,8 +2259,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2171,8 +2351,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2260,8 +2440,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2346,8 +2526,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2438,8 +2618,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2528,8 +2708,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2618,8 +2798,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2707,8 +2887,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2800,8 +2980,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2891,8 +3071,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -2949,8 +3129,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3053,8 +3233,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3095,6 +3275,300 @@ export class APIClient {
     }
     return _observableOf<{ [key: string]: number }>(<any>null);
   }
+
+
+
+
+ /**
+   * @return Success
+   */
+  getClientStatisticsByYear(): Observable<{ [key: string]: number }> {
+    let url_ =
+      this.baseUrl + "/api/Statistics/GetClientStatisticsByYear";
+
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetClientStatisticsByYear(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetClientStatisticsByYear(<any>response_);
+            } catch (e) {
+              return <Observable<{ [key: string]: number }>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else {
+            return <Observable<{ [key: string]: number }>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetClientStatisticsByYear(
+    response: HttpResponseBase
+  ): Observable<{ [key: string]: number }> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200) {
+            result200 = {};
+            for (const key in resultData200) {
+              if (resultData200.hasOwnProperty(key)) {
+                result200[key] = resultData200[key];
+              }
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<{ [key: string]: number }>(<any>null);
+  }
+
+
+
+  /**
+   * @return Success
+   */
+  getClientStatisticsByWeek(): Observable<{ [key: string]: number }> {
+    let url_ =
+      this.baseUrl + "/api/Statistics/GetClientStatisticsByWeek";
+
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetClientStatisticsByWeek(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetClientStatisticsByWeek(<any>response_);
+            } catch (e) {
+              return <Observable<{ [key: string]: number }>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else {
+            return <Observable<{ [key: string]: number }>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetClientStatisticsByWeek(
+    response: HttpResponseBase
+  ): Observable<{ [key: string]: number }> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200) {
+            result200 = {};
+            for (const key in resultData200) {
+              if (resultData200.hasOwnProperty(key)) {
+                result200[key] = resultData200[key];
+              }
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<{ [key: string]: number }>(<any>null);
+  }
+
+  /**
+   * @return Success
+   */
+  getClientStatisticsByMonth(): Observable<{ [key: string]: number }> {
+    let url_ =
+      this.baseUrl + "/api/Statistics/GetClientStatisticsByMonth";
+
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetClientStatisticsByMonth(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetClientStatisticsByMonth(<any>response_);
+            } catch (e) {
+              return <Observable<{ [key: string]: number }>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else {
+            return <Observable<{ [key: string]: number }>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetClientStatisticsByMonth(
+    response: HttpResponseBase
+  ): Observable<{ [key: string]: number }> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200) {
+            result200 = {};
+            for (const key in resultData200) {
+              if (resultData200.hasOwnProperty(key)) {
+                result200[key] = resultData200[key];
+              }
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<{ [key: string]: number }>(<any>null);
+  }
+
 
   /**
    * @return Success
@@ -3165,8 +3639,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3266,8 +3740,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3354,8 +3828,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3441,8 +3915,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3532,8 +4006,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3623,8 +4097,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3714,8 +4188,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3802,8 +4276,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3891,8 +4365,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -3985,8 +4459,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4079,8 +4553,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4173,8 +4647,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4264,8 +4738,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4355,8 +4829,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4448,8 +4922,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4537,8 +5011,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4635,8 +5109,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4728,8 +5202,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4821,8 +5295,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -4914,8 +5388,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -5008,8 +5482,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -5101,8 +5575,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -5191,8 +5665,8 @@ export class APIClient {
       response instanceof HttpResponse
         ? response.body
         : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
+          ? (<any>response).error
+          : undefined;
 
     const _headers: any = {};
     if (response.headers) {
@@ -5776,6 +6250,58 @@ export interface IWorkplace {
   workplaceEquipment?: WorkplaceEquipment[] | undefined;
 }
 
+export interface IMonitoring {
+  id?: number | undefined;
+  clientId?: number | undefined;
+  date?: Date | undefined;
+  rightValues?: number | undefined;
+}
+
+export class Monitoring implements IMonitoring {
+  constructor(data?: IMonitoring) {
+    if (data) {
+      for (const property in data) {
+        if (data.hasOwnProperty(property)) {
+          (<any>this)[property] = (<any>data)[property];
+        }
+      }
+    }
+  }
+  id?: number | undefined;
+  clientId?: number | undefined;
+  date?: Date | undefined;
+  rightValues?: number | undefined;
+
+  static fromJS(data: any): Monitoring {
+    data = typeof data === "object" ? data : {};
+    const result = new Monitoring();
+    result.init(data);
+    return result;
+  }
+
+  init(data?: any) {
+    if (data) {
+      this.id = data["id"];
+      this.clientId = data["clientId"];
+      this.date = data["date"]
+        ? new Date(data["date"].toString())
+        : <any>undefined;
+      this.rightValues = data["rightValues"];
+    }
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["id"] = this.id;
+    data["clientId"] = this.clientId;
+    data["date"] = this.date
+      ? this.date.toISOString()
+      : <any>undefined;
+    data["rightValues"] = this.rightValues;
+    return data;
+  }
+}
+
 export class User implements IUser {
   constructor(data?: IUser) {
     if (data) {
@@ -5936,7 +6462,7 @@ export class WorkplaceOrder implements IWorkplaceOrder {
       ? this.workplace.toJSON()
       : <any>undefined;
 
-      console.log(data);
+    console.log(data);
 
     return data;
   }
@@ -6450,7 +6976,7 @@ export interface IWorkplaceSearchingResult {
 export interface IFilter {
   startTime?: Date | undefined;
   finishTime?: Date | undefined;
-
+  like?: string | undefined;
 }
 
 export class Filter {
@@ -6472,6 +6998,7 @@ export class Filter {
   }
   startTime?: Date | undefined;
   finishTime?: Date | undefined;
+  like?: string | undefined;
 
   toJSON(filter) {
     let data;
@@ -6483,7 +7010,7 @@ export class Filter {
       : <any>undefined;
 
 
-      console.log(data);
+    console.log(data);
 
     return data;
   }

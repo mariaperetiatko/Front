@@ -1,26 +1,79 @@
-<div *ngIf="dist<30&&dist>0||dist>100">
-  <div class="brd">
-    {{dist}}
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Monitoring" | translate }}
+    </li>
+  </ol>
+</nav>
+
+<div class="body-background">
+  <div style="margin-top: 10px;">On/Off Monitoring</div>
+  <label class="switch">
+    <input type="checkbox" />
+    <span class="slider round"></span>
+  </label>
+  <div class="window-background">
+    <div class="window">
+      On/Off Monitoring
+      <hr />
+      <label class="switch">
+        <input type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Select Date</label>
+    <input type="date" name="date" class="form-control" [(ngModel)]="date" />
+  </div>
+
+  <button class="btn btn-default send-button" (click)="getStatistics()">
+    {{ "Get Statistics" | translate }}
+  </button>
+
+  <div>
+    <div>
+      <div class="chart" style="height:300px;width:300px;">
+        <canvas baseChart
+
+          [data]="pieChartData111"
+          [labels]="pieChartLabels111"
+          [chartType]="pieChartType111"
+          [options]="pieChartOptions111"
+          [plugins]="pieChartPlugins111"
+          [colors]="pieChartColors111"
+          [legend]="pieChartLegend111">
+        </canvas>
+      </div>
+    </div>
   </div>
 </div>
-<div *ngIf="dist>=30&&dist<=100">
+
+<div *ngIf="(dist < 30 && dist > 0) || dist > 100">
+  <div class="brd">
+    {{ dist }}
+  </div>
+</div>
+<div *ngIf="dist >= 30 && dist <= 100">
   <div class="brd1">
-    {{dist}}
+    {{ dist }}
   </div>
 </div>
 15-05-2019
 <div>
   <div>
-    <div class="chart" style="height:300px;width:300px;">
-      <canvas baseChart
-
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
         [data]="pieChartData"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
         [colors]="pieChartColors"
-        [legend]="pieChartLegend">
+        [legend]="pieChartLegend"
+      >
       </canvas>
     </div>
   </div>
@@ -29,16 +82,17 @@
 18-05-2019
 <div>
   <div>
-    <div class="chart" style="height:300px;width:300px;">
-      <canvas baseChart
-
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
         [data]="pieChartData1"
         [labels]="pieChartLabels1"
         [chartType]="pieChartType1"
         [options]="pieChartOptions1"
         [plugins]="pieChartPlugins1"
         [colors]="pieChartColors1"
-        [legend]="pieChartLegend1">
+        [legend]="pieChartLegend1"
+      >
       </canvas>
     </div>
   </div>
@@ -47,16 +101,17 @@
 21-05-2019
 <div>
   <div>
-    <div class="chart" style="height:300px;width:300px;">
-      <canvas baseChart
-
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
         [data]="pieChartData2"
         [labels]="pieChartLabels2"
         [chartType]="pieChartType2"
         [options]="pieChartOptions2"
         [plugins]="pieChartPlugins2"
         [colors]="pieChartColors2"
-        [legend]="pieChartLegend2">
+        [legend]="pieChartLegend2"
+      >
       </canvas>
     </div>
   </div>

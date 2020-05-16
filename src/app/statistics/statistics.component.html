@@ -1,3 +1,4 @@
+<!--
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item" aria-current="page">{{ 'Statistics' | translate }}</li>
@@ -77,4 +78,77 @@ Building
 
           </div>
         </div>
+</div>
+-->
+
+
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb  bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">{{ 'Statistics' | translate }}</li>
+  </ol>
+</nav>
+
+<div *ngIf="isRequesting" class="spinner-border"></div>
+
+<div class="body-background" *ngIf="!isRequesting">
+
+<button class="btn form-button" (click)="showStatByYear()">{{ 'Year' | translate }}</button>
+<button class="btn form-button" (click)="showStatByMonth()">{{ 'Month' | translate }}</button>
+<button class="btn form-button" (click)="showStatByWeek()">{{ 'Week' | translate }}</button>
+<div *ngIf="isYearVisible">
+Year statistics
+<div>
+  <div>
+    <div style="display: block">
+      <canvas baseChart
+        [datasets]="barChartDataForYear"
+        [labels]="barChartLabelsForYear"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [chartType]="barChartType">
+      </canvas>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<div *ngIf="isMonthVisible">
+Month statistics
+<div>
+    <div>
+      <div style="display: block">
+        <canvas baseChart
+          [datasets]="barChartDataForMonth"
+          [labels]="barChartLabelsForMonth"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType">
+        </canvas>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div *ngIf="isWeekVisible">
+Week statistics
+    <div>
+        <div>
+          <div style="display: block">
+            <canvas baseChart
+              [datasets]="barChartDataForWeek"
+              [labels]="barChartLabelsForWeek"
+              [options]="barChartOptions"
+              [plugins]="barChartPlugins"
+              [legend]="barChartLegend"
+              [chartType]="barChartType">
+            </canvas>
+          </div>
+
+        </div>
+      </div>
+</div>
 </div>
