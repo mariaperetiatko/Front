@@ -34,7 +34,7 @@
     "dhtmlx-scheduler": "^4.4.0",
     "font-awesome": "^4.7.0",
     "from-cdn": "^1.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "linqts": "^1.12.2",
     "moment": "^2.22.2",
     "ng2-charts": "^2.2.3",
