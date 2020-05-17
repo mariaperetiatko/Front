@@ -259,6 +259,93 @@ export class APIClient {
   /**
    * @return Success
    */
+  getLastMonitorings(): Observable<Monitoring[]> {
+    let url_ = this.baseUrl + "/api/Monitoring/GetLastMonitorings";
+    url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem("auth_token");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetMonitorings(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetMonitorings(<any>response_);
+            } catch (e) {
+              return <Observable<Monitoring[]>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<Monitoring[]>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetMonitorings(
+    response: HttpResponseBase
+  ): Observable<Monitoring[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (let item of resultData200)
+              result200.push(Monitoring.fromJS(item));
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<Monitoring[]>(<any>null);
+  }
+
+
+  /**
+   * @return Success
+   */
   getMonitoringList(): Observable<Monitoring[]> {
     let url_ = this.baseUrl + "/api/Monitoring/GetMonitoringList";
     url_ = url_.replace(/[?&]$/, "");
@@ -759,6 +846,94 @@ export class APIClient {
       );
     }
     return _observableOf<void>(<any>null);
+  }
+
+
+
+  /**
+   * @return Success
+   */
+  getBuildingsByLandlord(): Observable<Building[]> {
+    let url_ = this.baseUrl + "/api/Building/GetBuildingsByLandlord";
+    url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem("auth_token");
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetBuildingsByLandlord(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetBuildingsByLandlord(<any>response_);
+            } catch (e) {
+              return <Observable<Building[]>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<Building[]>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetBuildingsByLandlord(
+    response: HttpResponseBase
+  ): Observable<Building[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (let item of resultData200) {
+              result200.push(Building.fromJS(item));
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<Building[]>(<any>null);
   }
 
   /**
@@ -5985,12 +6160,14 @@ export class Landlord implements ILandlord {
   firstName?: string | undefined;
   lastName?: string | undefined;
   passportNumber?: number | undefined;
-  phone?: number | undefined;
+  phone?: string | undefined;
   email?: string | undefined;
   isInBlackList?: number | undefined;
   identityId?: string | undefined;
   identity?: User | undefined;
   building?: Building[] | undefined;
+  birthday?: Date | undefined;
+
 
   static fromJS(data: any): Landlord {
     data = typeof data === "object" ? data : {};
@@ -6009,6 +6186,9 @@ export class Landlord implements ILandlord {
       this.email = data["email"];
       this.isInBlackList = data["isInBlackList"];
       this.identityId = data["identityId"];
+      this.birthday = data["birthday"]
+      ? new Date(data["birthday"].toString())
+      : <any>undefined;
       this.identity = data["identity"]
         ? User.fromJS(data["identity"])
         : <any>undefined;
@@ -6031,6 +6211,7 @@ export class Landlord implements ILandlord {
     data["email"] = this.email;
     data["isInBlackList"] = this.isInBlackList;
     data["identityId"] = this.identityId;
+    data["birthday"] = this.birthday ? this.birthday : <any>undefined;
     data["identity"] = this.identity ? this.identity.toJSON() : <any>undefined;
     if (this.building && this.building.constructor === Array) {
       data["building"] = [];
@@ -6047,12 +6228,13 @@ export interface ILandlord {
   firstName?: string | undefined;
   lastName?: string | undefined;
   passportNumber?: number | undefined;
-  phone?: number | undefined;
+  phone?: string | undefined;
   email?: string | undefined;
   isInBlackList?: number | undefined;
   identityId?: string | undefined;
   identity?: User | undefined;
   building?: Building[] | undefined;
+  birthday?: Date | undefined;
 }
 
 

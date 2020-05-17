@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartType, ChartOptions } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
+import { Label, Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { interval } from 'rxjs';
 import { APIClient, Monitoring } from './../api.service';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, finalize } from 'rxjs/operators';
+import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import * as moment from 'moment';
+
 
 
 @Component({
@@ -14,7 +17,97 @@ import { takeWhile } from 'rxjs/operators';
 })
 export class VisionDiagramsComponent implements OnInit {
 
+  is0 = false;
+  is1 = false;
+  is2 = false;
+  is3 = false;
+  is4 = false;
+  isRequesting = false;
+  pieChartData0: number[];
+  pieChartData1: number[];
+  pieChartData2: number[];
+  pieChartData3: number[];
+  pieChartData4: number[];
+  date0: Date;
+  date1: Date;
+  date2: Date;
+  date3: Date;
+  date4: Date;
 
+  monitorings: Monitoring[];
+
+  lineChartData: ChartDataSets[] = [{ data: [], label: 'Right dynamics' }];
+
+  //    [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+  //  { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
+  //  { data: [180, 480, 770, 90, 1000, 270, 400], label: 'Series C', yAxisID: 'y-axis-1' }
+  //];
+
+  lineChartLabels: Label[] = [];
+  // = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  lineChartOptions: (ChartOptions & { annotation: any }) = {
+    legend: {
+      labels: {
+        boxWidth: 80
+      }
+    },
+
+    responsive: true,
+    maintainAspectRatio: false ,
+    scales: {
+      // We use this empty structure as a placeholder for dynamic theming.
+      xAxes: [{}],
+      yAxes: [
+        {
+          id: 'y-axis-0',
+          position: 'left',
+          ticks: {
+          beginAtZero: true,
+          suggestedMax:1,
+          suggestedMin:0,
+          stepSize: 20
+          }
+        }
+      ]
+    },
+    annotation: {
+      annotations: [
+        {
+          type: 'line',
+          mode: 'vertical',
+          scaleID: 'x-axis-0',
+          value: 'March',
+          borderColor: 'orange',
+          borderWidth: 2,
+          label: {
+            enabled: true,
+            boxWidth: 80,
+            fontColor: 'orange',
+            content: 'LineAnno'
+          }
+        },
+      ],
+    },
+  };
+  lineChartColors: Color[] = [
+    { // grey
+      backgroundColor: 'rgba(117,235,162,0.15)',
+      borderColor: 'rgba(117,235,162,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }];
+
+
+
+    lineChartLegend = true;
+    lineChartType = 'line';
+    lineChartPlugins = [pluginAnnotations];
+
+
+  hhh=false;
+  lastMonitorings: Monitoring[];
   public pieChartOptions111: ChartOptions = {
     responsive: true,
 
@@ -30,17 +123,20 @@ export class VisionDiagramsComponent implements OnInit {
       },
     }
   };
-  pieChartLabels111: Label[];
+  pieChartLabels111: Label[] = [['Wrong'], ['Right']];
   pieChartData111: number[];
-  pieChartType111: ChartType;
-  pieChartLegend111;
-  pieChartPlugins111;
-  pieChartColors111 = [];
-
-
+  pieChartType111: ChartType  = 'pie';
+  pieChartLegend111  = true;
+  pieChartPlugins111  = [pluginDataLabels];
+  pieChartColors111 = [
+    {
+      backgroundColor: ['rgba(255,0,0,0.2)', 'rgba(0,255,0,0.2)'],
+      //, 'rgba(0,0,255,0.3)'
+    }
+]
 
   dist = 0;
-  public pieChartOptions: ChartOptions = {
+  /*public pieChartOptions: ChartOptions = {
     responsive: true,
 
     legend: {
@@ -68,7 +164,7 @@ export class VisionDiagramsComponent implements OnInit {
   ];
 
 
-  public pieChartOptions1: ChartOptions = {
+  /*public pieChartOptions1: ChartOptions = {
     responsive: true,
 
     legend: {
@@ -122,7 +218,7 @@ export class VisionDiagramsComponent implements OnInit {
     },
   ];
 
-
+*/
 
   date: Date;
 
@@ -131,24 +227,76 @@ export class VisionDiagramsComponent implements OnInit {
 
   ngOnInit() {
     // this.showDist();
+    // this.getLast();
+    this.getMonitoringList();
   }
 
+  getMonitoringList() {
+    this.isRequesting = true;
+
+    this.apiClient.getMonitoringList()
+    .pipe(finalize(() => this.isRequesting = false))
+    .subscribe((data: Monitoring []) => {
+      this.monitorings = data;
+      this.lineChartData[0].data = [];
+      for (let i = 0; i < this.monitorings.length; i++) {
+        this.lineChartLabels.push(moment(this.monitorings[i].date).format('MM/DD/YYYY'));
+        (this.lineChartData[0].data as number[]).push(this.monitorings[i].rightValues);
+      }
+
+    });
+  }
+
+
+  getLast() {
+    this.isRequesting = true;
+
+    this.apiClient.getLastMonitorings()
+    .pipe(finalize(() => this.isRequesting = false))
+    .subscribe((data: Monitoring []) => {
+      this.lastMonitorings = data;
+      console.log(this.lastMonitorings);
+      if (this.lastMonitorings.length >= 0)
+      {
+        this.date0 = this.lastMonitorings[0].date;
+        this.pieChartData0 = [1 - this.lastMonitorings[0].rightValues, this.lastMonitorings[0].rightValues];
+        this.is0 = true;
+      }
+
+      if (this.lastMonitorings.length >= 1)
+      {
+        this.date1 = this.lastMonitorings[1].date;
+        this.pieChartData1 = [1 - this.lastMonitorings[1].rightValues, this.lastMonitorings[1].rightValues];
+        this.is1 = true;
+      }
+      if (this.lastMonitorings.length >= 2)
+      {
+        this.date2 = this.lastMonitorings[2].date;
+        this.pieChartData2 = [1 - this.lastMonitorings[2].rightValues, this.lastMonitorings[2].rightValues];
+        this.is2 = true;
+      }
+      if (this.lastMonitorings.length >= 3)
+      {
+        this.date3 = this.lastMonitorings[3].date;
+        this.pieChartData3 = [1 - this.lastMonitorings[3].rightValues, this.lastMonitorings[3].rightValues];
+        this.is3 = true;
+      }
+      if (this.lastMonitorings.length >= 4)
+      {
+        this.date4 = this.lastMonitorings[4].date;
+        this.pieChartData4 = [1 - this.lastMonitorings[4].rightValues, this.lastMonitorings[4].rightValues];
+        this.is4 = true;
+      }
+  })};
+
+
   getStatistics() {
-    console.log(this.date);
+
     this.apiClient.getMonitoringByDate(this.date)
+    .pipe(finalize(() => this.hhh = true))
       .subscribe((data) => {
         console.log(data);
-        this.pieChartLabels111 = [['Wrong'], ['Right']];
         this.pieChartData111 = [1 - data.rightValues, data.rightValues];
-        this.pieChartType111 = 'pie';
-        this.pieChartLegend111 = true;
-        this.pieChartPlugins111 = [pluginDataLabels];
-        this.pieChartColors111 = [
-          {
-            backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)'],
-            //, 'rgba(0,0,255,0.3)'
-          }
-      ]
     })};
 
 
@@ -168,23 +316,23 @@ changeLabels() {
     'patrol', 'satisfied', 'academy', 'acceptance', 'ivory', 'aquarium', 'building', 'store', 'replace', 'language',
     'redeem', 'honest', 'intention', 'silk', 'opera', 'sleep', 'innocent', 'ignore', 'suite', 'applaud', 'funny'];
   const randomWord = () => words[Math.trunc(Math.random() * words.length)];
-  this.pieChartLabels = Array.apply(null, { length: 3 }).map(_ => randomWord());
+  this.pieChartLabels111 = Array.apply(null, { length: 3 }).map(_ => randomWord());
 }
 
 addSlice() {
-  this.pieChartLabels.push(['Line 1', 'Line 2', 'Line 3']);
-  this.pieChartData.push(400);
-  this.pieChartColors[0].backgroundColor.push('rgba(196,79,244,0.3)');
+  this.pieChartLabels111.push(['Line 1', 'Line 2', 'Line 3']);
+  this.pieChartData111.push(400);
+  this.pieChartColors111[0].backgroundColor.push('rgba(196,79,244,0.3)');
 }
 
 removeSlice() {
-  this.pieChartLabels.pop();
-  this.pieChartData.pop();
-  this.pieChartColors[0].backgroundColor.pop();
+  this.pieChartLabels111.pop();
+  this.pieChartData111.pop();
+  this.pieChartColors111[0].backgroundColor.pop();
 }
 
 changeLegendPosition() {
-  this.pieChartOptions.legend.position = this.pieChartOptions.legend.position === 'left' ? 'top' : 'left';
+  this.pieChartOptions111.legend.position = this.pieChartOptions111.legend.position === 'left' ? 'top' : 'left';
 }
 
 showDist(): void {

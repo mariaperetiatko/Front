@@ -1,0 +1,68 @@
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Home" | translate }}
+    </li>
+  </ol>
+</nav>
+<div>
+  <div class="body-background" *ngIf="!isRequesting">
+    <button class="btn btn-default send-button" (click)="goToCreatePage()" style="margin-bottom: 10px;">
+      {{ "Create new Building" | translate }}
+    </button>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Work hours</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <!--  <colgroup>
+          <col width="20%" />
+          <col width="30%" />
+          <col width="10%" />
+          <col width="40%" />
+        </colgroup>-->
+      <tbody>
+        <tr *ngFor="let building of buildings">
+          <td>{{ building.name }}</td>
+          <td>
+            {{ building.country }}, {{ building.city }}, {{ building.street }},
+            {{ building.house }}, {{ building.flat }}
+          </td>
+          <td>
+            {{ getWorkingHours(building) }}
+          </td>
+          <td>
+            <button
+              class="btn btn-default send-button"
+              style="margin-bottom: 10px;"
+            >
+              {{ "Manage workplaces" | translate }}
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn-default send-button"
+              style="margin-bottom: 10px;"
+            >
+              {{ "Edit" | translate }}
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn-default send-button"
+              style="margin-bottom: 10px;"
+            >
+              {{ "Delete" | translate }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

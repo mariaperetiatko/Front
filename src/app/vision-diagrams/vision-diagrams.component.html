@@ -7,11 +7,6 @@
 </nav>
 
 <div class="body-background">
-  <div style="margin-top: 10px;">On/Off Monitoring</div>
-  <label class="switch">
-    <input type="checkbox" />
-    <span class="slider round"></span>
-  </label>
   <div class="window-background">
     <div class="window">
       On/Off Monitoring
@@ -21,31 +16,141 @@
         <span class="slider round"></span>
       </label>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label>Select Date</label>
-    <input type="date" name="date" class="form-control" [(ngModel)]="date" />
-  </div>
+    <div class="window-search">
+    <div class="form-group">
+      <label>Select Date</label>
+      <input type="date" name="date" class="form-control" [(ngModel)]="date" />
+    </div>
 
-  <button class="btn btn-default send-button" (click)="getStatistics()">
-    {{ "Get Statistics" | translate }}
-  </button>
+    <button class="btn btn-default send-button" (click)="getStatistics()">
+      {{ "Get Statistics" | translate }}
+    </button>
 
-  <div>
-    <div>
-      <div class="chart" style="height:300px;width:300px;">
-        <canvas baseChart
+    <div *ngIf="hhh" class="window-diagram">
+      <div>
+        <div class="chart" style="width:100%; margin-bottom:10px">
+          <canvas baseChart
 
-          [data]="pieChartData111"
-          [labels]="pieChartLabels111"
-          [chartType]="pieChartType111"
-          [options]="pieChartOptions111"
-          [plugins]="pieChartPlugins111"
-          [colors]="pieChartColors111"
-          [legend]="pieChartLegend111">
-        </canvas>
+            [data]="pieChartData111"
+            [labels]="pieChartLabels111"
+            [chartType]="pieChartType111"
+            [options]="pieChartOptions111"
+            [plugins]="pieChartPlugins111"
+            [colors]="pieChartColors111"
+            [legend]="pieChartLegend111">
+          </canvas>
+        </div>
       </div>
+    </div>
+  </div>
+  </div>
+
+  <div *ngIf="!isRequesting">
+    <div style="width: 70%;">
+      Statistics
+      <div style="display: block;">
+        <canvas
+          baseChart
+          style="position: relative; height: 475px; width: 400px;"
+          height="475px"
+          width="400px"
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [colors]="lineChartColors"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          [plugins]="lineChartPlugins"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
+        ></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="is0 && pieChartData0.length > 0">
+    {{ date0 | date: "MM/dd/yyyy" }}
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
+        [data]="pieChartData0"
+        [labels]="pieChartLabels111"
+        [chartType]="pieChartType111"
+        [options]="pieChartOptions111"
+        [plugins]="pieChartPlugins111"
+        [colors]="pieChartColors111"
+        [legend]="pieChartLegend111"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <div *ngIf="is1 && pieChartData1.length > 0">
+    {{ date1 | date: "MM/dd/yyyy" }}
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
+        [data]="pieChartData1"
+        [labels]="pieChartLabels111"
+        [chartType]="pieChartType111"
+        [options]="pieChartOptions111"
+        [plugins]="pieChartPlugins111"
+        [colors]="pieChartColors111"
+        [legend]="pieChartLegend111"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <div *ngIf="is2 && pieChartData2.length > 0">
+    {{ date2 | date: "MM/dd/yyyy" }}
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
+        [data]="pieChartData2"
+        [labels]="pieChartLabels111"
+        [chartType]="pieChartType111"
+        [options]="pieChartOptions111"
+        [plugins]="pieChartPlugins111"
+        [colors]="pieChartColors111"
+        [legend]="pieChartLegend111"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <div *ngIf="is3 && pieChartData3.length > 0">
+    {{ date3 | date: "MM/dd/yyyy" }}
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
+        [data]="pieChartData3"
+        [labels]="pieChartLabels111"
+        [chartType]="pieChartType111"
+        [options]="pieChartOptions111"
+        [plugins]="pieChartPlugins111"
+        [colors]="pieChartColors111"
+        [legend]="pieChartLegend111"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <div *ngIf="is4 && pieChartData4.length > 0">
+    {{ date4 | date: "MM/dd/yyyy" }}
+    <div class="chart" style="height: 300px; width: 300px;">
+      <canvas
+        baseChart
+        [data]="pieChartData4"
+        [labels]="pieChartLabels111"
+        [chartType]="pieChartType111"
+        [options]="pieChartOptions111"
+        [plugins]="pieChartPlugins111"
+        [colors]="pieChartColors111"
+        [legend]="pieChartLegend111"
+      >
+      </canvas>
     </div>
   </div>
 </div>
@@ -60,8 +165,7 @@
     {{ dist }}
   </div>
 </div>
-15-05-2019
-<div>
+<!--<div>
   <div>
     <div class="chart" style="height: 300px; width: 300px;">
       <canvas
@@ -115,4 +219,4 @@
       </canvas>
     </div>
   </div>
-</div>
+</div>-->

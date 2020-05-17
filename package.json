@@ -28,6 +28,7 @@
     "angular-bootstrap-datetimepicker": "^2.2.1",
     "bootstrap": "^4.1.3",
     "chart.js": "^2.8.0",
+    "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-datalabels": "^0.6.0",
     "core-js": "^2.5.4",
     "dhtmlx-scheduler": "^4.4.0",

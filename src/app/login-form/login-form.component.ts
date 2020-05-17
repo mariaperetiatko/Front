@@ -52,10 +52,14 @@ export class LoginFormComponent implements OnInit {
             if (result) {
               const isMember = (localStorage.getItem('role') === 'Member');
               const isAdmin = (localStorage.getItem('role') === 'Admin');
+              const isLandlord = (localStorage.getItem('role') === 'RestaurantOwner');
               if (isMember) {
                 localStorage.setItem('redirect', '/home');
+              } else if (isLandlord){
+                localStorage.setItem('redirect', '/home-landlord');
               } else {
                 localStorage.setItem('redirect', '/clients-admin');
+
               }
               window.location.reload();
             }

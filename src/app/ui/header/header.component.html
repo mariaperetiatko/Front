@@ -44,6 +44,16 @@
 
     </ul>
 
+    <ul *ngIf="isLandlord" class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+      <li class="nav-item active">
+        <a class="nav-link  d-block jumping" routerLink="/home-landlord">{{ 'Home' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-block jumping" routerLink="/landlord-buildings">{{ 'Buildings' | translate }}</a>
+      </li>
+    </ul>
+
     <ul *ngIf="isAdmin" class="navbar-nav mr-auto mt-2 mt-lg-0">
 
         <li class="nav-item active">

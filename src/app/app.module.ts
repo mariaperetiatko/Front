@@ -36,6 +36,9 @@ import { BookingsComponent } from './bookings/bookings.component';
 import { RouterModule } from '@angular/router';
 import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
 import { BookingEditComponent } from './booking-edit/booking-edit.component';
+import { LandlordAccountComponent } from './landlord-account/landlord-account.component';
+import { LandlordBuildingsComponent } from './landlord-buildings/landlord-buildings.component';
+import { BuildingCreateComponent } from './building-create/building-create.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -63,7 +66,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     VisionDiagramsComponent,
     BookingsComponent,
     BookingsArchiveComponent,
-    BookingEditComponent
+    BookingEditComponent,
+    LandlordAccountComponent,
+    LandlordBuildingsComponent,
+    BuildingCreateComponent
   ],
   imports: [
     ChartsModule,

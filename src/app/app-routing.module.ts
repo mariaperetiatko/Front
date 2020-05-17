@@ -1,3 +1,5 @@
+import { LandlordBuildingsComponent } from './landlord-buildings/landlord-buildings.component';
+import { LandlordAccountComponent } from './landlord-account/landlord-account.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { VisionDiagramsComponent } from './vision-diagrams/vision-diagrams.component';
 import { LandlordsComponent } from './landlords/landlords.component';
@@ -21,6 +23,7 @@ import { BuildingsAdminComponent } from './buildings-admin/buildings-admin.compo
 import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.component';
 import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
 import { BookingEditComponent } from './booking-edit/booking-edit.component';
+import { BuildingCreateComponent } from './building-create/building-create.component';
 
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -43,7 +46,13 @@ const routes: Routes = [
                          { path: 'vision-diagrams', component: VisionDiagramsComponent},
                          { path: 'bookings/future-bookings', component: BookingsComponent},
                          { path: 'bookings/bookings-archive', component: BookingsArchiveComponent},
-                         { path: 'bookings/booking-edit/:workplaceOrderId', component: BookingEditComponent}
+                         { path: 'bookings/booking-edit/:workplaceOrderId', component: BookingEditComponent},
+                         { path: 'home-landlord', component: LandlordAccountComponent},
+                         { path: 'landlord-buildings', component: LandlordBuildingsComponent},
+                         { path: 'building-create', component: BuildingCreateComponent}
+
+
+
                          ];
 
 @NgModule({

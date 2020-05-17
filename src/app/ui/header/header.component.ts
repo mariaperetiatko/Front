@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   LoginString = 'Login';
   isMember = (localStorage.getItem('role') === 'Member');
   isAdmin = (localStorage.getItem('role') === 'Admin');
+  isLandlord = (localStorage.getItem('role') === 'RestaurantOwner');
+
 
   constructor(private userService: UserService, private router: Router,
     private activatedRoute: ActivatedRoute,  public translate: TranslateService) {

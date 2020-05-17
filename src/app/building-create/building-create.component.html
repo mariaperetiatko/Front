@@ -1,0 +1,31 @@
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Map search" | translate }}
+    </li>
+  </ol>
+</nav>
+<div class="body-background">
+  <div class="map-background">
+    <button
+      (click)="setCurrentPosition()"
+      style="margin-bottom: 10px;"
+      class="btn btn-default map-button"
+    >
+      {{ "Set current position" | translate }}
+    </button>
+    <input
+      id="address"
+      #address
+      class="form-control"
+      style="margin-bottom: 10px;"
+      type="text"
+      placeholder="Search Box"
+    />
+
+    <div #gmap style="width: 100%; height: 400px; overflow: hidden;"></div>
+  </div>
+
+
+
+</div>
