@@ -15,41 +15,27 @@
       Infomation
       <hr />
       <div class="checque-wrapper">
-      <div class="left-column">Address</div>
-      <div class="right-column">
-
+        <div class="left-column">Address</div>
+        <div class="right-column">
           {{ workplace.building.country }}, {{ workplace.building.city }},
           {{ workplace.building.street }}, {{ workplace.building.flat }}
-
-      </div></div>
+        </div>
+      </div>
       <div class="checque-wrapper">
-
-      <div class="left-column">Cost</div>
-      <div class="right-column">
-        {{ workplace.cost }}
-      </div></div>
+        <div class="left-column">Cost</div>
+        <div class="right-column">{{ workplace.cost }}</div>
+      </div>
       <div class="checque-wrapper">
-
-      <div class="left-column">Landlord</div>
-      <div class="right-column">
-
+        <div class="left-column">Landlord</div>
+        <div class="right-column">
           {{ workplace.building.landlord.firstName }}
           {{ workplace.building.landlord.lastName }}
-
-      </div></div>
+        </div>
+      </div>
       <div class="checque-wrapper">
-
-      <div class="left-column">Phone</div>
-      <div class="right-column">
-        {{ workplace.building.landlord.phone }}
-      </div></div>
-      <div class="checque-wrapper">
-
-      <div class="left-column">Working hours</div>
-
-      <div class="right-column">
-        {{ this.startWorkingTime }} - {{ this.finishWorkingTime }}
-      </div></div>
+        <div class="left-column">Phone</div>
+        <div class="right-column">{{ workplace.building.landlord.phone }}</div>
+      </div>
     </div>
     <div class="order-background" *ngIf="workplaceDate">
       Booking
@@ -116,7 +102,41 @@
       </div>
     </div>
   </div>
+
   <div class="window-background">
+    Working hours
+    <hr />
+    <div class="checque-wrapper">
+      <div class="left-column2">Monday</div>
+      <div class="right-column2">{{ this.monStartWorkingTime }} - {{ this.monFinishWorkingTime }}</div>
+    </div>
+    <div class="checque-wrapper">
+      <div class="left-column2">Tuesday</div>
+      <div class="right-column2">{{ this.tueStartWorkingTime }} - {{ this.tueFinishWorkingTime }}</div>
+    </div>
+    <div class="checque-wrapper">
+      <div class="left-column2">Wedneday</div>
+      <div class="right-column2">{{ this.wedStartWorkingTime }} - {{ this.wedFinishWorkingTime }}</div>
+    </div>
+    <div class="checque-wrapper">
+      <div class="left-column2">Thursday</div>
+      <div class="right-column2">{{ this.thuStartWorkingTime }} - {{ this.thuFinishWorkingTime }}</div>
+    </div>
+    <div class="checque-wrapper">
+      <div class="left-column2">Friday</div>
+      <div class="right-column2">{{ this.friStartWorkingTime }} - {{ this.friFinishWorkingTime }}</div>
+    </div>
+    <div class="checque-wrapper">
+      <div class="left-column2">Saturday</div>
+      <div class="right-column2">{{ this.satStartWorkingTime }} - {{ this.satFinishWorkingTime }}</div>
+    </div>
+    <div class="checque-wrapper">
+      <div class="left-column2">Sunday</div>
+      <div class="right-column2">{{ this.sunStartWorkingTime }} - {{ this.sunFinishWorkingTime }}</div>
+    </div>
+  </div>
+
+  <div class="window-background" style="margin-top: 20px">
     Equipment
     <hr />
     <div

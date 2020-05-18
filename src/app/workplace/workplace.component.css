@@ -99,6 +99,18 @@
   overflow: hidden;
 }
 
+
+.left-column2 {
+  float: left;
+  overflow: hidden;
+}
+
+.right-column2 {
+  width: 50%;
+  float: right;
+  overflow: hidden;
+}
+
 .left-column-checque {
   float: left;
   overflow: hidden;

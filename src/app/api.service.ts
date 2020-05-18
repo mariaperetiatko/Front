@@ -1216,40 +1216,43 @@ export class APIClient {
    * @return Success
    */
   createBuilding(building: Building | null | undefined) {
-    const headers = new HttpHeaders();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    let url = this.baseUrl + "/api/Building/CreateBuilding";
-    let body = JSON.stringify(building);
-
     let url_ = this.baseUrl + "/api/Building/CreateBuilding";
     url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+
     const content_ = JSON.stringify(building);
 
-    return this.http.post(url, body, { headers });
+    const options_: any = {
+      body: content_,
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
 
-    /* let options_ : any = {
-          body: content_,
-          observe: "response",
-          responseType: "blob",
-          headers: new HttpHeaders({
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-          })
-      };
-
-      return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+    return this.http
+      .request("post", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
           return this.processCreateBuilding(response_);
-      })).pipe(_observableCatch((response_: any) => {
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
           if (response_ instanceof HttpResponseBase) {
-              try {
-                  return this.processCreateBuilding(<any>response_);
-              } catch (e) {
-                  return <Observable<Building>><any>_observableThrow(e);
-              }
-          } else
-              return <Observable<Building>><any>_observableThrow(response_);
-      }));*/
+            try {
+              return this.processCreateBuilding(<any>response_);
+            } catch (e) {
+              return <Observable<Building>>(<any>_observableThrow(e));
+            }
+          } else {
+            return <Observable<Building>>(<any>_observableThrow(response_));
+          }
+        })
+      );
   }
 
   protected processCreateBuilding(
@@ -6007,10 +6010,20 @@ export class Building implements IBuilding {
   x?: number | undefined;
   y?: number | undefined;
   name?: string | undefined;
-  startHour?: number | undefined;
-  startMinute?: number | undefined;
-  finistHour?: number | undefined;
-  finishMinute?: number | undefined;
+  monStartTime?: number | undefined;
+  monFinishTime?: number | undefined;
+  tueStartTime?: number | undefined;
+  tueFinishTime?: number | undefined;
+  wedStartTime?: number | undefined;
+  wedFinishTime?: number | undefined;
+  thuStartTime?: number | undefined;
+  thuFinishTime?: number | undefined;
+  friStartTime?: number | undefined;
+  friFinishTime?: number | undefined;
+  satStartTime?: number | undefined;
+  satFinishTime?: number | undefined;
+  sunStartTime?: number | undefined;
+  sunFinishTime?: number | undefined;
   landlord?: Landlord | undefined;
   workplace?: Workplace[] | undefined;
 
@@ -6033,10 +6046,20 @@ export class Building implements IBuilding {
       this.x = data["x"];
       this.y = data["y"];
       this.name = data["name"];
-      this.startHour = data["startHour"];
-      this.startMinute = data["startMinute"];
-      this.finistHour = data["finistHour"];
-      this.finishMinute = data["finishMinute"];
+      this.monStartTime = data["monStartTime"];
+      this.monFinishTime = data["monFinishTime"];
+      this.tueStartTime = data["tueStartTime"];
+      this.tueFinishTime = data["tueFinishTime"];
+      this.wedStartTime = data["wedStartTime"];
+      this.wedFinishTime = data["wedFinishTime"];
+      this.thuStartTime = data["thuStartTime"];
+      this.thuFinishTime = data["thuFinishTime"];
+      this.friStartTime = data["friStartTime"] ;
+      this.friFinishTime = data["friFinishTime"];
+      this.satStartTime = data["satStartTime"];
+      this.satFinishTime = data["satFinishTime"];
+      this.sunStartTime = data["sunStartTime"];
+      this.sunFinishTime = data["sunFinishTime"];
       this.landlord = data["landlord"]
         ? Landlord.fromJS(data["landlord"])
         : <any>undefined;
@@ -6061,10 +6084,20 @@ export class Building implements IBuilding {
     data["x"] = this.x;
     data["y"] = this.y;
     data["name"] = this.name;
-    data["startHour"] = this.startHour;
-    data["startMinute"] = this.startMinute;
-    data["finistHour"] = this.finistHour;
-    data["finishMinute"] = this.startMinute;
+    data["monStartTime"] = this.monStartTime;
+    data["monFinishTime"] = this.monFinishTime;
+    data["tueStartTime"] = this.tueStartTime;
+    data["tueFinishTime"] = this.tueFinishTime;
+    data["wedStartTime"] = this.wedStartTime;
+    data["wedFinishTime"] = this.wedFinishTime;
+    data["thuStartTime"] = this.thuStartTime;
+    data["thuFinishTime"] = this.thuFinishTime;
+    data["friStartTime"] = this.friStartTime;
+    data["friFinishTime"] = this.friFinishTime;
+    data["satStartTime"] = this.satStartTime;
+    data["satFinishTime"] = this.satFinishTime;
+    data["sunStartTime"] = this.sunStartTime;
+    data["sunFinishTime"] = this.sunFinishTime;
     data["landlord"] = this.landlord ? this.landlord.toJSON() : <any>undefined;
     if (this.workplace && this.workplace.constructor === Array) {
       data["workplace"] = [];
@@ -6087,10 +6120,20 @@ export interface IBuilding {
   x?: number | undefined;
   y?: number | undefined;
   name?: string | undefined;
-  startHour?: number | undefined;
-  startMinute?: number | undefined;
-  finistHour?: number | undefined;
-  finishMinute?: number | undefined;
+  monStartTime?: number | undefined;
+  monFinishTime?: number | undefined;
+  tueStartTime?: number | undefined;
+  tueFinishTime?: number | undefined;
+  wedStartTime?: number | undefined;
+  wedFinishTime?: number | undefined;
+  thuStartTime?: number | undefined;
+  thuFinishTime?: number | undefined;
+  friStartTime?: number | undefined;
+  friFinishTime?: number | undefined;
+  satStartTime?: number | undefined;
+  satFinishTime?: number | undefined;
+  sunStartTime?: number | undefined;
+  sunFinishTime?: number | undefined;
   landlord?: Landlord | undefined;
   workplace?: Workplace[] | undefined;
 }

@@ -26,8 +26,20 @@ export class WorkplaceComponent implements OnInit {
   workplaceEquipmentList: WorkplaceEquipment[];
   workplaceOrderList: WorkplaceOrder[];
   workplaceDate: Date;
-  startWorkingTime;
-  finishWorkingTime;
+  monStartWorkingTime;
+  monFinishWorkingTime;
+  tueStartWorkingTime;
+  tueFinishWorkingTime;
+  wedStartWorkingTime;
+  wedFinishWorkingTime;
+  thuStartWorkingTime;
+  thuFinishWorkingTime;
+  friStartWorkingTime;
+  friFinishWorkingTime;
+  satStartWorkingTime;
+  satFinishWorkingTime;
+  sunStartWorkingTime;
+  sunFinishWorkingTime;
   timesToBook = [];
   durationTimesToBook = [];
   isTimesLoading = true;
@@ -80,17 +92,29 @@ export class WorkplaceComponent implements OnInit {
         this.workplace = results[0];
         this.workplaceEquipmentList = results[1];
 
-        if (this.workplace.building.startMinute === 0) {
-          this.startWorkingTime = this.workplace.building.startHour + ":00";
-        } else {
-          this.startWorkingTime = this.workplace.building.startHour + ":30";
-        }
-        if (this.workplace.building.finishMinute === 0) {
-          this.finishWorkingTime = this.workplace.building.finistHour + ":00";
-        } else {
-          this.finishWorkingTime = this.workplace.building.finistHour + ":30";
-        }
+        this.monStartWorkingTime = this.getTimeString(this.workplace.building.monStartTime);
+        this.monFinishWorkingTime = this.getTimeString(this.workplace.building.monFinishTime);
+        this.tueStartWorkingTime = this.getTimeString(this.workplace.building.tueStartTime);
+        this.tueFinishWorkingTime = this.getTimeString(this.workplace.building.tueFinishTime);
+        this.wedStartWorkingTime = this.getTimeString(this.workplace.building.wedStartTime);
+        this.wedFinishWorkingTime = this.getTimeString(this.workplace.building.wedFinishTime);
+        this.thuStartWorkingTime = this.getTimeString(this.workplace.building.thuStartTime);
+        this.thuFinishWorkingTime = this.getTimeString(this.workplace.building.thuFinishTime);
+        this.friStartWorkingTime = this.getTimeString(this.workplace.building.friStartTime);
+        this.friFinishWorkingTime = this.getTimeString(this.workplace.building.friFinishTime);
+        this.satStartWorkingTime = this.getTimeString(this.workplace.building.satStartTime);
+        this.satFinishWorkingTime = this.getTimeString(this.workplace.building.satFinishTime);
+        this.sunStartWorkingTime = this.getTimeString(this.workplace.building.sunStartTime);
+        this.sunFinishWorkingTime = this.getTimeString(this.workplace.building.sunFinishTime);
       });
+  }
+
+  getTimeString(numericTime: number): string {
+    if (numericTime % 1 === 0) {
+      return numericTime + ":00";
+    } else {
+      return Math.floor(numericTime) + ":30";
+    }
   }
 
   getWorkplaceOrdersByWorkplaceAndDate() {
@@ -137,20 +161,45 @@ export class WorkplaceComponent implements OnInit {
     this.isSelectedTimesLoading = true;
     this.isTimesLoading = true;
     this.timesToBook = [];
-    let startPoint = this.workplace.building.startHour;
 
-    if (this.workplace.building.startMinute !== 0) {
-      startPoint += 0.5;
+    let dayOfWeek = (new Date(this.workplaceDate)).getDay();
+
+    let dayStart;
+    let dayFinish;
+    if (dayOfWeek === 0) {
+      dayStart = this.workplace.building.sunStartTime;
+      dayFinish =  this.workplace.building.sunFinishTime;
+    } else if (dayOfWeek === 1) {
+      dayStart = this.workplace.building.monStartTime;
+      dayFinish =  this.workplace.building.monFinishTime;
+    } else if (dayOfWeek === 2) {
+      dayStart = this.workplace.building.tueStartTime;
+      dayFinish =  this.workplace.building.tueFinishTime;
+    } else if (dayOfWeek === 3) {
+      dayStart = this.workplace.building.wedStartTime;
+      dayFinish =  this.workplace.building.wedFinishTime;
+    } else if (dayOfWeek === 4) {
+      dayStart = this.workplace.building.thuStartTime;
+      dayFinish =  this.workplace.building.thuFinishTime;
+    } else if (dayOfWeek === 5) {
+      dayStart = this.workplace.building.friStartTime;
+      dayFinish =  this.workplace.building.friFinishTime;
+    } else if (dayOfWeek === 6) {
+      dayStart = this.workplace.building.satStartTime;
+      dayFinish =  this.workplace.building.satFinishTime;
+    }
+    let startPoint = dayStart;
+
+    if (dayStart % 1 !== 0) {
+      startPoint = Math.floor(startPoint) + 0.5;
     }
 
-    let endPoint = this.workplace.building.finistHour;
+    let endPoint = dayFinish;
 
-    if (this.workplace.building.finishMinute !== 0) {
-      endPoint += 0.5;
+    if (dayFinish % 1 !== 0) {
+      endPoint = startPoint(endPoint) + 0.5;
     }
-    if (
-      this.minDateString === moment(this.workplaceDate).format("YYYY-MM-DD")
-    ) {
+    if (this.minDateString === moment(this.workplaceDate).format("YYYY-MM-DD")) {
 
       let dt = new Date();
       let currentNumeric = dt.getHours();
@@ -206,7 +255,6 @@ export class WorkplaceComponent implements OnInit {
     }
     this.isTimesLoading = false;
   }
-
 
   bookWorkplace(duration) {
     this.finishTimeNumeric = this.startTime.timeNumeric + duration.restNumeric;

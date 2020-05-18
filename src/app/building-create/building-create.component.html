@@ -1,7 +1,10 @@
 <nav aria-label="breadcrumb" style="margin-top: 10px;">
   <ol class="breadcrumb bradcrumps-style">
     <li class="breadcrumb-item" aria-current="page">
-      {{ "Map search" | translate }}
+     <a href="javascript:void(0)" (click)="goToBuildings()"> {{ "Buildings" | translate }}</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Building creation" | translate }}
     </li>
   </ol>
 </nav>
@@ -25,7 +28,173 @@
 
     <div #gmap style="width: 100%; height: 400px; overflow: hidden;"></div>
   </div>
+<table class="table table-bordered">
+  <thead>
 
-
-
+    <tr>
+      <th scope="col" style="text-align:center">Day of week</th>
+      <th scope="col" style="text-align:center">Start time</th>
+      <th scope="col" style="text-align:center">Finish time</th>
+      <th scope="col" style="text-align:center">Not working day</th>
+    </tr>
+  </thead>
+  <!--  <colgroup>
+      <col width="20%" />
+      <col width="30%" />
+      <col width="10%" />
+      <col width="40%" />
+    </colgroup>-->
+  <tbody>
+    <tr>
+      <td>Monday</td>
+      <td>
+        <select [disabled]="isMonTimeDisable" class="form-control" [(ngModel)]="building.monStartTime" name="monStartTime" #monStartTime="ngModel">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.monFinishTime||building.monFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isMonTimeDisable" class="form-control" [(ngModel)]="building.monFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.monStartTime||building.monStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="monTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+    <tr>
+      <td>Tuesday</td>
+      <td>
+        <select [disabled]="isTueTimeDisable" class="form-control" [(ngModel)]="building.tueStartTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.tueFinishTime||building.tueFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isTueTimeDisable" class="form-control" [(ngModel)]="building.tueFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.tueStartTime||building.tueStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="tueTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+    <tr>
+      <td>Wednesday</td>
+      <td>
+        <select [disabled]="isWedTimeDisable" class="form-control" [(ngModel)]="building.wedStartTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.wedFinishTime||building.wedFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isWedTimeDisable" class="form-control" [(ngModel)]="building.wedFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.wedStartTime||building.wedStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="wedTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+    <tr>
+      <td>Thursday</td>
+      <td>
+        <select [disabled]="isThuTimeDisable" class="form-control" [(ngModel)]="building.thuStartTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.thuFinishTime||building.thuFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isThuTimeDisable" class="form-control" [(ngModel)]="building.thuFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.thuStartTime||building.thuStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="thuTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+    <tr>
+      <td>Friday</td>
+      <td>
+        <select [disabled]="isFriTimeDisable" class="form-control" [(ngModel)]="building.friStartTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.friFinishTime||building.friFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isFriTimeDisable" class="form-control" [(ngModel)]="building.friFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.friStartTime||building.friStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="friTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+    <tr>
+      <td>Saturday</td>
+      <td>
+        <select [disabled]="isSatTimeDisable" class="form-control" [(ngModel)]="building.satStartTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.satFinishTime||building.satFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isSatTimeDisable" class="form-control" [(ngModel)]="building.satFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.satStartTime||building.satStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="satTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+    <tr>
+      <td>Sunday</td>
+      <td>
+        <select [disabled]="isSunTimeDisable" class="form-control" [(ngModel)]="building.sunStartTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.sunFinishTime||building.sunFinishTime>item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td>
+        <select [disabled]="isSunTimeDisable" class="form-control" [(ngModel)]="building.sunFinishTime">
+          <ng-container *ngFor="let item of timeObjects">
+            <option *ngIf="!building.sunStartTime||building.sunStartTime<item.numeric" value="{{item.numeric}}">{{item.str}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td style="padding-bottom:0">
+        <input (change)="sunTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div style="overflow:hidden">
+  <div style="float:left; width:10%">
+    <label for="flat">
+    Flat number</label>
+  </div>
+  <div style="float:left; width:30%">
+    <input class="form-control" name="flat" type="number" [(ngModel)]="building.flat" #flat="ngModel" required />
+  </div>
+</div>
+<button [disabled]="flat.invalid" class="btn btn-default form-button" (click)="sreateBuilding()">{{ 'Create' | translate }}</button>
 </div>
