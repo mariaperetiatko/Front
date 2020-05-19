@@ -7,18 +7,18 @@ import {
 import { Component, OnInit, AfterContentInit, TemplateRef } from "@angular/core";
 import { ViewChild } from "@angular/core";
 import { UserService } from "../user.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { List } from "linqts";
 import { finalize } from "rxjs/operators";
 
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-building-create',
-  templateUrl: './building-create.component.html',
-  styleUrls: ['./building-create.component.css']
+  selector: 'app-building-edit',
+  templateUrl: './building-edit.component.html',
+  styleUrls: ['./building-edit.component.css']
 })
-export class BuildingCreateComponent implements AfterContentInit {
+export class BuildingEditComponent implements AfterContentInit {
 
   building: Building;
   locationMarker: google.maps.Marker = new google.maps.Marker();
@@ -92,17 +92,36 @@ export class BuildingCreateComponent implements AfterContentInit {
     { numeric: 24, str: '24:00' }
   ];
 
+  buildingId;
   @ViewChild("content") templateRef: TemplateRef<any>;
 
   constructor(
     private apiClient: APIClient,
     private router: Router,
-    private userService: UserService, private modalService: NgbModal
+    private userService: UserService, private modalService: NgbModal, private activateRoute: ActivatedRoute
   ) { }
 
-  vm = this;
 
-  sreateBuilding() {
+  ngAfterContentInit(): void {
+    this.buildingId = Number.parseFloat(this.activateRoute.snapshot.params['buildingId']);
+    if (this.buildingId >= 0) {
+      this.getBuilding();
+    }
+  }
+
+  getBuilding() {
+    this.isRequesting = true;
+    this.apiClient.getBuildingById(this.buildingId)
+      .pipe(finalize(() => (this.isRequesting = false)))
+      .subscribe((data: Building) => {
+        this.building = data;
+        console.log(data);
+        this.ngAfterContentInit1();
+
+      });
+  }
+
+  updateBuilding() {
     if (!this.isMonTimeDisable) {
       if (this.building.monStartTime == null) {
         this.building.monStartTime = 0;
@@ -169,11 +188,11 @@ export class BuildingCreateComponent implements AfterContentInit {
     if (this.building.country === undefined) this.building.country = '';
     if (this.building.street === undefined) this.building.street = '';
     if (this.building.house === undefined) this.building.house = '';
-    if (this.building.flat === undefined) this.building.flat = 1;
+    //if (this.building.flat === undefined) this.building.flat = 1;
 
     this.isRequesting = true;
 
-    this.apiClient.createBuilding(this.building)
+    this.apiClient.updateBuilding(this.building)
       .pipe(finalize(() => (this.isRequesting = false)))
       .subscribe((data: Building) => {
         const element: HTMLElement = document.getElementById(
@@ -255,9 +274,8 @@ export class BuildingCreateComponent implements AfterContentInit {
     }
   }
   inputs;
-  ngAfterContentInit() {
-    //this.getFindedWorkplacesList();
-    this.building = new Building();
+  ngAfterContentInit1() {
+
     const mapProp = {
       center: new google.maps.LatLng(50.01509, 36.22864),
       zoom: 10,
@@ -276,40 +294,57 @@ export class BuildingCreateComponent implements AfterContentInit {
       this.searchListener.bind(this)
     );
 
-    let lat = JSON.parse(localStorage.getItem('latitude'));
-    let lng = JSON.parse(localStorage.getItem('longitude'));
 
-    if (lat != null && lng != null) {
-      this.latitude = Number.parseFloat(lat);
-      this.longitude = Number.parseFloat(lng);
+    this.latitude = this.building.x;
+    this.longitude = this.building.y;
 
-      this.map.setCenter(
-        new google.maps.LatLng(this.latitude, this.longitude)
+    this.map.setCenter(
+      new google.maps.LatLng(this.latitude, this.longitude)
+    );
+
+    const location = new google.maps.LatLng(this.latitude, this.longitude);
+
+    const marker = new google.maps.Marker({
+      position: location,
+      map: this.map,
+      title: "Got you!",
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+    });
+
+    let posit = marker.getPosition();
+
+    let geocoder1 = new google.maps.Geocoder();
+
+    geocoder1.geocode
+      ({
+        location: posit
+      },
+
+        function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            this.inputs.value = results[0].formatted_address;
+          }
+        }.bind(this)
       );
 
-      const location = new google.maps.LatLng(this.latitude, this.longitude);
 
-      const marker = new google.maps.Marker({
-        position: location,
-        map: this.map,
-        title: "Got you!",
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-      });
+    this.locationMarker = marker;
 
-      let posit = marker.getPosition();
+    google.maps.event.addListener(marker, 'dragend', function () {
+      let pos = marker.getPosition();
 
-      let geocoder1 = new google.maps.Geocoder();
+      let geocoder = new google.maps.Geocoder();
 
-      geocoder1.geocode
+      geocoder.geocode
         ({
-          location: posit
+          location: pos
         },
 
           function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-              this.building = new Building();
               this.inputs.value = results[0].formatted_address;
+
               for (var i = 0; i < results[0].address_components.length; i++) {
                 if (results[0].address_components[i].types[0] === "country") {
                   this.building.country = results[0].address_components[i].long_name;
@@ -330,95 +365,7 @@ export class BuildingCreateComponent implements AfterContentInit {
               }
               this.building.x = results[0].geometry.location.lat();
               this.building.y = results[0].geometry.location.lng();
-            }
-          }.bind(this)
-        );
-
-
-      this.locationMarker = marker;
-
-      google.maps.event.addListener(marker, 'dragend', function () {
-        let pos = marker.getPosition();
-        console.log('this');
-
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode
-          ({
-            location: pos
-          },
-
-            function (results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                this.building = new Building();
-                this.inputs.value = results[0].formatted_address;
-
-                for (var i = 0; i < results[0].address_components.length; i++) {
-                  if (results[0].address_components[i].types[0] === "country") {
-                    this.building.country = results[0].address_components[i].long_name;
-                  }
-
-                  if (results[0].address_components[i].types[0] === "locality") {
-                    this.building.city = results[0].address_components[i].long_name;
-                  }
-
-                  if (results[0].address_components[i].types[0] === "route") {
-                    this.building.street = results[0].address_components[i].long_name;
-                  }
-
-                  if (results[0].address_components[i].types[0] === "street_number") {
-                    this.building.house = results[0].address_components[i].long_name;
-                  }
-
-                }
-                this.building.x = results[0].geometry.location.lat();
-                this.building.y = results[0].geometry.location.lng();
-                console.log(this.building);
-              }
-              else {
-                console.log('error');
-                //  $("#mapErrorMsg").html('Cannot determine address at this location.'+status).show(100);
-              }
-            }.bind(this)
-          );
-      }.bind(this)
-      );
-    }
-
-
-    function geocodePosition(pos) {
-      console.log('this');
-
-      let geocoder = new google.maps.Geocoder();
-      console.log(this);
-      geocoder.geocode
-        ({
-          location: pos
-        },
-          function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              this.inputs.value = results[0].formatted_address;
-
-              for (var i = 0; i < results[0].address_components.length; i++) {
-                if (results[0].address_components[i].types[0] === "country") {
-                  this.building.country = results[0].address_components[i].long_name;
-                }
-
-                if (results[0].address_components[i].types[0] === "locality") {
-                  this.building.city = results[0].address_components[i].long_name;
-                }
-
-                if (results[0].address_components[i].types[0] === "route") {
-                  this.building.street = results[0].address_components[i].long_name;
-                }
-
-                if (results[0].address_components[i].types[0] === "street_number") {
-                  this.building.house = results[0].address_components[i].long_name;
-                }
-
-              }
-              console.log(results[0].geometry.location.lat());
-              // $("#mapErrorMsg").hide(100);
+              console.log(this.building);
             }
             else {
               console.log('error');
@@ -426,8 +373,8 @@ export class BuildingCreateComponent implements AfterContentInit {
             }
           }.bind(this)
         );
-    }
-
+    }.bind(this)
+    );
   }
 
   goToBuildings() {
@@ -494,7 +441,6 @@ export class BuildingCreateComponent implements AfterContentInit {
 
               function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                  this.building = new Building();
                   this.inputs.value = results[0].formatted_address;
 
                   for (var i = 0; i < results[0].address_components.length; i++) {
@@ -545,9 +491,6 @@ export class BuildingCreateComponent implements AfterContentInit {
 
     this.latitude = places[0].geometry.location.lat();
     this.longitude = places[0].geometry.location.lng();
-    localStorage.setItem('latitude', this.latitude);
-    localStorage.setItem('longitude', this.longitude);
-
   }
 
   setMapType(mapTypeId: string) {
@@ -558,26 +501,6 @@ export class BuildingCreateComponent implements AfterContentInit {
     this.isHidden = !this.isHidden;
     this.gmapElement.nativeElement.hidden = this.isHidden;
   }
-
-  /*getFindedWorkplacesList() {
-    this.searchingViewModel = JSON.parse(
-      localStorage.getItem("searchingViewModel")
-    );
-
-    this.apiClient
-      .searcForWorcplaces(this.searchingViewModel)
-      .subscribe((data: FindedWorkplace[]) => {
-        this.findedWorkplacesList = data;
-        for (const item of this.findedWorkplacesList) {
-          this.apiClient
-            .getWorkplaceById(item.workplaceId)
-            .subscribe((workplace: Workplace) => {
-              this.worlplacesList.Add(workplace);
-            });
-        }
-        console.log(this.findedWorkplacesList);
-      });
-  }*/
 
   setCurrentPosition() {
     if ("geolocation" in navigator) {
@@ -604,22 +527,21 @@ export class BuildingCreateComponent implements AfterContentInit {
         });
 
 
-      let posit = marker.getPosition();
+        let posit = marker.getPosition();
 
-      let geocoder1 = new google.maps.Geocoder();
+        let geocoder1 = new google.maps.Geocoder();
 
-      geocoder1.geocode
-        ({
-          location: posit
-        },
+        geocoder1.geocode
+          ({
+            location: posit
+          },
 
-          function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              this.building = new Building();
-              this.inputs.value = results[0].formatted_address;
-            }
-          }.bind(this)
-        );
+            function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                this.inputs.value = results[0].formatted_address;
+              }
+            }.bind(this)
+          );
         google.maps.event.addListener(marker, 'dragend', function () {
           let pos = marker.getPosition();
           console.log('this');
@@ -633,7 +555,6 @@ export class BuildingCreateComponent implements AfterContentInit {
 
               function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                  this.building = new Building();
                   this.inputs.value = results[0].formatted_address;
 
                   for (var i = 0; i < results[0].address_components.length; i++) {
@@ -727,4 +648,5 @@ export class BuildingCreateComponent implements AfterContentInit {
   }
 
 }
+
 

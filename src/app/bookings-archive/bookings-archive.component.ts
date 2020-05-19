@@ -47,7 +47,6 @@ export class BookingsArchiveComponent implements OnInit {
       .subscribe((data: FilteredPagedResult) => {
         this.workplaceOrders = data.workplaceOrders;
         this.pageCountNumber = data.totalCount;
-        console.log(data.totalCount);
 
         this.pageCount = Array(data.totalCount).fill(0).map((x, i) => i + 1)
         this.totalSum = 0;

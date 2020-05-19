@@ -24,6 +24,9 @@ import { WorkplaceAdminComponent } from './workplace-admin/workplace-admin.compo
 import { BookingsArchiveComponent } from './bookings-archive/bookings-archive.component';
 import { BookingEditComponent } from './booking-edit/booking-edit.component';
 import { BuildingCreateComponent } from './building-create/building-create.component';
+import { BuildingEditComponent } from './building-edit/building-edit.component';
+import { WorkplacesComponent } from './workplaces/workplaces.component';
+import { WorkplaceEditComponent } from './workplace-edit/workplace-edit.component';
 
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -49,10 +52,10 @@ const routes: Routes = [
                          { path: 'bookings/booking-edit/:workplaceOrderId', component: BookingEditComponent},
                          { path: 'home-landlord', component: LandlordAccountComponent},
                          { path: 'landlord-buildings', component: LandlordBuildingsComponent},
-                         { path: 'building-create', component: BuildingCreateComponent}
-
-
-
+                         { path: 'building-create', component: BuildingCreateComponent},
+                         { path: 'building-edit/:buildingId', component: BuildingEditComponent},
+                         { path: 'building/workplaces/:buildingId', component: WorkplacesComponent},
+                         { path: 'workplace-edit/:workplaceId', component: WorkplaceEditComponent}
                          ];
 
 @NgModule({

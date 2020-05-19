@@ -7,6 +7,8 @@ export class ConfigService {
 
     constructor() {
         this._apiURI = 'https://aapz-backend.conveyor.cloud/api';
+        //this._apiURI = 'https://192.168.1.4:45490/api';
+
      }
 
      getApiURI() {

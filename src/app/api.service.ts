@@ -40,6 +40,7 @@ export class APIClient {
     @Optional() @Inject(API_BASE_URL) baseUrl?: string
   ) {
     this.http = http;
+    //this.baseUrl = baseUrl ? baseUrl : "https://192.168.1.4:45490";
     this.baseUrl = baseUrl ? baseUrl : "https://aapz-backend.conveyor.cloud";
   }
 
@@ -158,6 +159,96 @@ export class APIClient {
     return _observableOf<FilteredPagedResult>(<any>null);
   }
 
+
+  /**
+    * @return Success
+    */
+   getPagedWorkplacesByBuildingId(buildingId: number, pageNumber: number): Observable<WorkplacePagedResult> {
+    let url_ = this.baseUrl + "/api/Workplace/GetPagedWorkplacesByBuildingId/{buildingId}/{pageNumber}";
+    if (pageNumber === undefined || pageNumber === null)
+      throw new Error("The parameter 'pageNumber' must be defined.");
+    if (buildingId === undefined || buildingId === null)
+      throw new Error("The parameter 'buildingId' must be defined.");
+    url_ = url_.replace("{buildingId}", encodeURIComponent("" + buildingId));
+    url_ = url_.replace("{pageNumber}", encodeURIComponent("" + pageNumber));
+    url_ = url_.replace(/[?&]$/, "");
+    let authToken = localStorage.getItem("auth_token");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      })
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetPagedWorkplacesByBuildingId(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetPagedWorkplacesByBuildingId(<any>response_);
+            } catch (e) {
+              return <Observable<WorkplacePagedResult>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<WorkplacePagedResult>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetPagedWorkplacesByBuildingId(
+    response: HttpResponseBase
+  ): Observable<WorkplacePagedResult> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200
+            ? WorkplacePagedResult.fromJS(resultData200)
+            : new WorkplacePagedResult();
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<WorkplacePagedResult>(<any>null);
+  }
 
 
 
@@ -6280,12 +6371,60 @@ export interface ILandlord {
   birthday?: Date | undefined;
 }
 
+export interface IWorkplacePagedResult {
+  workplaces?: Workplace[] | undefined;
+  totalCount?: number | undefined;
+}
+
+export class WorkplacePagedResult implements IWorkplacePagedResult {
+  constructor(data?: IWorkplacePagedResult) {
+    if (data) {
+      for (const property in data) {
+        if (data.hasOwnProperty(property)) {
+          (<any>this)[property] = (<any>data)[property];
+        }
+      }
+    }
+  }
+  workplaces?: Workplace[] | undefined;
+  totalCount?: number | undefined;
+
+  static fromJS(data: any): WorkplacePagedResult {
+    data = typeof data === "object" ? data : {};
+    const result = new WorkplacePagedResult();
+    result.init(data);
+    return result;
+  }
+
+  init(data?: any) {
+    if (data) {
+      this.totalCount = data["totalCount"];
+      if (data["workplaces"] && data["workplaces"].constructor === Array) {
+        this.workplaces = [];
+        for (const item of data["workplaces"]) {
+          this.workplaces.push(Workplace.fromJS(item));
+        }
+      }
+    }
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["totalCount"] = this.totalCount;
+    if (this.workplaces && this.workplaces.constructor === Array) {
+      data["workplaces"] = [];
+      for (const item of this.workplaces) {
+        data["workplaces"].push(item.toJSON());
+      }
+    }
+    return data;
+  }
+}
 
 export interface IFilteredPagedResult {
   workplaceOrders?: WorkplaceOrder[] | undefined;
   totalCount?: number | undefined;
 }
-
 
 export class FilteredPagedResult implements IFilteredPagedResult {
   constructor(data?: IFilteredPagedResult) {

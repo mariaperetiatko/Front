@@ -1,0 +1,149 @@
+<div *ngIf="!isRequesting">
+  <nav aria-label="breadcrumb" style="margin-top: 10px;">
+    <ol class="breadcrumb bradcrumps-style">
+      <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
+        {{ "Buildings" | translate }}
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        {{building.name }}{{ "Workplaces" | translate }}
+      </li>
+    </ol>
+  </nav>
+
+  <div *ngIf="isRequesting" class="spinner-border"></div>
+
+  <div class="body-background">
+
+    <div class="orders-wrapper" *ngIf="workplaces.length>0">
+      <button class="btn btn-default send-button" style="margin-bottom: 10px;">
+        {{ "Create new Workplace" | translate }}
+      </button>
+      <div class="text-center">
+        <ul
+          class="pagination pg-blue justify-content-center"
+          *ngIf="pageCountNumber > 1"
+        >
+          <li class="page-item" *ngIf="page !== 1">
+            <a
+              class="page-link"
+              aria-label="Previous"
+              (click)="loadPage(page - 1)"
+            >
+              <span aria-hidden="true">&laquo;</span>
+
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+
+          <li class="page-item" *ngFor="let i of pageCount">
+            <a
+              [ngClass]="i == page ? 'pag-active' : ''"
+              class="page-link"
+              (click)="loadPage(i)"
+            >
+              {{ i }}
+            </a>
+          </li>
+
+          <li class="page-item" *ngIf="page !== pageCountNumber">
+            <a
+              class="page-link"
+              aria-label="Next"
+              (click)="loadPage(page + 1)"
+            >
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div *ngFor="let workplace of workplaces" class="order-background">
+        <div style="overflow: hidden;">
+          <div style="float: left;">Workplace {{ workplace.id }}</div>
+        </div>
+        <hr />
+        <div class="checque-background">
+          <div class="checque-wrapper">
+            <div class="left-column-checque">Cost:</div>
+            <div class="right-column-checque">{{ workplace.cost }}</div>
+          </div>
+          <div class="checque-wrapper">
+            <div class="left-column-checque">Equipment:</div>
+            <div class="right-column-checque">
+              <div *ngFor="let item of workplace.workplaceEquipment">
+                {{ item.equipment.name }}{{ item.count }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-default form-button" (click)="edit(workplace.id)" >
+          {{ "Edit" | translate }}
+        </button>
+        <button class="btn btn-default form-button" style=" margin-right:10px"
+          (click)="openDeliteConfirmationWindow(workplace.id)">
+        {{ "Delete" | translate }}
+      </button>
+      </div>
+    </div>
+    <div class="window-background">
+      Building
+      <hr />
+      <div class="checque-wrapper">
+        <div class="left-column-checque">Name:</div>
+        <div class="right-column-checque">
+          {{ building.name }}
+        </div>
+      </div>
+      <div class="checque-wrapper">
+        <div class="left-column-checque">Address:</div>
+        <div class="right-column-checque">
+          {{building.country }},
+          {{building.city }},
+          {{building.street }},
+          {{building.house }}, {{ building.flat }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Delition confitmation</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+       Are you shure to delete this workplace?
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      style="background-color: #cad5df;"
+      (click)="modal.close('Ok click'); deleteWorkplace()"
+    >
+      Ok
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline"
+      style="background-color: #cad5df;"
+      (click)="modal.close('Ok click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<div id="myDiv" style="display: none;" (click)="open()">Launch demo modal</div>

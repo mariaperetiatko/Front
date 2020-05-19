@@ -6,6 +6,8 @@
   </ol>
 </nav>
 <div>
+  <div *ngIf="isRequesting" class="spinner-border"></div>
+
   <div class="body-background" *ngIf="!isRequesting">
     <button class="btn btn-default send-button" (click)="goToCreatePage()" style="margin-bottom: 10px;">
       {{ "Create new Building" | translate }}
@@ -13,12 +15,10 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Address</th>
-          <th scope="col">Work hours</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col"></th>
+          <th scope="col"width="20%">Name</th>
+          <th scope="col"width="45%">Address</th>
+          <th scope="col"width="35%"></th>
+
         </tr>
       </thead>
       <!--  <colgroup>
@@ -34,35 +34,75 @@
             {{ building.country }}, {{ building.city }}, {{ building.street }},
             {{ building.house }}, {{ building.flat }}
           </td>
-          <td>
-
-          </td>
-          <td>
-            <button
-              class="btn btn-default send-button"
-              style="margin-bottom: 10px;"
+          <td style="color:transparent">
+            <a
+              style="margin-right:30px; margin-left:30px; float:left; color:rgba(0,0,0,.5)"
+              href="javascript:void(0)"
+              (click)="goToWorkplacesPage(building.id)"
             >
               {{ "Manage workplaces" | translate }}
-            </button>
-          </td>
-          <td>
-            <button
-              class="btn btn-default send-button"
-              style="margin-bottom: 10px;"
+            </a>
+
+            <a
+            style="margin-right:30px; margin-left:5px; float:left; color:rgba(0,0,0,.5)"
+            href="javascript:void(0)"
+            (click)="goToUpdatePage(building.id)"
             >
               {{ "Edit" | translate }}
-            </button>
-          </td>
-          <td>
-            <button
-              class="btn btn-default send-button"
-              style="margin-bottom: 10px;"
+            </a>
+
+            <a
+            style="margin-left:5px; float:left; color:rgba(0,0,0,.5)"
+            href="javascript:void(0)"
+            (click)="openDelitionPopup(building.id)"
             >
               {{ "Delete" | translate }}
-            </button>
+            </a>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Delition confitmation</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+       Are you shure to delete this building?
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      style="background-color: #cad5df;"
+      (click)="modal.close('Ok click'); deleteBuilding()"
+    >
+      Ok
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline"
+      style="background-color: #cad5df;"
+      (click)="modal.close('Ok click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<div id="myDiv" style="display: none;" (click)="open()">Launch demo modal</div>

@@ -39,6 +39,9 @@ import { BookingEditComponent } from './booking-edit/booking-edit.component';
 import { LandlordAccountComponent } from './landlord-account/landlord-account.component';
 import { LandlordBuildingsComponent } from './landlord-buildings/landlord-buildings.component';
 import { BuildingCreateComponent } from './building-create/building-create.component';
+import { BuildingEditComponent } from './building-edit/building-edit.component';
+import { WorkplacesComponent } from './workplaces/workplaces.component';
+import { WorkplaceEditComponent } from './workplace-edit/workplace-edit.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -69,7 +72,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     BookingEditComponent,
     LandlordAccountComponent,
     LandlordBuildingsComponent,
-    BuildingCreateComponent
+    BuildingCreateComponent,
+    BuildingEditComponent,
+    WorkplacesComponent,
+    WorkplaceEditComponent
   ],
   imports: [
     ChartsModule,

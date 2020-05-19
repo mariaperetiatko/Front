@@ -1,0 +1,61 @@
+<div *ngIf="isRequesting" class="spinner-border"></div>
+<div *ngIf="!isRequesting">
+  <nav aria-label="breadcrumb" style="margin-top: 10px;">
+    <ol class="breadcrumb bradcrumps-style">
+      <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
+        {{ "Buildings" | translate }}
+      </li>
+      <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
+        {{ "Workplaces" | translate }}
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+       {{ "Workplace" | translate }} {{workplace.id}}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="body-background">
+    <div class="orders-wrapper">
+
+      <div *ngFor="let workplaceEquipment of workplace.workplaceEquipment" class="order-background">
+        <div class="checque-background">
+          <div class="checque-wrapper">
+            <div class="left-column-checque">{{workplaceEquipment.equipment.name}}</div>
+            <div class="right-column-checque">
+
+              <input type="number" class="form-control" [(ngModel)]="workplaceEquipment.count" />
+              <button
+              class="btn btn-default form-button"
+              *ngIf="addButtonShown"
+              (click)="deleteWorkplaceEquipment(workplaceEquipment.id)"
+            >Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="window-background">
+      <div class="form-group">
+        <label>{{ "Equipment" | translate }}</label>
+        <select
+          class="form-control"
+          (change)="selectNewEquipment($event)"
+          [(ngModel)]="selectedNewEquipment"
+        >
+          <option
+            *ngFor="let equipment of equipmentList"
+            [value]="equipment.id"
+            [attr.selected]="selectedNewEquipment === equipment.id ? true : null"
+          >
+            {{ equipment.name }}
+          </option>
+        </select>
+        <button
+          class="btn btn-default form-button"
+          *ngIf="addButtonShown"
+          (click)="addWorkplaceEquipment()"
+        >Add</button>
+      </div>
+    </div>
+  </div>
+</div>

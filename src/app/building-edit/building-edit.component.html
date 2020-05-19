@@ -31,7 +31,7 @@
 
     <div #gmap style="width: 100%; height: 400px; overflow: hidden;"></div>
   </div>
-<table class="table table-bordered">
+<table class="table table-bordered" *ngIf="!isRequesting">
   <thead>
 
     <tr>
@@ -65,7 +65,7 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="monTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="monTimeDisable()" [checked]="building.monFinishTime==null&&building.monStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
     <tr>
@@ -85,7 +85,7 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="tueTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="tueTimeDisable()" [checked]="building.tueFinishTime==null&&building.tueStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
     <tr>
@@ -105,7 +105,7 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="wedTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="wedTimeDisable()" [checked]="building.wedFinishTime==null&&building.wedStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="thuTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="thuTimeDisable()" [checked]="building.thuFinishTime==null&&building.thuStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
     <tr>
@@ -145,7 +145,7 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="friTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="friTimeDisable()" [checked]="building.friFinishTime==null&&building.friStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
     <tr>
@@ -165,7 +165,7 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="satTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="satTimeDisable()" [checked]="building.satFinishTime==null&&building.satStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
     <tr>
@@ -185,33 +185,33 @@
         </select>
       </td>
       <td style="padding-bottom:0">
-        <input (change)="sunTimeDisable()" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
+        <input (change)="sunTimeDisable()" [checked]="building.sunFinishTime==null&&building.sunStartTime==null" style="margin-bottom:0" type="checkbox" id="checkbox-1-1" class="regular-checkbox big-checkbox" />
       </td>
     </tr>
   </tbody>
 </table>
-<div style="overflow:hidden">
+<div style="overflow:hidden" *ngIf="!isRequesting">
   <div style="float:left; width:15%">
     <label for="flat">
     Flat number</label>
   </div>
   <div style="float:left; width:30%">
-    <input class="form-control" name="flat" type="number" [(ngModel)]="building.flat" #flat="ngModel" required />
+    <input class="form-control" name="flat" type="number" [(ngModel)]="building.flat" #flat="ngModel" />
   </div>
   <div style="float:left; width:15%; margin-left:10%">
     <label for="flat">
     Name</label>
   </div>
   <div style="float:left; width:30%">
-    <input class="form-control" name="name" type="text" [(ngModel)]="building.name" #name="ngModel" required />
+    <input class="form-control" name="name" type="text" [(ngModel)]="building.name" #name="ngModel" />
   </div>
 </div>
-<button [disabled]="flat.invalid" style="margin-top:10px" class="btn btn-default form-button" (click)="sreateBuilding()">{{ 'Create' | translate }}</button>
+<button *ngIf="!isRequesting" style="margin-top:10px"  class="btn btn-default form-button" (click)="updateBuilding()">{{ 'Update' | translate }}</button>
 </div>
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Booking edited</h4>
+    <h4 class="modal-title" id="modal-basic-title">Building edited</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -219,7 +219,7 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        Booking edited successfully!
+        Building edited successfully!
       </div>
     </form>
   </div>
