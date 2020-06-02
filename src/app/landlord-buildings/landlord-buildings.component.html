@@ -15,8 +15,8 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th scope="col"width="20%">Name</th>
-          <th scope="col"width="45%">Address</th>
+          <th scope="col"width="20%">{{ "Name" | translate }}</th>
+          <th scope="col"width="45%">{{ "Address" | translate }}</th>
           <th scope="col"width="35%"></th>
 
         </tr>
@@ -68,7 +68,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Delition confitmation</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{ "Deletion confitmation" | translate }}</h4>
     <button
       type="button"
       class="close"
@@ -81,7 +81,7 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-       Are you shure to delete this building?
+        {{ "Are you shure to delete this building?" | translate }}
       </div>
     </form>
   </div>
@@ -100,7 +100,7 @@
       style="background-color: #cad5df;"
       (click)="modal.close('Ok click')"
     >
-      Cancel
+    {{ "Cancel" | translate }}
     </button>
   </div>
 </ng-template>

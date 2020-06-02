@@ -22,6 +22,7 @@ export class WorkplaceEditComponent implements OnInit {
   fullEquipmentList: Equipment[];
   selectedNewEquipment: number;
   addButtonShown = false;
+  buildingName;
 
   constructor(
     private apiClient: APIClient,
@@ -31,6 +32,8 @@ export class WorkplaceEditComponent implements OnInit {
 
   ngOnInit() {
     this.workplaceId = Number.parseFloat(this.activateRoute.snapshot.params['workplaceId']);
+    this.buildingName = Number.parseFloat(this.activateRoute.snapshot.params['buildingName']);
+
     if (this.workplaceId >= 0) {
       this.getData();
     }
@@ -43,11 +46,13 @@ export class WorkplaceEditComponent implements OnInit {
   addWorkplaceEquipment() {
     const newWorkplaceEquipment: WorkplaceEquipment = new WorkplaceEquipment();
     newWorkplaceEquipment.count = 1;
+    newWorkplaceEquipment.equipmentId = this.selectedNewEquipment;
+    newWorkplaceEquipment.workplaceId = this.workplaceId;
+
     this.isRequesting = true;
 
     this.apiClient
       .createWorkplaceEquipment(newWorkplaceEquipment)
-      .pipe(finalize(() => (this.isRequesting = false)))
       .subscribe((data: WorkplaceEquipment) => {
         this.addButtonShown = false;
 
@@ -55,10 +60,13 @@ export class WorkplaceEditComponent implements OnInit {
       });
   }
 
+  goToBuildings() {
+    this.router.navigate(["/landlord-buildings/"]);
+  }
+
   deleteWorkplaceEquipment(workplaceEquipmentId) {
     this.isRequesting = true;
     this.apiClient.deleteWorkplaceEquipment(workplaceEquipmentId)
-      .pipe(finalize(() => (this.isRequesting = false)))
       .subscribe((data) => {
         this.getData();
       });
@@ -70,6 +78,30 @@ export class WorkplaceEditComponent implements OnInit {
       .pipe(finalize(() => (this.isRequesting = false)))
       .subscribe((data: Workplace) => {
         this.workplace = data;
+        console.log(data);
+      });
+  }
+
+  goToWorkplaces() {
+    this.router.navigate(["/building/workplaces/", this.workplace.buildingId]);
+
+  }
+
+  updateWorkplace() {
+    this.isRequesting = true;
+    this.apiClient.updateWorkplace(this.workplace)
+      .pipe(finalize(() => (this.isRequesting = false)))
+      .subscribe((data) => {
+        console.log(data);
+      });
+  }
+
+  saveWorkplaceEquipment(workplaceEquipment) {
+    this.isRequesting = true;
+    this.apiClient.updateWorkplaceEquipment(workplaceEquipment)
+      .pipe(finalize(() => (this.isRequesting = false)))
+      .subscribe((data) => {
+        console.log(data);
       });
   }
 

@@ -115,6 +115,13 @@ export class BuildingEditComponent implements AfterContentInit {
       .pipe(finalize(() => (this.isRequesting = false)))
       .subscribe((data: Building) => {
         this.building = data;
+        this.isMonTimeDisable = this.building.monStartTime === null && this.building.monFinishTime === null;
+        this.isTueTimeDisable = this.building.tueStartTime === null && this.building.tueFinishTime === null;
+        this.isWedTimeDisable = this.building.wedStartTime === null && this.building.wedFinishTime === null;
+        this.isThuTimeDisable = this.building.thuStartTime === null && this.building.thuFinishTime === null;
+        this.isFriTimeDisable = this.building.friStartTime === null && this.building.friFinishTime === null;
+        this.isSatTimeDisable = this.building.satStartTime === null && this.building.satFinishTime === null;
+        this.isSunTimeDisable = this.building.sunStartTime === null && this.building.sunFinishTime === null;
         console.log(data);
         this.ngAfterContentInit1();
 
@@ -324,6 +331,27 @@ export class BuildingEditComponent implements AfterContentInit {
         function (results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             this.inputs.value = results[0].formatted_address;
+            for (var i = 0; i < results[0].address_components.length; i++) {
+              if (results[0].address_components[i].types[0] === "country") {
+                this.building.country = results[0].address_components[i].long_name;
+              }
+
+              if (results[0].address_components[i].types[0] === "locality") {
+                this.building.city = results[0].address_components[i].long_name;
+              }
+
+              if (results[0].address_components[i].types[0] === "route") {
+                this.building.street = results[0].address_components[i].long_name;
+              }
+
+              if (results[0].address_components[i].types[0] === "street_number") {
+                this.building.house = results[0].address_components[i].long_name;
+              }
+
+            }
+            this.building.x = results[0].geometry.location.lat();
+            this.building.y = results[0].geometry.location.lng();
+            console.log(this.building);
           }
         }.bind(this)
       );
@@ -344,7 +372,7 @@ export class BuildingEditComponent implements AfterContentInit {
           function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               this.inputs.value = results[0].formatted_address;
-
+              console.log(results[0]);
               for (var i = 0; i < results[0].address_components.length; i++) {
                 if (results[0].address_components[i].types[0] === "country") {
                   this.building.country = results[0].address_components[i].long_name;
@@ -428,6 +456,43 @@ export class BuildingEditComponent implements AfterContentInit {
         })
         this.markers.push(marker);
 
+        let posit = marker.getPosition();
+
+        let geocoder1 = new google.maps.Geocoder();
+
+        geocoder1.geocode
+          ({
+            location: posit
+          },
+
+            function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                this.inputs.value = results[0].formatted_address;
+                for (var i = 0; i < results[0].address_components.length; i++) {
+                  if (results[0].address_components[i].types[0] === "country") {
+                    this.building.country = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "locality") {
+                    this.building.city = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "route") {
+                    this.building.street = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "street_number") {
+                    this.building.house = results[0].address_components[i].long_name;
+                  }
+
+                }
+                this.building.x = results[0].geometry.location.lat();
+                this.building.y = results[0].geometry.location.lng();
+                console.log(this.building);
+              }
+            }.bind(this)
+          );
+
         google.maps.event.addListener(marker, 'dragend', function () {
           let pos = marker.getPosition();
           console.log('this');
@@ -442,7 +507,7 @@ export class BuildingEditComponent implements AfterContentInit {
               function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                   this.inputs.value = results[0].formatted_address;
-
+                  console.log(results[0]);
                   for (var i = 0; i < results[0].address_components.length; i++) {
                     if (results[0].address_components[i].types[0] === "country") {
                       this.building.country = results[0].address_components[i].long_name;
@@ -539,6 +604,27 @@ export class BuildingEditComponent implements AfterContentInit {
             function (results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 this.inputs.value = results[0].formatted_address;
+                for (var i = 0; i < results[0].address_components.length; i++) {
+                  if (results[0].address_components[i].types[0] === "country") {
+                    this.building.country = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "locality") {
+                    this.building.city = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "route") {
+                    this.building.street = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "street_number") {
+                    this.building.house = results[0].address_components[i].long_name;
+                  }
+
+                }
+                this.building.x = results[0].geometry.location.lat();
+                this.building.y = results[0].geometry.location.lng();
+                console.log(this.building);
               }
             }.bind(this)
           );
@@ -556,7 +642,7 @@ export class BuildingEditComponent implements AfterContentInit {
               function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                   this.inputs.value = results[0].formatted_address;
-
+                  console.log(results[0]);
                   for (var i = 0; i < results[0].address_components.length; i++) {
                     if (results[0].address_components[i].types[0] === "country") {
                       this.building.country = results[0].address_components[i].long_name;

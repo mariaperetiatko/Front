@@ -1,0 +1,46 @@
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+  <ol class="breadcrumb bradcrumps-style">
+    <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
+      <a href="javascript:void(0)" (click)="goToBuildings()">
+        {{ "Buildings" | translate }}</a
+      >
+    </li>
+    <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
+      <a href="javascript:void(0)" (click)="goToWorkplaces()">
+        {{ "Workplaces" | translate }} {{ "of building" | translate }} {{ buildingName }}</a
+      >
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+      {{ "Bookings archive" | translate }} {{ "of workplace" | translate }} {{ workplaceId }}
+    </li>
+  </ol>
+</nav>
+
+<div *ngIf="isRequesting" class="spinner-border"></div>
+
+<div class="body-background" *ngIf="!isRequesting">
+  <div class="orders-wrapper">
+    <div *ngFor="let order of workplaceOrders" class="order-background">
+      <div style="overflow: hidden;">
+        <div style="float: left;">{{ order.startTime | date: "MM/dd/yyyy" }}</div>
+        <div style="float: right;">
+          {{ order.startTime | date: "HH:mm" }} -
+          {{ order.finishTime | date: "HH:mm" }}
+        </div>
+      </div>
+      <hr />
+      <div class="checque-background">
+        <div class="checque-wrapper">
+          <div class="left-column-checque">{{ "Client" | translate }}:</div>
+          <div class="right-column-checque">
+            {{ order.client.firstName }} {{ order.client.lastName }}
+          </div>
+        </div>
+        <div class="checque-wrapper">
+          <div class="left-column-checque">{{ "Cost" | translate }}:</div>
+          <div class="right-column-checque">{{ order.sumToPay }} {{ "grn" | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

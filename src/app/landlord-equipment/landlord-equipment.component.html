@@ -1,0 +1,52 @@
+<div *ngIf="isRequesting" class="spinner-border"></div>
+<div *ngIf="!isRequesting">
+  <nav aria-label="breadcrumb" style="margin-top: 10px;">
+    <ol class="breadcrumb bradcrumps-style">
+      <li class="breadcrumb-item" aria-current="page">
+        {{ "Equipment" | translate }}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="body-background">
+    <div class="orders-wrapper">
+
+      <div class="order-background">
+
+        <div *ngFor="let equipment of equipments">
+          <div class="checque-background">
+            <div class class="checque-wrapper" style="padding-top:10px">
+                {{ equipment.name }}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="window-background">
+        <div style="overflow: hidden;">
+          <div style="float: left; width: 30%;">{{ "New equipment" | translate }}</div>
+          <div style="float: left; width: 45%;">
+            <input
+            (keyup)="checkValue()"
+              class="form-control"
+              type="text"
+              name="cost"
+              #cost="ngModel"
+              [(ngModel)]="newEquipment.name"
+              required
+            />
+          </div>
+          <div style="float: right; width: 20%;">
+            <button
+            [disabled]="!isNameValid"
+              class="btn btn-default form-button"
+              (click)="createEquipment()"
+            >
+              {{ "Add" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

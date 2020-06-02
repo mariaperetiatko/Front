@@ -17,7 +17,7 @@
         <a class="nav-link d-block jumping" routerLink="/workplace-parameters">{{ 'Workplace parameters' | translate }}</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link d-block jumping" routerLink="/map-search">{{ 'Map search' | translate }}</a>
+        <a class="nav-link d-block jumping" routerLink="/map-search">{{ 'Map searching' | translate }}</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link d-block jumping" routerLink="/scheduler">{{ 'Scheduler' | translate }}</a>
@@ -25,8 +25,8 @@
       <li class="nav-item dropdown" routerLinkActive="active">
         <a class="nav-link d-block jumping dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="/bookings">{{ 'Bookings' | translate }}</a>
         <div class="dropdown-menu" style="background-color:#f3f4f6 !important;padding-top:0;padding-bottom:0">
-          <a class="dropdown-item" style="padding-top:0;padding-bottom:0" href="/bookings/future-bookings">Future bookings</a>
-          <a class="dropdown-item" style="padding-top:0;padding-bottom:0" href="/bookings/bookings-archive">Archive</a>
+          <a class="dropdown-item" style="padding-top:0;padding-bottom:0" href="/bookings/future-bookings">{{ 'Future bookings' | translate }}</a>
+          <a class="dropdown-item" style="padding-top:0;padding-bottom:0" href="/bookings/bookings-archive">{{ 'Archive' | translate }}</a>
           </div>
       </li>
       <li class="nav-item" routerLinkActive="active">
@@ -35,11 +35,8 @@
       <li class="nav-item" routerLinkActive="active">
           <a class="nav-link d-block jumping" routerLink="/buildings">{{ 'Buildings' | translate }}</a>
         </li>
-        <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link d-block jumping" routerLink="/landlords">{{ 'Landlords' | translate }}</a>
-          </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link d-block jumping" routerLink="/vision-diagrams">Vision diagrams</a>
+            <a class="nav-link d-block jumping" routerLink="/vision-diagrams">{{ 'Vision diagrams' | translate }}</a>
           </li>
 
     </ul>
@@ -52,20 +49,23 @@
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link d-block jumping" routerLink="/landlord-buildings">{{ 'Buildings' | translate }}</a>
       </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link d-block jumping" routerLink="/landlord-equipment">{{ 'Equipment' | translate }}</a>
+      </li>
     </ul>
 
     <ul *ngIf="isAdmin" class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-        <li class="nav-item active">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link  d-block jumping" routerLink="/clients-admin">{{ 'Clients' | translate }}</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link d-block jumping" routerLink="/equipment-admin">{{ 'Equipment' | translate }}</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link d-block jumping" routerLink="/buildings-admin">{{ 'Buildings' | translate }}</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link d-block jumping" routerLink="/workplace-admin">{{ 'Workplaces' | translate }}</a>
         </li>
       </ul>

@@ -21,6 +21,8 @@ export class WorkplacesComponent implements OnInit {
   pageCount;
   building: Building;
   workplaceToDeliteId;
+  isCreation=false;
+  newWorkplace: Workplace = new Workplace();
 
   @ViewChild('content') templateRef: TemplateRef<any>;
 
@@ -35,19 +37,41 @@ export class WorkplacesComponent implements OnInit {
     }
   }
 
+  createWorkplace() {
+    this.isRequesting = true;
+    this.newWorkplace.buildingId = this.buildingId;
+    this.apiClient.createWorkplace(this.newWorkplace)
+    .pipe(finalize(() => (this.isRequesting = false)))
+    .subscribe((data) => {
+      this.getData();
+    });
+  }
+
   loadPage(pageNumber) {
     this.page = pageNumber;
     this.getWorkplacesByBuildingId();
   }
 
   edit(workplaceId) {
-    this.router.navigate(["/workplace-edit/", workplaceId]);
+    this.router.navigate(["/workplace-edit/", this.building.name, workplaceId]);
   }
 
   openDeliteConfirmationWindow(workplaceId) {
     this.workplaceToDeliteId = workplaceId;
     const element: HTMLElement = document.getElementById('myDiv') as HTMLElement;
     element.click();
+  }
+
+  goToBuildings() {
+    this.router.navigate(["/landlord-buildings/"]);
+  }
+
+  getOrdersArchive(workplaceId) {
+    this.router.navigate(["building/workplaces/orders-archive/", this.building.id, this.building.name, workplaceId]);
+  }
+
+  getFutureOrders(workplaceId) {
+    this.router.navigate(["building/workplaces/future-orders/", this.building.id, this.building.name, workplaceId]);
   }
 
   open() {

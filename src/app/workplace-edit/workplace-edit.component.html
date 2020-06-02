@@ -3,13 +3,15 @@
   <nav aria-label="breadcrumb" style="margin-top: 10px;">
     <ol class="breadcrumb bradcrumps-style">
       <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
-        {{ "Buildings" | translate }}
+        <a href="javascript:void(0)" (click)="goToBuildings()"> {{ "Buildings" | translate }}</a>
+
       </li>
       <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
-        {{ "Workplaces" | translate }}
+        <a href="javascript:void(0)" (click)="goToWorkplaces()"> {{ "Workplaces" | translate }} {{ "of building" | translate }} {{buildingName}}</a>
+
       </li>
       <li class="breadcrumb-item" aria-current="page">
-       {{ "Workplace" | translate }} {{workplace.id}}
+        {{ "Workplace" | translate }} {{ workplace.id }}
       </li>
     </ol>
   </nav>
@@ -17,44 +19,107 @@
   <div class="body-background">
     <div class="orders-wrapper">
 
-      <div *ngFor="let workplaceEquipment of workplace.workplaceEquipment" class="order-background">
-        <div class="checque-background">
-          <div class="checque-wrapper">
-            <div class="left-column-checque">{{workplaceEquipment.equipment.name}}</div>
-            <div class="right-column-checque">
+      <div class="order-background">
 
-              <input type="number" class="form-control" [(ngModel)]="workplaceEquipment.count" />
-              <button
-              class="btn btn-default form-button"
-              *ngIf="addButtonShown"
-              (click)="deleteWorkplaceEquipment(workplaceEquipment.id)"
-            >Delete</button>
+        <div *ngFor="let workplaceEquipment of workplace.workplaceEquipment">
+          <div class="checque-background">
+            <div class class="checque-wrapper" style="padding-top:10px">
+              <div class="first-column-checque" style="margin-top:5px">
+                {{ workplaceEquipment.equipment.name }}
+              </div>
+              <div class="second-column-checque">
+                <input type="number" name="test_name" min="0" oninput="validity.valid||(value='');"
+                  class="form-control"
+
+                  [(ngModel)]="workplaceEquipment.count"
+                />
+              </div>
+              <div class="third-column-checque">
+                <a
+                  style="
+                    margin-right: 10px;
+                    float: right;
+                    color: rgba(0, 0, 0, 0.5);
+                    margin-left:10px;
+                    margin-top:5px
+                  "
+                  href="javascript:void(0)"
+                  (click)="deleteWorkplaceEquipment(workplaceEquipment.id)"
+                >
+                  {{ "Delete" | translate }}
+                </a>
+              </div>
+              <div class="right-column-checque">
+                <a
+                  style="
+                    margin-left: 5px;
+                    float: right;
+                    color: rgba(0, 0, 0, 0.5);
+                    margin-top:5px
+                  "
+                  href="javascript:void(0)"
+                  (click)="saveWorkplaceEquipment(workplaceEquipment)"
+                >
+                  {{ "Save" | translate }}
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="window-background">
-      <div class="form-group">
-        <label>{{ "Equipment" | translate }}</label>
-        <select
-          class="form-control"
-          (change)="selectNewEquipment($event)"
-          [(ngModel)]="selectedNewEquipment"
-        >
-          <option
-            *ngFor="let equipment of equipmentList"
-            [value]="equipment.id"
-            [attr.selected]="selectedNewEquipment === equipment.id ? true : null"
+      <div class="window-background">
+        <div style="overflow: hidden;">
+          <div style="float: left; width: 30%;margin-top:7px">{{ "Cost" | translate }}
+            ({{ "grn" | translate }})</div>
+          <div style="float: left; width: 30%;">
+            <input oninput="validity.valid||(value='');"
+              class="form-control"
+              type="number"
+              min="0"
+              name="cost"
+              #cost="ngModel"
+              [(ngModel)]="workplace.cost"
+              required
+            />
+          </div>
+          <div style="float: right; width: 20%;">
+            <button
+            [disabled]="(workplace.cost==null||workplace.cost<0)"
+              class="btn btn-default form-button"
+              (click)="updateWorkplace()"
+            >
+              {{ "Save cost" | translate }}
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="form-group">
+          <label>{{ "Equipment" | translate }}</label>
+          <select
+            class="form-control"
+            (change)="selectNewEquipment($event)"
+            [(ngModel)]="selectedNewEquipment"
           >
-            {{ equipment.name }}
-          </option>
-        </select>
-        <button
-          class="btn btn-default form-button"
-          *ngIf="addButtonShown"
-          (click)="addWorkplaceEquipment()"
-        >Add</button>
+            <option
+              *ngFor="let equipment of equipmentList"
+              [value]="equipment.id"
+              [attr.selected]="
+                selectedNewEquipment === equipment.id ? true : null
+              "
+            >
+              {{ equipment.name }}
+            </option>
+          </select>
+          <button
+            class="btn btn-default form-button"
+            *ngIf="addButtonShown"
+            style="margin-top: 10px;"
+            (click)="addWorkplaceEquipment()"
+          >
+          {{ "Add" | translate }}
+          </button>
+
       </div>
     </div>
   </div>

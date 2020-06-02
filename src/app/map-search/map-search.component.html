@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb" style="margin-top: 10px;">
   <ol class="breadcrumb bradcrumps-style">
     <li class="breadcrumb-item" aria-current="page">
-      {{ "Map search" | translate }}
+      {{ "Map searching" | translate }}
     </li>
   </ol>
 </nav>
@@ -20,7 +20,7 @@
       class="form-control"
       style="margin-bottom: 10px;"
       type="text"
-      placeholder="Search Box"
+      placeholder="{{ 'Search Box' | translate }}"
     />
 
     <div #gmap style="width: 100%; height: 400px; overflow: hidden;"></div>
@@ -29,22 +29,26 @@
     (click)="showAllBuildings()"
     class="btn btn-default button-show"
     *ngIf="isOneBuildingShown"
-  >Show all coworkings</button>
+  >{{ "Show all coworkings" | translate }}</button>
   <div class="buildings" *ngIf="isOneBuildingShown">
     <div class="one-building">
-      {{ buildingToShow.building.country }}
+      <div style="overflow:hidden">
+        <div style="float:left">{{ buildingToShow.building.name }}</div>
+        <div style="float:right">{{getDistance(buildingToShow.building.x, buildingToShow.building.y)}} {{ "km" | translate }}</div>
+      </div>
       <hr />
+      <div [className]="buildingToShow.workplaceSearchingResults.length>1 ? 'scroll' : ''">
       <div
         *ngFor="let workplaceResult of buildingToShow.workplaceSearchingResults"
         (click)="visitWorkplace(workplaceResult.workplaceId)"
         class="workplace-background"
       >
-        <div class="workplace-background-column">
-          <p>Workplace Number</p>
-          <p>Equipment Appropriation</p>
-          <p>Cost Appropriation</p>
+        <div class="workplace-background-column-left">
+          <p>{{ "Workplace Number" | translate }}</p>
+          <p>{{ "Equipment Appropriation" | translate }}</p>
+          <p>{{ "Cost Appropriation" | translate }}</p>
         </div>
-        <div class="workplace-background-column">
+        <div class="workplace-background-column-right">
           <p>{{ workplaceResult.workplaceId }}</p>
           <p>
             {{ workplaceResult.equipmentAppropriation | number: "1.0-0" }} %
@@ -52,26 +56,32 @@
           <p>{{ workplaceResult.costAppropriation | number: "1.0-0" }} %</p>
         </div>
       </div>
+      </div>
     </div>
   </div>
   <div class="buildings" *ngIf="!isRequesting && !isOneBuildingShown">
+    <div *ngFor="let buildingResult of buildingSearchingResults">
     <div
       class="building-background"
-      *ngFor="let buildingResult of buildingSearchingResults"
+       *ngIf="buildingResult.workplaceSearchingResults.length>0"
     >
-      {{ buildingResult.building.name }}
+    <div style="overflow:hidden">
+      <div style="float:left">{{ buildingResult.building.name }}</div>
+      <div style="float:right">{{getDistance(buildingResult.building.x, buildingResult.building.y)}} {{ "km" | translate }}</div>
+    </div>
       <hr />
+      <div [className]="buildingResult.workplaceSearchingResults.length>1 ? 'scroll' : ''">
       <div
         *ngFor="let workplaceResult of buildingResult.workplaceSearchingResults"
         (click)="visitWorkplace(workplaceResult.workplaceId)"
         class="workplace-background"
       >
-        <div class="workplace-background-column">
-          <p>Workplace Number</p>
-          <p>Equipment Appropriation</p>
-          <p>Cost Appropriation</p>
+        <div class="workplace-background-column-left">
+          <p>{{ "Workplace Number" | translate }}</p>
+          <p>{{ "Equipment Appropriation" | translate }}</p>
+          <p>{{ "Cost Appropriation" | translate }}</p>
         </div>
-        <div class="workplace-background-column">
+        <div class="workplace-background-column-right">
           <p>{{ workplaceResult.workplaceId }}</p>
           <p>
             {{ workplaceResult.equipmentAppropriation | number: "1.0-0" }} %
@@ -79,6 +89,8 @@
           <p>{{ workplaceResult.costAppropriation | number: "1.0-0" }} %</p>
         </div>
       </div>
+      </div>
+    </div>
     </div>
   </div>
 </div>

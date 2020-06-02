@@ -8,18 +8,34 @@
 
 <div class="body-background">
   <div class="window-background">
-    <div class="window">
-      On/Off Monitoring
+    <div *ngIf="monit==1" class="window" style="background-color: #f6000021 ! important">
+      {{ "On/Off Monitoring" | translate }}
       <hr />
       <label class="switch">
         <input type="checkbox" />
         <span class="slider round"></span>
       </label>
+
+      <div  style="float: right; margin-top:15px; margin-right: 60px">15 см</div>
+
+    </div>
+
+    <div *ngIf="monit===2" class="window" style="background-color: #f6000021 ! important">
+      lll
+      {{ "On/Off Monitoring" | translate }}
+      <hr />
+      <label class="switch">
+        <input type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+
+      <div  style="float: right; margin-top:15px; margin-right: 60px">53 см</div>
+
     </div>
 
     <div class="window-search">
     <div class="form-group">
-      <label>Select Date</label>
+      <label>{{ "Select Monitoring Date" | translate }}</label>
       <input type="date" name="date" class="form-control" [(ngModel)]="date" />
     </div>
 
@@ -27,7 +43,7 @@
       {{ "Get Statistics" | translate }}
     </button>
 
-    <div *ngIf="hhh" class="window-diagram">
+    <div *ngIf="hhh && pieChartData111" class="window-diagram">
       <div>
         <div class="chart" style="width:100%; margin-bottom:10px">
           <canvas baseChart
@@ -48,7 +64,7 @@
 
   <div *ngIf="!isRequesting">
     <div style="width: 70%;">
-      Statistics
+      {{ "Statistics" | translate }}
       <div style="display: block;">
         <canvas
           baseChart

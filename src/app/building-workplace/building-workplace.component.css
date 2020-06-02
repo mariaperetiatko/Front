@@ -1,0 +1,188 @@
+.body-background {
+  overflow: hidden;
+  background-color: #f3f4f6;
+  padding: 30px;
+  border-radius: 0.25rem;
+  margin-bottom: 10%;
+}
+
+.window-background {
+  width: 30%;
+  float: right;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  margin-right: auto;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+}
+
+.info-background {
+  width: 100%;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  margin-right: auto;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+}
+
+.left-background {
+  width: 67%;
+  float: left;
+}
+
+.order-background {
+  width: 100%;
+  margin-right: auto;
+  margin-top: 20px;
+  overflow: auto;
+  padding: 10px;
+  background-color: #cad5df;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+}
+
+.checque-background {
+  background-color: #f3f4f6;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 10px;
+}
+
+.checque-wrapper::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.checque-wrapper {
+  margin-bottom: 10px;
+}
+
+.checque-background-column {
+  width: 45%;
+  float: left;
+}
+
+.order-background1 {
+  margin-top: 20px;
+  width: 100%;
+  margin-right: 0;
+  padding: 0 !important;
+  overflow: auto;
+  border-left: 2px solid #cad5df;
+  border-right: 2px solid #cad5df;
+}
+
+.workplace-background {
+  background-color: #f3f4f6;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.left-column {
+  float: left;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.right-column {
+  padding-right: 10px;
+  width: 70%;
+  float: right;
+  overflow: hidden;
+}
+
+
+.left-column2 {
+  float: left;
+  overflow: hidden;
+}
+
+.right-column2 {
+  width: 50%;
+  float: right;
+  overflow: hidden;
+}
+
+.left-column-checque {
+  float: left;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.right-column-checque {
+  padding-right: 10px;
+  width: 50%;
+  float: right;
+  overflow: hidden;
+}
+
+.left-column1 {
+  width: 70%;
+  float: left;
+  overflow: hidden;
+}
+
+.right-column1 {
+  padding-right: 10px;
+  width: 30%;
+  float: right;
+  overflow: hidden;
+}
+
+.bradcrumps-style {
+  background-color: #cad5df !important;
+  color: black !important;
+}
+
+.form-button {
+  float: right;
+  background-color: #f3f4f6;
+}
+
+.time-background {
+  width: 25%;
+  float: left;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  margin-right: 4%;
+  margin-left: 4%;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+  cursor: pointer;
+}
+
+.time-background1 {
+  width: 10%;
+  float: left;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #cad5df;
+  text-align: center;
+  margin-right: 2.1%;
+  margin-left: 2.1%;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+  border: 2px solid #cad5df;
+  cursor: pointer;
+}
+
+.time-background:hover {
+  background-color: #f3f4f6b7;
+}
+
+.time-background1:hover {
+  background-color: #f3f4f6b7;
+}
+.time-background-column {
+  float: left;
+}

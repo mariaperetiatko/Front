@@ -1,9 +1,11 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+    <ol class="breadcrumb bradcrumps-style">
       <li class="breadcrumb-item" aria-current="page">{{ 'Workplaces' | translate }}</li>
     </ol>
   </nav>
-    <div *ngIf="isEq">
+  <div *ngIf="isRequesting" class="spinner-border"></div>
+  <div class="body-background"style="overflow:hidden" *ngIf="!isRequesting">
+   <!-- <div *ngIf="isEq">
     <table class="table table-bordered">
         <thead>
            <tr>
@@ -25,55 +27,67 @@
           <option *ngFor="let land of eqList" [value]="land.id" [selected]="eqId">{{ land.name }}</option>
         </select>
      <button type="button" (click)="createWorkplaceEquipment()" class="btn btn-default">{{ 'Add equipment' | translate }}</button>
-</div>
-<button type="button" (click)="createWorkplace()" class="btn btn-default">{{ 'Create new workplace' | translate }}</button>
+</div>-->
+<div style="float:right;width:30%; margin-left:10px">
+<button type="button" (click)="createWorkplace()" style="margin-bottom:10px" class="btn btn-default form-button">{{ 'Create new workplace' | translate }}</button>
+
 <div *ngIf="isUsed">
+  <div class="form-background" style="width:100%; overflow:hidden">
+
     <div class="form-group">
-       <label>{{ 'Mark' | translate }}</label>
-       <input class="form-control" type="text" name="mark" [(ngModel)]="workplace.mark">
+       <label>{{ 'Cost' | translate }} ({{"grn"|translate}})</label>
+       <input oninput="validity.valid||(value='');" class="form-control" type="number" min="0" name="cost" required [(ngModel)]="workplace.cost">
     </div>
-    <div class="form-group">
-       <label>{{ 'Cost' | translate }}</label>
-       <input class="form-control" type="text" name="cost" [(ngModel)]="workplace.cost">
-    </div>
-     <li class="nav-item mr-2">
         <label>{{ 'Building' | translate }}</label>
-        <select #langSelect class="form-control"(change)="workplace.buildingId=langSelect.value">
+        <select required #langSelect class="form-control"(change)="workplace.buildingId=langSelect.value">
           <option *ngFor="let land of buildingsList" [value]="land.id" [selected]="workplace.buildingId">{{ land.country + ' ' + land.city + ' ' + land.street + ' ' + land.house + ' ' + land.flat }}</option>
         </select>
-    </li>
+
+
 
 
     <div *ngIf="isCreate">
-        <button class="btn btn-default details" (click)="onCreate(workplace)">{{ 'Create' | translate }}</button>
+
+        <button [disabled]="workplace.cost==null" style="background-color: #f3f4f6;margin-top:10px" class="btn btn-default details form-button" (click)="onCreate(workplace)">{{ 'Create' | translate }}</button>
         </div>
         <div *ngIf="isUpdate">
-            <button class="btn btn-default details" (click)="onUpdate(workplace)">{{ 'Update' | translate }}</button>
+            <button [disabled]="workplace.cost==null" style="background-color: #f3f4f6;margin-top:10px" class="btn btn-default details form-button" (click)="onUpdate(workplace)">{{ 'Update' | translate }}</button>
             </div>
         </div>
+        <hr>
+        </div>
+</div>
+<div style="float:left;width:67%">
+
     <table class="table table-bordered">
         <thead>
            <tr>
-              <td>{{ 'Mark' | translate }}</td>
-              <td>{{ 'Cost' | translate }}</td>
+            <td>{{ 'Number' | translate }}</td>
+
+              <td>{{ 'Cost' | translate }} ({{ 'grn' | translate }})</td>
               <td>{{ 'Building' | translate }}</td>
 
-              <td>{{ 'Equipment' | translate }}</td>
-              <td>{{ 'Update' | translate }}</td>
-              <td>{{ 'Delete' | translate }}</td>
+              <td></td>
            </tr>
 
         </thead>
         <tbody>
            <tr *ngFor="let cl of workplacesList">
-              <td>{{cl.mark}}</td>
+            <td>{{cl.id}}</td>
+
               <td>{{cl.cost}}</td>
               <td>{{cl.buildingId}}</td>
-              <td> <button type="button" (click)="getEquipmentByWorkplace(cl.id)" class="btn btn-default">{{ 'Equipment' | translate }}</button></td>
+              <td>
 
-                  <td> <button type="button" (click)="updateWorkplace(cl)" class="btn btn-default">{{ 'Update' | translate }}</button></td>
-              <td> <button type="button" (click)="deleteWorkplace(cl.id)" class="btn btn-default">{{ 'Delete' | translate }}</button></td>
+                <a style="margin-left:70px; float:left; color:rgba(0,0,0,.5)"
+                href="javascript:void(0)"
+                (click)="updateWorkplace(cl)">{{ 'Update' | translate }}</a>
+
+                <a style="margin-left:70px; float:left; color:rgba(0,0,0,.5)"
+                href="javascript:void(0)"
+                (click)="deleteWorkplace(cl.id)">{{ 'Delete' | translate }}</a>
            </tr>
         </tbody>
      </table>
-
+    </div>
+</div>

@@ -228,6 +228,9 @@ export class MapSearchComponent implements AfterContentInit {
         );
         localStorage.setItem('latitude', this.latitude);
         localStorage.setItem('longitude', this.longitude);
+        console.log('latitude:', this.latitude);
+
+        console.log('longitude:', this.longitude);
         const location = new google.maps.LatLng(this.latitude, this.longitude);
 
         const marker = new google.maps.Marker({
@@ -250,9 +253,22 @@ export class MapSearchComponent implements AfterContentInit {
     .pipe(finalize(() => this.isRequesting = false))
     .subscribe((data: BuildingSearchingResult[]) => {
       this.buildingSearchingResults = data;
+
+      for (let i = 0; i < this.buildingSearchingResults.length; i++) {
+        this.buildingSearchingResults[i].workplaceSearchingResults.sort((a, b) =>
+        (a.equipmentAppropriation < b.equipmentAppropriation) ? 1 :
+        (a.equipmentAppropriation === b.equipmentAppropriation) ? ((a.costAppropriation < b.costAppropriation) ? 1 : -1) : -1 );
+      }
+      this.buildingSearchingResults.sort((a, b) =>
+      (Math.max.apply(Math, a.workplaceSearchingResults.map(function(o) { return o.equipmentAppropriation; }))) <
+      (Math.max.apply(Math, b.workplaceSearchingResults.map(function(o) { return o.equipmentAppropriation; }))) ? 1 : -1);
       console.log(data);
       this.showBuildings();
     });
+  }
+
+  getDistance(x, y): string {
+    return (Math.sqrt(Math.pow(x - this.latitude, 2) + Math.pow(y - this.longitude, 2)) * 111).toFixed(2);
   }
 
   setCenter(latitude: number, longitude: number) {

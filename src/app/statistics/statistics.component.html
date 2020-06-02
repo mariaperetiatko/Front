@@ -96,7 +96,7 @@ Building
 <button class="btn form-button" (click)="showStatByMonth()">{{ 'Month' | translate }}</button>
 <button class="btn form-button" (click)="showStatByWeek()">{{ 'Week' | translate }}</button>
 <div *ngIf="isYearVisible">
-Year statistics
+{{ "Year statistics" | translate }}
 <div>
   <div>
     <div style="display: block">
@@ -116,7 +116,7 @@ Year statistics
 </div>
 
 <div *ngIf="isMonthVisible">
-Month statistics
+{{ 'Month statistics' | translate }}
 <div>
     <div>
       <div style="display: block">
@@ -134,7 +134,7 @@ Month statistics
   </div>
 </div>
 <div *ngIf="isWeekVisible">
-Week statistics
+{{ 'Week statistics' | translate }}
     <div>
         <div>
           <div style="display: block">

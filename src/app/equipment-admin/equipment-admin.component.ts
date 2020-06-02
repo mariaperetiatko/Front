@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIClient, Equipment, Workplace } from '../api.service';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -14,7 +15,8 @@ export class EquipmentAdminComponent implements OnInit {
   isUpdate = false;
   isCreate = false;
   isUsed = false;
-
+  isRequesting = false;
+  isNameValid = false;
   constructor(private apiClient: APIClient) { }
 
   ngOnInit() {
@@ -22,7 +24,9 @@ export class EquipmentAdminComponent implements OnInit {
   }
 
   getEquipmentList() {
+    this.isRequesting = true;
     this.apiClient.getEquipmentsList()
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe((data: Equipment[]) => {
       this.equipmentList = data;
     });
@@ -36,13 +40,22 @@ export class EquipmentAdminComponent implements OnInit {
   }
 
   onUpdate(equipment: Equipment): void {
+    this.isRequesting = true;
     this.apiClient.updateEquipment(equipment)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.isUsed = false;
      });
    }
 
+   checkValue() {
+    if(this.equipmentList.filter(e => e.name === this.equipment.name).length > 0 || this.equipment.name=='')
+    this.isNameValid = false;
+    else
+    this.isNameValid = true;
+
+  }
    createEquipment(): void {
     this.equipment = new Equipment();
     this.isUpdate = false;
@@ -51,7 +64,9 @@ export class EquipmentAdminComponent implements OnInit {
   }
 
   onCreate(equipment: Equipment): void {
+    this.isRequesting = true;
     this.apiClient.createEquipment(equipment)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.isUsed = false;
@@ -59,7 +74,9 @@ export class EquipmentAdminComponent implements OnInit {
    }
 
    deleteEquipment(equipmentId: number): void {
+    this.isRequesting = true;
     this.apiClient.deleteEquipment(equipmentId)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.hide();

@@ -1,14 +1,15 @@
 .body-background {
-  background-color: #f3f4f6;
-  padding: 30px;
-  border-radius: 0.25rem;
+  background-color:#f3f4f6;
+  padding:30px;
+  border-radius: .25rem;
   margin-bottom: 10%;
   overflow: auto;
+
 }
 
 .order-background {
   width: 100%;
-  float: left;
+float:left;
   overflow: auto;
   padding: 10px;
   background-color: #cad5df;
@@ -19,7 +20,7 @@
 
 .orders-wrapper {
   width: 67%;
-  float: left;
+  float:left;
 }
 
 .checque-wrapper {
@@ -31,32 +32,20 @@
   background-color: #cad5df !important;
 }
 
-.first-column-checque {
+.left-column-checque {
   float: left;
   overflow: hidden;
-  width: 30%;
   padding-left: 10px;
 }
 
-.second-column-checque {
-  margin-left:10px;
-  float: left;
-  width: 20%;
-  overflow: hidden;
-}
-.third-column-checque {
-  margin-left:10px;
-  width: 20%;
+
+.right-column-checque {
+  padding-right: 10px;
+  width: 50%;
   float: right;
   overflow: hidden;
 }
 
-.right-column-checque {
-  padding-right: 10px;
-  width: 20%;
-  float: right;
-  overflow: hidden;
-}
 
 .window-background {
   width: 30%;
@@ -90,10 +79,5 @@
 
 .form-button {
   float: right;
-  background-color: #f3f4f6;
-}
-
-.send-button {
-  float: right;
-  background-color: #cad5df;
+  background-color:#f3f4f6;
 }

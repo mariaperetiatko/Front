@@ -1,3 +1,6 @@
+import { LandlordEquipmentComponent } from './landlord-equipment/landlord-equipment.component';
+import { FutureWorkplaceOrdersComponent } from './future-workplace-orders/future-workplace-orders.component';
+import { BuildingWorkplaceComponent } from './building-workplace/building-workplace.component';
 import { LandlordBuildingsComponent } from './landlord-buildings/landlord-buildings.component';
 import { LandlordAccountComponent } from './landlord-account/landlord-account.component';
 import { BookingsComponent } from './bookings/bookings.component';
@@ -27,6 +30,7 @@ import { BuildingCreateComponent } from './building-create/building-create.compo
 import { BuildingEditComponent } from './building-edit/building-edit.component';
 import { WorkplacesComponent } from './workplaces/workplaces.component';
 import { WorkplaceEditComponent } from './workplace-edit/workplace-edit.component';
+import { OrdersArciveComponent } from './orders-arcive/orders-arcive.component';
 
 const routes: Routes = [
                          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -38,6 +42,7 @@ const routes: Routes = [
                          { path: 'workplace-parameters', component: WorkspaceParametersComponent},
                          { path: 'map-search', component: MapSearchComponent},
                          { path: 'map-search/workplace/:workplaceId', component: WorkplaceComponent},
+                         { path: 'buildings/workplace/:workplaceId', component: BuildingWorkplaceComponent},
                          { path: 'scheduler', component: SchedulerComponent},
                          { path: 'statistics', component: StatisticsComponent},
                          { path: 'buildings', component: BuildingsComponent},
@@ -55,7 +60,12 @@ const routes: Routes = [
                          { path: 'building-create', component: BuildingCreateComponent},
                          { path: 'building-edit/:buildingId', component: BuildingEditComponent},
                          { path: 'building/workplaces/:buildingId', component: WorkplacesComponent},
-                         { path: 'workplace-edit/:workplaceId', component: WorkplaceEditComponent}
+                         { path: 'workplace-edit/:buildingName/:workplaceId', component: WorkplaceEditComponent},
+                         { path: 'building/workplaces/orders-archive/:buildingId/:buildingName/:workplaceId',
+                         component: OrdersArciveComponent},
+                         { path: 'building/workplaces/future-orders/:buildingId/:buildingName/:workplaceId',
+                          component: FutureWorkplaceOrdersComponent},
+                          { path: 'landlord-equipment', component: LandlordEquipmentComponent}
                          ];
 
 @NgModule({

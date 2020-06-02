@@ -2,10 +2,10 @@
   <nav aria-label="breadcrumb" style="margin-top: 10px;">
     <ol class="breadcrumb bradcrumps-style">
       <li class="breadcrumb-item active bradcrumps-style" aria-current="page">
-        {{ "Buildings" | translate }}
+         <a href="javascript:void(0)" (click)="goToBuildings()">{{ "Buildings" | translate }}</a>
       </li>
       <li class="breadcrumb-item" aria-current="page">
-        {{building.name }}{{ "Workplaces" | translate }}
+       {{ "Workplaces" | translate }}  {{ "of building" | translate }}  {{building.name }}
       </li>
     </ol>
   </nav>
@@ -15,9 +15,17 @@
   <div class="body-background">
 
     <div class="orders-wrapper" *ngIf="workplaces.length>0">
-      <button class="btn btn-default send-button" style="margin-bottom: 10px;">
+      <button class="btn btn-default send-button" *ngIf="!isCreation" style="margin-bottom: 10px;" (click)="isCreation=true">
         {{ "Create new Workplace" | translate }}
       </button>
+      <button [disabled]="newWorkplace.cost==null" *ngIf="isCreation" class="btn btn-default send-button" style="margin-left: 10px;margin-bottom: 10px;" (click)="createWorkplace()">
+        {{ "Create" | translate }}
+
+      </button>
+      <input style="float:right; width:30%;margin-left: 10px;" *ngIf="isCreation" oninput="validity.valid||(value='');" class="form-control" type="number" min="0" name="cost" required [(ngModel)]="newWorkplace.cost">
+
+      <label style="float:right; width:30%;margin-left: 10px;" *ngIf="isCreation">{{"Cost"|translate}} ({{"grn"|translate}})</label>
+
       <div class="text-center">
         <ul
           class="pagination pg-blue justify-content-center"
@@ -31,7 +39,7 @@
             >
               <span aria-hidden="true">&laquo;</span>
 
-              <span class="sr-only">Previous</span>
+              <span class="sr-only">{{ "Previous" | translate }}</span>
             </a>
           </li>
 
@@ -52,26 +60,26 @@
               (click)="loadPage(page + 1)"
             >
               <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
+              <span class="sr-only">{{ "Next" | translate }}</span>
             </a>
           </li>
         </ul>
       </div>
       <div *ngFor="let workplace of workplaces" class="order-background">
         <div style="overflow: hidden;">
-          <div style="float: left;">Workplace {{ workplace.id }}</div>
+          <div style="float: left;">{{ "Workplace" | translate }} {{ workplace.id }}</div>
         </div>
         <hr />
         <div class="checque-background">
           <div class="checque-wrapper">
-            <div class="left-column-checque">Cost:</div>
-            <div class="right-column-checque">{{ workplace.cost }}</div>
+            <div class="left-column-checque">{{ "Cost" | translate }}:</div>
+            <div class="right-column-checque">{{ workplace.cost }} {{ "grn" | translate }}</div>
           </div>
           <div class="checque-wrapper">
-            <div class="left-column-checque">Equipment:</div>
+            <div class="left-column-checque">{{ "Equipment" | translate }}:</div>
             <div class="right-column-checque">
               <div *ngFor="let item of workplace.workplaceEquipment">
-                {{ item.equipment.name }}{{ item.count }}
+                <span style="float:left;width:50%">{{ item.equipment.name }}</span><span style="float:left;width:50%">{{ item.count }}</span>
               </div>
             </div>
           </div>
@@ -83,19 +91,26 @@
           (click)="openDeliteConfirmationWindow(workplace.id)">
         {{ "Delete" | translate }}
       </button>
+      <button class="btn btn-default form-button" style=" margin-right:10px" (click)="getOrdersArchive(workplace.id)" >
+        {{ "Orders archive" | translate }}
+      </button>
+
+      <button class="btn btn-default form-button" style=" margin-right:10px" (click)="getFutureOrders(workplace.id)" >
+        {{ "Future orders" | translate }}
+      </button>
       </div>
     </div>
     <div class="window-background">
-      Building
+      {{ "Building" | translate }}
       <hr />
       <div class="checque-wrapper">
-        <div class="left-column-checque">Name:</div>
+        <div class="left-column-checque">{{ "Name" | translate }}:</div>
         <div class="right-column-checque">
           {{ building.name }}
         </div>
       </div>
       <div class="checque-wrapper">
-        <div class="left-column-checque">Address:</div>
+        <div class="left-column-checque">{{ "Address" | translate }}:</div>
         <div class="right-column-checque">
           {{building.country }},
           {{building.city }},
@@ -109,7 +124,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Delition confitmation</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{ "Deletion confitmation" | translate }}</h4>
     <button
       type="button"
       class="close"
@@ -122,7 +137,7 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-       Are you shure to delete this workplace?
+        {{ "Are you sure to delete this workplace?" | translate }}
       </div>
     </form>
   </div>
@@ -141,7 +156,7 @@
       style="background-color: #cad5df;"
       (click)="modal.close('Ok click')"
     >
-      Cancel
+    {{ "Cancel" | translate }}
     </button>
   </div>
 </ng-template>

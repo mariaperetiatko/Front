@@ -26,7 +26,7 @@
       style="margin-bottom: 10px;"
       type="text"
 
-      placeholder="Search Box"
+      placeholder="{{ 'Search Box' | translate }}"
     />
 
     <div #gmap style="width: 100%; height: 400px; overflow: hidden;"></div>
@@ -35,10 +35,10 @@
   <thead>
 
     <tr>
-      <th scope="col" style="text-align:center">Day of week</th>
-      <th scope="col" style="text-align:center">Start time</th>
-      <th scope="col" style="text-align:center">Finish time</th>
-      <th scope="col" style="text-align:center">Not working day</th>
+      <th scope="col" style="text-align:center" width="20%">{{ "Day of week" | translate }}</th>
+      <th scope="col" style="text-align:center" width="30%">{{ "Start time" | translate }}</th>
+      <th scope="col" style="text-align:center" width="30%">{{ "Finish time" | translate }}</th>
+      <th scope="col" style="text-align:center" width="20%">{{ "Not working day" | translate }}</th>
     </tr>
   </thead>
   <!--  <colgroup>
@@ -49,7 +49,7 @@
     </colgroup>-->
   <tbody>
     <tr>
-      <td>Monday</td>
+      <td>{{ "Monday" | translate }}</td>
       <td>
         <select [disabled]="isMonTimeDisable" class="form-control" [(ngModel)]="building.monStartTime" name="monStartTime" #monStartTime="ngModel">
           <ng-container *ngFor="let item of timeObjects">
@@ -69,7 +69,7 @@
       </td>
     </tr>
     <tr>
-      <td>Tuesday</td>
+      <td>{{ "Tuesday" | translate }}</td>
       <td>
         <select [disabled]="isTueTimeDisable" class="form-control" [(ngModel)]="building.tueStartTime">
           <ng-container *ngFor="let item of timeObjects">
@@ -89,7 +89,7 @@
       </td>
     </tr>
     <tr>
-      <td>Wednesday</td>
+      <td>{{ "Wednesday" | translate }}</td>
       <td>
         <select [disabled]="isWedTimeDisable" class="form-control" [(ngModel)]="building.wedStartTime">
           <ng-container *ngFor="let item of timeObjects">
@@ -109,7 +109,7 @@
       </td>
     </tr>
     <tr>
-      <td>Thursday</td>
+      <td>{{ "Thursday" | translate }}</td>
       <td>
         <select [disabled]="isThuTimeDisable" class="form-control" [(ngModel)]="building.thuStartTime">
           <ng-container *ngFor="let item of timeObjects">
@@ -129,7 +129,7 @@
       </td>
     </tr>
     <tr>
-      <td>Friday</td>
+      <td>{{ "Friday" | translate }}</td>
       <td>
         <select [disabled]="isFriTimeDisable" class="form-control" [(ngModel)]="building.friStartTime">
           <ng-container *ngFor="let item of timeObjects">
@@ -149,7 +149,7 @@
       </td>
     </tr>
     <tr>
-      <td>Saturday</td>
+      <td>{{ "Saturday" | translate }}</td>
       <td>
         <select [disabled]="isSatTimeDisable" class="form-control" [(ngModel)]="building.satStartTime">
           <ng-container *ngFor="let item of timeObjects">
@@ -169,7 +169,7 @@
       </td>
     </tr>
     <tr>
-      <td>Sunday</td>
+      <td>{{ "Sunday" | translate }}</td>
       <td>
         <select [disabled]="isSunTimeDisable" class="form-control" [(ngModel)]="building.sunStartTime">
           <ng-container *ngFor="let item of timeObjects">
@@ -193,14 +193,14 @@
 <div style="overflow:hidden">
   <div style="float:left; width:15%">
     <label for="flat">
-    Flat number</label>
+      {{ "Flat number" | translate }}</label>
   </div>
   <div style="float:left; width:30%">
     <input class="form-control" name="flat" type="number" [(ngModel)]="building.flat" #flat="ngModel" required />
   </div>
   <div style="float:left; width:15%; margin-left:10%">
     <label for="flat">
-    Name</label>
+      {{ "Name" | translate }}</label>
   </div>
   <div style="float:left; width:30%">
     <input class="form-control" name="name" type="text" [(ngModel)]="building.name" #name="ngModel" required />
@@ -211,7 +211,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Booking edited</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{ "Booking creation" | translate }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -219,7 +219,7 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        Booking edited successfully!
+        {{ "Building created successfully!" | translate }}
       </div>
     </form>
   </div>

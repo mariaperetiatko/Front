@@ -41,7 +41,9 @@ export class APIClient {
   ) {
     this.http = http;
     //this.baseUrl = baseUrl ? baseUrl : "https://192.168.1.4:45490";
-    this.baseUrl = baseUrl ? baseUrl : "https://aapz-backend.conveyor.cloud";
+    //this.baseUrl = baseUrl ? baseUrl : "https://aapz-backend.conveyor.cloud";
+    this.baseUrl = baseUrl ? baseUrl : "https://localhost:44333";
+
   }
 
   toJSON(filter: Filter) {
@@ -4313,6 +4315,111 @@ export class APIClient {
     return _observableOf<Workplace>(<any>null);
   }
 
+
+
+
+
+
+
+/**
+   * @return Success
+   */
+  getAppropriationByBuildingResults(buildingId: number): Observable<BuildingSearchingResult> {
+    let url_ = this.baseUrl + "/api/Searching/GetAppropriationByBuildingResults/{buildingId}";
+    if (buildingId === undefined || buildingId === null) {
+      throw new Error("The parameter 'buildingId' must be defined.");
+    }
+    url_ = url_.replace("{buildingId}", encodeURIComponent("" + buildingId));
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetAppropriationByBuildingResults(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetAppropriationByBuildingResults(<any>response_);
+            } catch (e) {
+              return <Observable<BuildingSearchingResult>>(<any>_observableThrow(e));
+            }
+          } else {
+            return <Observable<BuildingSearchingResult>>(<any>_observableThrow(response_));
+          }
+        })
+      );
+  }
+
+  protected processGetAppropriationByBuildingResults(
+    response: HttpResponseBase
+  ): Observable<BuildingSearchingResult> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200
+            ? BuildingSearchingResult.fromJS(resultData200)
+            : new BuildingSearchingResult();
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<BuildingSearchingResult>(<any>null);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * @param workplace (optional)
    * @return Success
@@ -5138,6 +5245,208 @@ export class APIClient {
     }
     return _observableOf<WorkplaceOrder[]>(<any>null);
   }
+
+
+
+
+
+
+/**
+   * @return Success
+   */
+  getPreviousWorkplaceOrdersByWorkplace(workplaceId): Observable<WorkplaceOrder[]> {
+    let url_ = this.baseUrl + "/api/WorkplaceOrder/GetPreviousWorkplaceOrdersByWorkplace/{workplaceId}";
+    if (workplaceId === undefined || workplaceId === null) {
+      throw new Error("The parameter 'workplaceId' must be defined.");
+    }
+    url_ = url_.replace("{workplaceId}", encodeURIComponent("" + workplaceId));
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetPreviousWorkplaceOrdersByWorkplace(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetPreviousWorkplaceOrdersByWorkplace(<any>response_);
+            } catch (e) {
+              return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(e));
+            }
+          } else {
+            return <Observable<WorkplaceOrder[]>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetPreviousWorkplaceOrdersByWorkplace(
+    response: HttpResponseBase
+  ): Observable<WorkplaceOrder[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (const item of resultData200) {
+              result200.push(WorkplaceOrder.fromJS(item));
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<WorkplaceOrder[]>(<any>null);
+  }
+
+
+
+
+
+
+
+
+  /**
+   * @return Success
+   */
+  getFutureWorkplaceOrdersByWorkplace(workplaceId): Observable<WorkplaceOrder[]> {
+    let url_ = this.baseUrl + "/api/WorkplaceOrder/GetFutureWorkplaceOrdersByWorkplace/{workplaceId}";
+    if (workplaceId === undefined || workplaceId === null) {
+      throw new Error("The parameter 'workplaceId' must be defined.");
+    }
+    url_ = url_.replace("{workplaceId}", encodeURIComponent("" + workplaceId));
+    url_ = url_.replace(/[?&]$/, "");
+    const authToken = localStorage.getItem("auth_token");
+    const options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "application/json",
+        Authorization: `Bearer ${authToken}`,
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetFutureWorkplaceOrdersByWorkplace(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetFutureWorkplaceOrdersByWorkplace(<any>response_);
+            } catch (e) {
+              return <Observable<WorkplaceOrder[]>>(<any>_observableThrow(e));
+            }
+          } else {
+            return <Observable<WorkplaceOrder[]>>(
+              (<any>_observableThrow(response_))
+            );
+          }
+        })
+      );
+  }
+
+  protected processGetFutureWorkplaceOrdersByWorkplace(
+    response: HttpResponseBase
+  ): Observable<WorkplaceOrder[]> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+          ? (<any>response).error
+          : undefined;
+
+    const _headers: any = {};
+    if (response.headers) {
+      for (const key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          const resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          if (resultData200 && resultData200.constructor === Array) {
+            result200 = [];
+            for (const item of resultData200) {
+              result200.push(WorkplaceOrder.fromJS(item));
+            }
+          }
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<WorkplaceOrder[]>(<any>null);
+  }
+
+
+
+
 
   /**
    * @return Success

@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { APIClient, Building, Workplace, Landlord } from '../api.service';
+import { APIClient, Building, Workplace, Landlord, BuildingSearchingResult, WorkplaceSearchingResult } from '../api.service';
 import { Router } from '@angular/router';
 
 
@@ -20,8 +20,14 @@ export class BuildingsComponent implements OnInit {
   isRequesting = true;
   isWorkplaceVisibleArray: Boolean[];
   landlordsList: Landlord[] = [];
+  appropriatationList: BuildingSearchingResult;
 
   constructor(private apiClient: APIClient, private router: Router) { }
+
+  visitWorkplace(workplaceId) {
+    this.router.navigate(["/buildings/workplace/", workplaceId]);
+  }
+
 
   ngOnInit() {
     this.apiClient.getLandlordsList()
@@ -40,6 +46,14 @@ export class BuildingsComponent implements OnInit {
     this. getWorkplacesList();
   }
 
+  getAppropriationByBuildingResults(buildingId: number) {
+    this.apiClient.getAppropriationByBuildingResults(buildingId)
+    .subscribe((data: BuildingSearchingResult) => {
+      this.appropriatationList = data;
+      console.log(data);
+    })
+  }
+
   filter(country: string, city: string, street: string) {
     const notFilter = (country === '' && city === '' && street === '');
     const countryFilter = (country !== '' && city === '' && street === '');
@@ -52,24 +66,30 @@ export class BuildingsComponent implements OnInit {
     if (notFilter) {
       this.filteredBuildingList = this.buildingList;
     } else if (countryFilter) {
+      this.cities = Array.from(new Set(this.buildingList.filter(x => x.country === country).map(a => a.city)));
       this.filteredBuildingList = this.buildingList.filter(x => x.country === country);
     } else if (cityFilter) {
+      this.streets = Array.from(new Set(this.buildingList.filter(x => x.city === city).map(a => a.street)));
       this.filteredBuildingList = this.buildingList.filter(x => x.city === city);
     } else if (streetFilter) {
       this.filteredBuildingList = this.buildingList.filter(x => x.street === street);
     } else if (countryCityFilter) {
+      this.streets = Array.from(new Set(this.buildingList.filter(x => x.city === city && x.country === country).map(a => a.street)));
       this.filteredBuildingList = this.buildingList.filter(x => x.country === country && x.city === city);
     } else if (countryStreetFilter) {
+      this.cities = Array.from(new Set(this.buildingList.filter(x => x.country === country).map(a => a.city)));
+      this.streets = Array.from(new Set(this.buildingList.filter(x => x.city === city && x.country === country).map(a => a.street)));
       this.filteredBuildingList = this.buildingList.filter(x => x.country === country &&  x.street === street);
     } else if (cityStreetFilter) {
       this.filteredBuildingList = this.buildingList.filter(x => x.city === city && x.street === street);
     } else if (countrySityStreetFilter) {
+      this.streets = Array.from(new Set(this.buildingList.filter(x => x.city === city && x.country === country).map(a => a.street)));
     this.filteredBuildingList = this.buildingList.filter(x => x.country === country
       && x.city === city && x.street === street);
     }
-    this.countries = Array.from(new Set(this.filteredBuildingList.map(a => a.country)));
-    this.cities = Array.from(new Set(this.filteredBuildingList.map(a => a.city)));
-    this.streets = Array.from(new Set(this.filteredBuildingList.map(a => a.street)));
+    // this.countries = Array.from(new Set(this.filteredBuildingList.map(a => a.country)));
+    //this.cities = Array.from(new Set(this.filteredBuildingList.map(a => a.city)));
+    //this.streets = Array.from(new Set(this.filteredBuildingList.map(a => a.street)));
     this.isWorkplaceVisibleArray = new Array<Boolean>(this.filteredBuildingList.length);
 
   }

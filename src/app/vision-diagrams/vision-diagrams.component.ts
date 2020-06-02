@@ -17,6 +17,7 @@ import * as moment from 'moment';
 })
 export class VisionDiagramsComponent implements OnInit {
 
+  monit=1;
   is0 = false;
   is1 = false;
   is2 = false;
@@ -36,7 +37,7 @@ export class VisionDiagramsComponent implements OnInit {
 
   monitorings: Monitoring[];
 
-  lineChartData: ChartDataSets[] = [{ data: [], label: 'Right dynamics' }];
+  lineChartData: ChartDataSets[] = [{ data: [], label: 'Позитивна динаміка' }];
 
   //    [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
   //  { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
@@ -123,7 +124,7 @@ export class VisionDiagramsComponent implements OnInit {
       },
     }
   };
-  pieChartLabels111: Label[] = [['Wrong'], ['Right']];
+  pieChartLabels111: Label[] = [['Недозволена'], ['Дозволена']];
   pieChartData111: number[];
   pieChartType111: ChartType  = 'pie';
   pieChartLegend111  = true;
@@ -228,6 +229,7 @@ export class VisionDiagramsComponent implements OnInit {
   ngOnInit() {
     // this.showDist();
     // this.getLast();
+   // this.fff();
     this.getMonitoringList();
   }
 
@@ -342,6 +344,21 @@ showDist(): void {
       this.distPerform();
     });
 }
+
+
+                 //  set your counter to 1
+fff() {
+
+  for (let i=1; i<10; i++) {
+
+    setTimeout( function timer(){
+      console.log(this.monit);
+      this.monit=i;
+    }, 2000 );
+}
+}
+
+
 
 distPerform(): void {
   this.apiClient.getAll()

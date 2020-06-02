@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIClient, Client, WorkplaceOrder, Workplace } from '../api.service';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class ClientsAdminComponent implements OnInit {
   workplaceOrdersList: WorkplaceOrder[] = [];
   workPlaceList: Workplace[] = [];
   isOrders = false;
+  isRequesting=false;
 
   constructor(private apiClient: APIClient) { }
 
@@ -25,7 +27,9 @@ export class ClientsAdminComponent implements OnInit {
   }
 
   getClientsList() {
+    this.isRequesting = true;
     this.apiClient.getClientsList()
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe((data: Client[]) => this.clientsList = data);
   }
 
@@ -38,7 +42,9 @@ export class ClientsAdminComponent implements OnInit {
   }
 
   onUpdate(client: Client): void {
+    this.isRequesting = true;
     this.apiClient.updateClient(client)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.isUsed = false;
@@ -54,7 +60,9 @@ export class ClientsAdminComponent implements OnInit {
   }
 
   onCreate(client: Client): void {
+    this.isRequesting = true;
     this.apiClient.createClient(client)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.isUsed = false;
@@ -62,7 +70,9 @@ export class ClientsAdminComponent implements OnInit {
    }
 
    deleteClient(clientId: number): void {
+    this.isRequesting = true;
     this.apiClient.deleteClient(clientId)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.hide();
@@ -77,7 +87,9 @@ export class ClientsAdminComponent implements OnInit {
   }
 
   getWorkplaceOrders(clientId: number): void {
+    this.isRequesting = true;
     this.apiClient.getWorkplaceOrdersList()
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe((data: WorkplaceOrder[]) => {
       this.workplaceOrdersList = data.filter(x => x.clientId === clientId);
       this.isOrders = true;
@@ -85,7 +97,9 @@ export class ClientsAdminComponent implements OnInit {
   }
 
   delepeWorkplaceOrder(workplaceOrder: WorkplaceOrder) {
+    this.isRequesting = true;
     this.apiClient.deleteWorkplaceOrder(workplaceOrder.id)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.getWorkplaceOrders(workplaceOrder.clientId);
     });

@@ -125,6 +125,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Label } from 'ng2-charts';
 import { APIClient, Building } from '../api.service';
 import { finalize } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -163,12 +164,11 @@ export class StatisticsComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels];
+  public barChartDataForYear: ChartDataSets[] = [{data: [], label: 'Відвідуваність'}];
+  public barChartDataForMonth: ChartDataSets[] = [{data: [], label: 'Відвідуваність'}];
+  public barChartDataForWeek: ChartDataSets[] = [{data: [], label: 'Відвідуваність'}];
 
-  public barChartDataForYear: ChartDataSets[] = [{data: [], label: 'Attendance'}];
-  public barChartDataForMonth: ChartDataSets[] = [{data: [], label: 'Attendance'}];
-  public barChartDataForWeek: ChartDataSets[] = [{data: [], label: 'Attendance'}];
-
-  constructor(private apiClient: APIClient) { }
+  constructor(private apiClient: APIClient, private translate: TranslateService) { }
 
   ngOnInit() {
     this.showStatByYear();

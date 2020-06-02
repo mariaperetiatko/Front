@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIClient, Building, Landlord } from '../api.service';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class BuildingsAdminComponent implements OnInit {
   isUsed = false;
   buildX;
   buildY;
-
+  isRequesting=false;
   constructor(private apiClient: APIClient) { }
 
   ngOnInit() {
@@ -26,6 +27,8 @@ export class BuildingsAdminComponent implements OnInit {
   }
 
   getBuildingList() {
+    this.isRequesting=true;
+
     this.apiClient.getBuildingsList()
     .subscribe((data: Building[]) => {
       this.buildingsList = data;
@@ -34,6 +37,7 @@ export class BuildingsAdminComponent implements OnInit {
 
   getLandlordsList() {
     this.apiClient.getLandlordsList()
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe((data: Landlord[]) => {
       this.landlordsList = data;
     });
@@ -76,7 +80,9 @@ export class BuildingsAdminComponent implements OnInit {
    }
 
    deleteBuilding(buildingId: number): void {
+    this.isRequesting=true;
     this.apiClient.deleteBuilding(buildingId)
+    .pipe(finalize(() => (this.isRequesting = false)))
     .subscribe(result => {
       this.ngOnInit();
       this.hide();

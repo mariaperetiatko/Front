@@ -42,6 +42,10 @@ import { BuildingCreateComponent } from './building-create/building-create.compo
 import { BuildingEditComponent } from './building-edit/building-edit.component';
 import { WorkplacesComponent } from './workplaces/workplaces.component';
 import { WorkplaceEditComponent } from './workplace-edit/workplace-edit.component';
+import { BuildingWorkplaceComponent } from './building-workplace/building-workplace.component';
+import { OrdersArciveComponent } from './orders-arcive/orders-arcive.component';
+import { FutureWorkplaceOrdersComponent } from './future-workplace-orders/future-workplace-orders.component';
+import { LandlordEquipmentComponent } from './landlord-equipment/landlord-equipment.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -75,7 +79,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     BuildingCreateComponent,
     BuildingEditComponent,
     WorkplacesComponent,
-    WorkplaceEditComponent
+    WorkplaceEditComponent,
+    BuildingWorkplaceComponent,
+    OrdersArciveComponent,
+    FutureWorkplaceOrdersComponent,
+    LandlordEquipmentComponent
   ],
   imports: [
     ChartsModule,

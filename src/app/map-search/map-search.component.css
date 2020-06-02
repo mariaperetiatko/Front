@@ -35,8 +35,12 @@
   background-color: #f3f4f6b7;
 }
 
-.workplace-background-column {
-  width: 45%;
+.workplace-background-column-left {
+  width: 55%;
+  float: left;
+}
+.workplace-background-column-right {
+  width: 40%;
   float: left;
 }
 
@@ -56,14 +60,18 @@
 }
 
 .buildings {
-  overflow: hidden;
+
 }
 
+.scroll {
+
+  overflow-y: scroll;
+  height: 140px;
+}
 .building-background {
   width: 45%;
   float: left;
   padding: 10px;
-  overflow: hidden;
   background-color: #cad5df;
   margin-right: 2.5%;
   margin-left: 2.5%;

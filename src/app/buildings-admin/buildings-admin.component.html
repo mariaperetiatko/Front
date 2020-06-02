@@ -1,10 +1,11 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" style="margin-top: 10px;">
+    <ol class="breadcrumb bradcrumps-style">
       <li class="breadcrumb-item" aria-current="page">{{ 'Buildings' | translate }}</li>
     </ol>
   </nav>
-<button type="button" (click)="createBuilding()" class="btn btn-default">{{ 'Create new building' | translate }}</button>
-<div *ngIf="isUsed">
+  <div *ngIf="isRequesting" class="spinner-border"></div>
+<div class="body-background" *ngIf="!isRequesting">
+<!--<div *ngIf="isUsed">
     <div class="form-group">
        <label>{{ 'Country' | translate }}</label>
        <input class="form-control" type="text" name="country" [(ngModel)]="building.country">
@@ -46,7 +47,7 @@
         <div *ngIf="isUpdate">
             <button class="btn btn-default details" (click)="onUpdate(building)">{{ 'Update' | translate }}</button>
             </div>
-        </div>
+        </div>-->
     <table class="table table-bordered">
         <thead>
            <tr>
@@ -55,11 +56,8 @@
               <td>{{ 'Street' | translate }}</td>
               <td>{{ 'House' | translate }}</td>
               <td>{{ 'Flat' | translate }}</td>
-              <td>{{ 'Landlord' | translate }}</td>
-              <td>x</td>
-              <td>y</td>
-              <td>{{ 'Update' | translate }}</td>
-              <td>{{ 'Delete' | translate }}</td>
+              <td>{{ 'Landlord number' | translate }}</td>
+              <td></td>
            </tr>
 
         </thead>
@@ -71,10 +69,14 @@
               <td>{{cl.house}}</td>
               <td>{{cl.flat}}</td>
               <td>{{cl.landlordId}}</td>
-              <td>{{cl.x / 100000}}</td>
-              <td>{{cl.y / 100000}}</td>
-                  <td> <button type="button" (click)="updateBuilding(cl)" class="btn btn-default">{{ 'Update' | translate }}</button></td>
-              <td> <button type="button" (click)="deleteBuilding(cl.id)" class="btn btn-default">{{ 'Delete' | translate }}</button></td>
+              <td>
+
+                <a style="margin-left:5px; float:left; color:rgba(0,0,0,.5)"
+                href="javascript:void(0)"
+                (click)="deleteBuilding(cl.id)">{{ "Delete" | translate }}</a>
+
+
            </tr>
         </tbody>
      </table>
+</div>

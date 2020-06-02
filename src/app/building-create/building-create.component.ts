@@ -395,11 +395,13 @@ export class BuildingCreateComponent implements AfterContentInit {
         ({
           location: pos
         },
+
           function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               this.inputs.value = results[0].formatted_address;
 
-              for (var i = 0; i < results[0].address_components.length; i++) {
+              for (var i = 0; i < results[0].address_components.length;
+                 i++) {
                 if (results[0].address_components[i].types[0] === "country") {
                   this.building.country = results[0].address_components[i].long_name;
                 }
@@ -480,6 +482,44 @@ export class BuildingCreateComponent implements AfterContentInit {
           animation: google.maps.Animation.DROP,
         })
         this.markers.push(marker);
+
+        let posit = marker.getPosition();
+
+        let geocoder1 = new google.maps.Geocoder();
+
+        geocoder1.geocode
+          ({
+            location: posit
+          },
+
+            function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                this.inputs.value = results[0].formatted_address;
+                for (var i = 0; i < results[0].address_components.length; i++) {
+                  if (results[0].address_components[i].types[0] === "country") {
+                    this.building.country = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "locality") {
+                    this.building.city = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "route") {
+                    this.building.street = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "street_number") {
+                    this.building.house = results[0].address_components[i].long_name;
+                  }
+
+                }
+                this.building.x = results[0].geometry.location.lat();
+                this.building.y = results[0].geometry.location.lng();
+                console.log(this.building);
+              }
+            }.bind(this)
+          );
+
 
         google.maps.event.addListener(marker, 'dragend', function () {
           let pos = marker.getPosition();
@@ -604,22 +644,43 @@ export class BuildingCreateComponent implements AfterContentInit {
         });
 
 
-      let posit = marker.getPosition();
+        let posit = marker.getPosition();
 
-      let geocoder1 = new google.maps.Geocoder();
+        let geocoder1 = new google.maps.Geocoder();
 
-      geocoder1.geocode
-        ({
-          location: posit
-        },
+        geocoder1.geocode
+          ({
+            location: posit
+          },
 
-          function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              this.building = new Building();
-              this.inputs.value = results[0].formatted_address;
-            }
-          }.bind(this)
-        );
+            function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                this.inputs.value = results[0].formatted_address;
+                for (var i = 0; i < results[0].address_components.length; i++) {
+                  if (results[0].address_components[i].types[0] === "country") {
+                    this.building.country = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "locality") {
+                    this.building.city = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "route") {
+                    this.building.street = results[0].address_components[i].long_name;
+                  }
+
+                  if (results[0].address_components[i].types[0] === "street_number") {
+                    this.building.house = results[0].address_components[i].long_name;
+                  }
+
+                }
+                this.building.x = results[0].geometry.location.lat();
+                this.building.y = results[0].geometry.location.lng();
+                console.log(this.building);
+              }
+            }.bind(this)
+          );
+
         google.maps.event.addListener(marker, 'dragend', function () {
           let pos = marker.getPosition();
           console.log('this');

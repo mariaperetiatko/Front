@@ -47,15 +47,15 @@
             class="form-control"
             (click)="changedClickLong(lng.value)"
           >
-            <option [value]="0" [selected]="selectedLong">km</option>
-            <option [value]="1" [selected]="selectedLong">ml</option>
+            <option [value]="0" [selected]="selectedLong">{{ "km" | translate }}</option>
+            <option [value]="1" [selected]="selectedLong">{{ "ml" | translate }}</option>
           </select>
         </td>
         <td>
           <input type="text" style="margin-bottom: 5px" class="form-control" [(ngModel)]="long" />
 
           <button class="btn btn-default form-button" (click)="updateSearchSetting()">
-            Save cost/radius
+            {{ "Save cost/radius" | translate }}
           </button>
         </td>
       </tr>
@@ -65,7 +65,7 @@
 </div>
 <div class="right-column">
   <div class="form-group">
-    <label>{{ "Equipment" | translate }}</label>
+    <label>{{ "New equipment" | translate }}</label>
     <select
       class="form-control"
       (change)="selectNewEquipment($event)"
@@ -83,7 +83,7 @@
       class="btn btn-default form-button"
       *ngIf="addButtonShown"
       (click)="addWorkplaceParameter()"
-    >Add</button>
+    >{{ "Add" | translate }}</button>
   </div>
 </div>
 </div>
@@ -122,12 +122,12 @@
               </td>
               <td>
                 <button class="btn btn-default greed-button" (click)="updateWorkplaceParameter(item)">
-                  Update
+                  {{ "Update" | translate }}
                 </button>
               </td>
               <td>
                 <button class="btn btn-default greed-button" (click)="deleteWorkplaceParameter(item)">
-                  Delete
+                  {{ "Delete" | translate }}
                 </button>
               </td>
             </tr>
