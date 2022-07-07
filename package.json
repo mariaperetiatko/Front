@@ -36,7 +36,7 @@
     "from-cdn": "^1.0.1",
     "jquery": "^3.3.1",
     "linqts": "^1.12.2",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "ng2-charts": "^2.2.3",
     "ngx-bootstrap": "^3.1.2",
     "open-iconic": "^1.1.1",
